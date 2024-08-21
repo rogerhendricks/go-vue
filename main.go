@@ -58,6 +58,10 @@ func main() {
     api.Get("/devices/:id", controllers.GetDevice)
     api.Put("/devices/:id", controllers.UpdateDevice)
     api.Delete("/devices/:id", controllers.DeleteDevice)
+
+    api.Get("/leads", controllers.GetLeads)
+    
+
     
 	app.Use("/", filesystem.New(filesystem.Config{
 		Root:   http.FS(distDir),
