@@ -46,7 +46,7 @@ function handleInput(event) {
             <option value="Medtronic">Medtronic</option>
             <option value="Sorin">Sorin</option>
         </select>
-        <label for="DeviceModel" class="form-label">DeviceModel</label>
+        <label for="DeviceModel" class="form-label">Device Model</label>
         <input type="text" class="form-control" id="DeviceModel" name="DeviceModel" v-model="formData.DeviceModel" @input="handleInput">
         <label for="Name" class="form-label">Name</label>
         <input type="text" class="form-control" id="Name" name="Name" v-model="formData.Name" @input="handleInput">
@@ -69,7 +69,8 @@ function handleInput(event) {
         </div>
         <label for="comment" class="form-label">comment</label>
         <input type="text" class="form-control" id="comment" name="comment" v-model="formData.comment" @input="handleInput"> 
-      <button type="submit" class="btn btn-primary">Submit</button>
+      
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
     </form>
   </div>
 </template>

@@ -52,14 +52,18 @@ func main() {
     api.Post("/logout", controllers.LogoutUser)
     api.Get("/user", controllers.GetUser)
 
-
+    // devices
     api.Get("/devices", controllers.GetDevices)
     api.Post("/devices", controllers.CreateDevice)
     api.Get("/devices/:id", controllers.GetDevice)
     api.Put("/devices/:id", controllers.UpdateDevice)
     api.Delete("/devices/:id", controllers.DeleteDevice)
-
+    // leads
     api.Get("/leads", controllers.GetLeads)
+    api.Post("/leads", controllers.CreateLead)
+    api.Get("/leads/:id", controllers.GetLead)
+    api.Put("leads/:id", controllers.UpdateLead)
+    api.Delete("leads/:id", controllers.DeleteLead)
     
 
     
