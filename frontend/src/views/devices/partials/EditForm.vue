@@ -50,7 +50,7 @@ function cancel() {
 </script>
 
 <template>
-  <div>
+  <div class="border border-success p-2 mb-2 border-opacity-50 rounded shadow-sm bg-light text-dark">
     <form @submit.prevent="handleSubmit" ref="form">
         <div class="row">
             <div class="col">
@@ -110,10 +110,10 @@ function cancel() {
         </div>
         <div class="row mt-2">
             <div class="col">
-                    <div class="btn-group" id="actions" role="group" >
-                        <button type="submit" class="btn btn-primary ">Update</button>
+                <button type="submit" class="btn btn-primary ">Update</button>
+                    <!-- <div class="btn-group" id="actions" role="group" >
                         <button type="button" class="btn btn-secondary" @click="cancel">Cancel</button>
-                    </div>
+                    </div> -->
             </div>
         </div>
     </form>

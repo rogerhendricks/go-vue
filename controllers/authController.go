@@ -44,8 +44,6 @@ func RegisterUser(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"message": "User registered successfully", "user": user})
 }
 
-
-
 func LoginUser(c *fiber.Ctx) error {
     db := database.InitDB()
 
@@ -88,6 +86,49 @@ func LogoutUser(c *fiber.Ctx) error {
         return c.Status(500).JSON(fiber.Map{"error": "Internal server error"})
     }
     return c.JSON(fiber.Map{"message": "Logout successful"})
+}
+
+func UpdateUser(c *fiber.Ctx) error {
+    db := database.InitDB()
+    sess, err := store.Get(c)
+    if err != nil {
+        return c.Status(500).JSON(fiber.Map{"error": "Internal server error"})
+    }
+    username := sess.Get("username")
+    if username == nil {
+        return c.Status(401).JSON(fiber.Map{"error": "Not logged in"})
+    }
+
+    user := new(models.User)
+    if err := c.BodyParser(user); err != nil {
+        return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+    }
+
+    var existingUser models.User
+    result := db.Where("username = ?", username).First(&existingUser)
+    if result.Error != nil {
+        return c.Status(404).JSON(fiber.Map{"error": "User not found"})
+    }
+
+    // Only update the fields if they are not empty
+    if user.Username != "" {
+        existingUser.Username = user.Username
+    }
+    if user.Fullname != "" {
+        existingUser.Fullname = user.Fullname
+    }
+    if user.Password != "" {
+        existingUser.Password = user.Password
+    }
+
+    result = db.Save(&existingUser)
+    if result.Error != nil {
+
+        return c.Status(500).JSON(fiber.Map{"error": "Could not update user"})
+    }
+
+    existingUser.Password = "" // Don't send password back
+    return c.JSON(fiber.Map{"message": "User updated successfully", "user": existingUser})
 }
 
 func GetUser(c *fiber.Ctx) error {

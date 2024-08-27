@@ -3,7 +3,9 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
-import Index from '../views/devices/Index.vue'
+import DeviceIndex  from '../views/devices/Index.vue'
+import LeadIndex  from '../views/leads/Index.vue'
+import UserSettings from '../UserSettings.vue'
 
 const routes = [
   {
@@ -22,6 +24,11 @@ const routes = [
     component: Register
   },
   {
+    path: '/settings',
+    name: 'UserSettings',
+    component: UserSettings,
+  },
+  {
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
@@ -30,9 +37,15 @@ const routes = [
   {
     path: '/devices',
     name: 'Devices',
-    component: Index,
+    component: DeviceIndex,
     meta: { requiresAuth: true }
   },
+  { 
+    path: '/leads',
+    name: 'Leads',
+    component: LeadIndex,
+    meta: { requiresAuth: true }
+  }
 ]
 
 const router = createRouter({

@@ -1,5 +1,6 @@
 package controllers
 import (
+    // "fmt"
 	"log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rogerhendricks/go-vue/database"
@@ -14,7 +15,9 @@ func GetLeads(c *fiber.Ctx) error{
         log.Printf("Error fetching leads: %v", result.Error)
         return c.Status(500).JSON(fiber.Map{"error": "Could not fetch leads"})
     }
-
+    // for i, lead := range leads {
+    //     fmt.Printf("Lead %d: %+v\n", i, lead)
+    // }
     return c.JSON(fiber.Map{"leads": leads})
 }
 

@@ -29,7 +29,7 @@ func main() {
     }
 
     // Migrate the schema
-    db.AutoMigrate(&models.User{})
+    db.AutoMigrate(&models.User{}, &models.Device{}, &models.Lead{})
 
     
     app := fiber.New()
@@ -51,6 +51,7 @@ func main() {
     api.Post("/login", controllers.LoginUser)
     api.Post("/logout", controllers.LogoutUser)
     api.Get("/user", controllers.GetUser)
+    api.Put("/user", controllers.UpdateUser)
 
     // devices
     api.Get("/devices", controllers.GetDevices)

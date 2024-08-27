@@ -36,6 +36,9 @@
             <router-link class="nav-link" to="/dashboard" v-if="user">Dashboard</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/leads" v-if="user">Leads</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/devices" v-if="user">Devices</router-link>
           </li>
           <li class="nav-item">
@@ -49,7 +52,12 @@
           </li>
         </ul>
         <div class="d-flex">
-         <span v-if="user">{{ user.fullname }}</span>
+         <span v-if="user">
+          <router-link class="nav-link" to="/settings">
+            {{ user.fullname }}
+          </router-link>
+        </span>
+         
          <span v-else>
             <router-link class="nav-link" to="/login" v-if="!user">Login</router-link>
          </span>
