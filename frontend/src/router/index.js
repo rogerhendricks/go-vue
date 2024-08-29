@@ -6,6 +6,7 @@ import Dashboard from '../views/Dashboard.vue'
 import DeviceIndex  from '../views/devices/Index.vue'
 import LeadIndex  from '../views/leads/Index.vue'
 import UserSettings from '../UserSettings.vue'
+import DocorIndex from '../views/doctors/Index.vue'
 
 const routes = [
   {
@@ -45,7 +46,13 @@ const routes = [
     name: 'Leads',
     component: LeadIndex,
     meta: { requiresAuth: true }
-  }
+  },
+  {
+    path: '/doctors',
+    name: 'Doctors',
+    component: DocorIndex,
+    meta: { requiresAuth: true }
+  },
 ]
 
 const router = createRouter({

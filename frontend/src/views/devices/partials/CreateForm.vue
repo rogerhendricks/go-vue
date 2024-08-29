@@ -1,10 +1,12 @@
 <script setup>
 import axios from '../../../axiosConfig'
 import { ref } from 'vue'
+import {useToast} from 'vue-toastification';
 
+const toast = useToast();
 
-const form = ref(null)
-const formData = ref({
+// const form = ref(null)
+const initialFormData = ref({
     Manufacturer: '',
     DeviceModel: '',
     Name: '',
@@ -13,8 +15,9 @@ const formData = ref({
     HasHazard: false,
     IsMri: true,
     comment: '',
-
 })
+
+const formData = ref({ ...initialFormData.value })
 
 async function handleSubmit() {
     try {
@@ -24,8 +27,15 @@ async function handleSubmit() {
         }
         });
         console.log('Device updated successfully', response.data);
+        toast.success('Lead updated successfully',{
+            timeout: 2000,
+        });
+        formData.value = { ...initialFormData };
     } catch (error) {
         console.error('Failed to update device', error);
+        toast.error('Failed to update lead',{
+            timeout: 2000,
+        });
     }
 }
 
@@ -36,7 +46,7 @@ function handleInput(event) {
 
 <template>
   <div>
-    <form @submit.prevent="handleSubmit" ref="form">
+    <form @submit.prevent="handleSubmit" >
         <label for="Manufacturer" class="form-label">Manufacturer</label>
         <select class="form-select" id="Manufacturer" name="Manufacturer" v-model="formData.Manufacturer" @input="handleInput">
             <option disabled value="" >Please select a manufacturer</option>

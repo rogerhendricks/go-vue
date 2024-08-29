@@ -106,9 +106,9 @@ function cancel() {
         <div class="row mt-2">
             <div class="col">
                 <button type="submit" class="btn btn-primary ">Update</button>
-                    <div class="btn-group" id="actions" role="group" >
+                    <!-- <div class="btn-group" id="actions" role="group" >
                         <button type="button" class="btn btn-secondary" @click="cancel">Cancel</button>
-                    </div>
+                    </div> -->
             </div>
         </div>
     </form>

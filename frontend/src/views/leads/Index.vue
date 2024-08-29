@@ -55,32 +55,20 @@
                 <input  type="text" class="form-control" placeholder="Search" v-model="searchTerm">
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
             </div>
-            <EditForm v-if="selectedLead" :lead="selectedLead" @cancel="selectedLead = null" />
+            <!-- <EditForm v-if="selectedLead" :lead="selectedLead" @cancel="selectedLead = null" /> -->
 
             <div class="my-2">
                 <button class="btn btn-primary" @click="getLeads">Refresh</button>
             </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Manufacturer</th>
-                        <th>Name</th>
-                        <th>Lead Model</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="lead in paginatedLeads" :key="lead.ID">
-                        <td>{{ lead.manufacturer }}</td>
-                        <td>{{ lead.name }}</td>
-                        <td>{{ lead.leadModel }}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm" @click="selectedLead = lead">Edit</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <ol>
+                <li v-for="lead in paginatedLeads">
+                    <button type="button" class="btn" @click="selectedLead = lead" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        {{ lead.manufacturer }} {{ lead.name }}
+                    </button>
+                    <!-- <button class="btn btn-danger btn-sm">Delete</button> -->
+                </li>
+            </ol>
+
             <nav aria-label="Page navigation example">
                 <ul class="pagination
                 justify-content-center">
@@ -107,5 +95,24 @@
                 </ul>
             </nav>
         </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Lead</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <EditForm v-if="selectedLead" :lead="selectedLead" :key="selectedLead.ID" @cancel="selectedLead = null" />
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="selectedLead = null" >Close</button>
+        </div>
+        </div>
+    </div>
     </div>
 </template>

@@ -1,9 +1,11 @@
 <script setup>
 import axios from '../../../axiosConfig'
 import { ref } from 'vue'
+import {useToast} from 'vue-toastification';
 
+const toast = useToast();
 const form = ref(null)
-const formData = ref({
+const initialFormData = ref({
     Manufacturer: '',
     LeadModel: '',
     Name: '',
@@ -11,8 +13,9 @@ const formData = ref({
     HasHazard: false,
     IsMri: true,
     comment: '',
-
 })
+
+const formData = ref({ ...initialFormData.value })
 
 async function handleSubmit() {
     try {
@@ -22,8 +25,15 @@ async function handleSubmit() {
         }
         });
         console.log('Lead updated successfully', response.data);
+        toast.success('Lead updated successfully',{
+            timeout: 2000,
+        });
+        formData.value = { ...initialFormData };
     } catch (error) {
         console.error('Failed to update lead', error);
+        toast.error('Failed to update lead',{
+            timeout: 2000,
+        });
     }
 }
 

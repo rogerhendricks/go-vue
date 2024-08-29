@@ -36,6 +36,9 @@
             <router-link class="nav-link" to="/dashboard" v-if="user">Dashboard</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/doctors" v-if="user">Doctors</router-link>
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/leads" v-if="user">Leads</router-link>
           </li>
           <li class="nav-item">
