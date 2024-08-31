@@ -6,7 +6,6 @@ import {useToast} from 'vue-toastification';
 const toast = useToast();
 const props = defineProps(['device']);
 const emit = defineEmits('cancel');
-console.log('These are the device props',props.device);
 
 const form = ref(null)
 const formData = ref({
@@ -25,9 +24,9 @@ const formData = ref({
 async function handleSubmit() {
     try {
         const response = await axios.put(`api/devices/${props.device.ID}`, formData.value, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
         console.log('Device updated successfully', response.data);
         toast.success('Device updated successfully',{

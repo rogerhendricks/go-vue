@@ -7,6 +7,12 @@ import "bootstrap"
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css";
 
+router.beforeEach((to, from, next) => {
+    console.log(`Navigating to ${to.path} from ${from.path}`);
+    next();
+  });
+
+  
 createApp(App)
 .use(router)
 .use(Toast)

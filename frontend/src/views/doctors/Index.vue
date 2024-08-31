@@ -2,14 +2,19 @@
 import axios from '../../axiosConfig'
 import { ref, computed } from 'vue'
 import CreateForm from './partials/CreateForm.vue'
-import EditForm from './partials/EditForm.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const doctors = ref([])
 const loading = ref(false)
 const selectedDoctor = ref(null)
 let searchTerm = ref('');
 let currentPage = ref(1);
 let pageSize = ref(10);
+
+const selectDoctor = (doctor) => {
+  router.push({ name: 'Doctor', params: { id: doctor.ID }})
+}
 
 const filteredDoctors = computed(() => {
   if (!searchTerm.value) {
@@ -32,6 +37,7 @@ async function getDoctors() {
   try {
     const response = await axios.get('/api/doctors')
     doctors.value = response.data.doctors
+    console.log('Doctors:', doctors.value)
   } catch (error) {
     console.error('Error fetching doctors:', error)
   } finally {
@@ -56,12 +62,13 @@ getDoctors()
             </div>
             </div>
             <div class="my-2">
-            <button class="btn btn-primary" @click="getDoctors" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Refresh</button>
+            <button class="btn btn-primary" @click="getDoctors">Refresh</button>
             </div>
             <ol>
                 <li v-for="doctor in paginatedDoctors"> 
-                    <button type="button" class="btn" @click="selectedDoctor = doctor" >
-                    {{ doctor.name}}
+                    <!-- <button type="button" class="btn" @click="selectedDoctor = doctor" > -->
+                    <button type="button" class="btn" @click="selectDoctor(doctor)" >
+                      {{doctor.ID}} {{ doctor.name}} Phone: {{ doctor.phone }}
                     </button>
                 </li>
             </ol>
@@ -97,7 +104,7 @@ getDoctors()
 
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
@@ -112,6 +119,6 @@ getDoctors()
         </div>
       </div>
     </div>
-</div>
+</div> -->
 
 </template>

@@ -39,14 +39,14 @@ const removeAddress = (index) => {
 const handleSubmit = async () => {
   try {
     const response = await axios.post('api/doctors', doctor)
-    console.log('Device updated successfully', response.data);
-    toast.success('Lead updated successfully',{
+    console.log('Doctor updated successfully', response.data);
+    toast.success('Doctor updated successfully',{
             timeout: 2000,
         });
     Object.assign(doctor, initialDoctorState);
   } catch (error) {
-    console.error('Failed to update device', error);
-    toast.error('Failed to update lead',{
+    console.error('Failed to update doctor', error);
+    toast.error('Failed to update doctor',{
             timeout: 2000,
         });
   }

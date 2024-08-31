@@ -12,7 +12,7 @@ func GetDoctors(c *fiber.Ctx) error {
 	db := database.InitDB()
 
 	var doctors []models.Doctor
-	result := db.Find(&doctors)
+	result := db.Select("id", "Name", "Phone").Find(&doctors)
 	if result.Error != nil {
 		log.Printf("Error fetching doctors: %v", result.Error)
 		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch doctors"})
@@ -54,6 +54,7 @@ func CreateDoctor(c *fiber.Ctx) error {
 }
 
 func UpdateDoctor(c *fiber.Ctx) error {
+	
 	db := database.InitDB()
 
 	doctorID := c.Params("id")
@@ -65,17 +66,49 @@ func UpdateDoctor(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch doctor"})
 	}
 
-	if err := c.BodyParser(existingDoctor); err != nil {
+	newDoctor := new(models.Doctor)
+	if err := c.BodyParser(newDoctor); err != nil {
 		log.Printf("Error parsing doctor data: %v", err)
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
 	}
+    // Update doctor's information
+    existingDoctor.Name = newDoctor.Name
+	existingDoctor.Phone = newDoctor.Phone
+	existingDoctor.Email = newDoctor.Email
+
+	// Handle addresses
+	for _, address := range newDoctor.Addresses {
+		existingAddress := new(models.Address)
+		if err := db.Where("id = ?", address.ID).First(existingAddress).Error; err != nil {
+			// If address doesn't exist, create a new one
+			existingDoctor.Addresses = append(existingDoctor.Addresses, address)
+		} else {
+			// If address exists, update it
+			db.Model(existingAddress).Updates(address)
+		}
+	}
+
+		// Handle addresses to delete
+		for _, address := range existingDoctor.Addresses {
+			found := false
+			for _, newAddress := range newDoctor.Addresses {
+				if address.ID == newAddress.ID {
+					found = true
+					break
+				}
+			}
+			if !found {
+				db.Delete(&address)
+			}
+		}
+		
 	result = db.Save(existingDoctor)
 	if result.Error != nil {
 		log.Printf("Error updating doctor: %v", result.Error)
 		return c.Status(500).JSON(fiber.Map{"error": "Could not update doctor"})
 	}
 
-	return c.JSON(fiber.Map{"message": "Doctor updated successfully", "doctor": existingDoctor})
+	return c.JSON(fiber.Map{"message": "Doctor database updated successfully", "doctor": existingDoctor})
 }
 
 func DeleteDoctor(c *fiber.Ctx) error {
