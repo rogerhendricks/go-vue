@@ -20,6 +20,19 @@ func GetDevices(c *fiber.Ctx) error {
     return c.JSON(fiber.Map{"devices": devices})
 }
 
+func GetDevicesList(c *fiber.Ctx) error {
+    db := database.InitDB()
+
+    var devices []models.Device
+    result := db.Select("ID", "manufacturer", "name", "type").Find(&devices)
+    if result.Error != nil {
+        log.Printf("Error fetching devices: %v", result.Error)
+        return c.Status(500).JSON(fiber.Map{"error": "Could not fetch list of devices"})
+    }
+
+    return c.JSON(fiber.Map{"devices": devices})
+}
+
 func GetDevice(c *fiber.Ctx) error {
     db := database.InitDB()
 

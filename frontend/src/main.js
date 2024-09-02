@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css";
+import store from './store'
+
 
 router.beforeEach((to, from, next) => {
     console.log(`Navigating to ${to.path} from ${from.path}`);
@@ -15,5 +17,6 @@ router.beforeEach((to, from, next) => {
   
 createApp(App)
 .use(router)
+.use(store)
 .use(Toast)
 .mount('#app')

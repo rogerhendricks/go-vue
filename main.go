@@ -92,4 +92,7 @@ func SetupRoutes(app *fiber.App) {
 	api.Get("/doctors/:id", controllers.GetDoctor)
 	api.Put("/doctors/:id", controllers.UpdateDoctor)
 	api.Delete("/doctors/:id", controllers.DeleteDoctor)
+    // Lists
+    api.Get("/deviceList", controllers.GetDevicesList)
+    api.Get("/doctorsList", controllers.GetDoctorsList)
 }

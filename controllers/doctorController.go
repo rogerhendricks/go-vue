@@ -5,7 +5,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/rogerhendricks/go-vue/database"
 	"github.com/rogerhendricks/go-vue/models"
-
 )
 
 func GetDoctors(c *fiber.Ctx) error {
@@ -13,6 +12,19 @@ func GetDoctors(c *fiber.Ctx) error {
 
 	var doctors []models.Doctor
 	result := db.Select("id", "Name", "Phone").Find(&doctors)
+	if result.Error != nil {
+		log.Printf("Error fetching doctors: %v", result.Error)
+		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch doctors"})
+	}
+
+	return c.JSON(fiber.Map{"doctors": doctors})
+}
+
+func GetDoctorsList(c *fiber.Ctx) error {
+	db := database.InitDB()
+
+	var doctors []models.Doctor
+	result := db.Select("ID", "name" ).Find(&doctors)
 	if result.Error != nil {
 		log.Printf("Error fetching doctors: %v", result.Error)
 		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch doctors"})

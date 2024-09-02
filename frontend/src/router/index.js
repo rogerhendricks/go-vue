@@ -8,7 +8,9 @@ import LeadIndex  from '../views/leads/Index.vue'
 import UserSettings from '../UserSettings.vue'
 import DocorIndex from '../views/doctors/Index.vue'
 import Doctor from '../views/doctors/Doctor.vue'
-
+import PatientIndex from '../views/patients/Index.vue'
+import Patient from '../views/patients/Patient.vue'
+import PatientCreate from '../views/patients/Create.vue'
 const routes = [
   {
     path: '/',
@@ -59,6 +61,24 @@ const routes = [
     name: 'Doctor',
     component: Doctor,
     props: true
+  },
+  {
+    path: '/patients',
+    name: 'Patients',
+    component: PatientIndex,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/patients/create',
+    name: 'PatientCreate',
+    component: PatientCreate,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/patients/:id',
+    name: 'Patient',
+    component: Patient,
+    meta: {requiresAuth: true},
   }
 ]
 
