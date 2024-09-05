@@ -10,7 +10,7 @@ import DocorIndex from '../views/doctors/Index.vue'
 import Doctor from '../views/doctors/Doctor.vue'
 import PatientIndex from '../views/patients/Index.vue'
 import Patient from '../views/patients/Patient.vue'
-import PatientCreate from '../views/patients/Create.vue'
+
 const routes = [
   {
     path: '/',
@@ -66,12 +66,6 @@ const routes = [
     path: '/patients',
     name: 'Patients',
     component: PatientIndex,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/patients/create',
-    name: 'PatientCreate',
-    component: PatientCreate,
     meta: { requiresAuth: true }
   },
   {

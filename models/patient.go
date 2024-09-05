@@ -16,5 +16,7 @@ type Patient struct {
 	Dob string `json:"dob"`
 	Active bool `json:"active"`
 	
-    Doctors []Doctor `gorm:"foreignKey:PatientID"`
+    // Doctors []Doctor `gorm:"foreignKey:PatientID"`
+	Doctors []Doctor `gorm:"many2many:patient_doctors;"`
+	
 }

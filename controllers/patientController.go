@@ -20,6 +20,18 @@ func GetPatients(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"patients": patients})
 }
 
+func SearchPatients(c *fiber.Ctx) error {
+    db := database.InitDB()
+
+
+    searchTerm := c.Query("search", "")
+
+    var patients []models.Patient
+    db.Where("name LIKE ?", "%" + searchTerm + "%").Find(&patients)
+    return c.JSON(patients)
+}
+
+
 func GetPatient(c *fiber.Ctx) error {
 	db := database.InitDB()
 
@@ -34,54 +46,82 @@ func GetPatient(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"patient": patient})
 }
 
+// func CreatePatient(c *fiber.Ctx) error {
+// 	db := database.InitDB()
+	
+// 	patient := new(models.Patient)
+// 	if err := c.BodyParser(patient); err != nil {
+// 		log.Printf("Error parsing patient data: %v", err)
+// 		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+// 	}
+
+// 	result := db.Create(patient)
+// 	if result.Error != nil {
+// 		log.Printf("Error creating patient: %v", result.Error)
+// 		return c.Status(500).JSON(fiber.Map{"error": "Could not create patient"})
+// 	}
+
+// 	return c.JSON(fiber.Map{"message": "Patient created successfully", "patient": patient})
+// }
+
 func CreatePatient(c *fiber.Ctx) error {
-	db := database.InitDB()
+    db := database.InitDB()
+    
+    patient := new(models.Patient)
+    if err := c.BodyParser(patient); err != nil {
+        log.Printf("Error parsing patient data: %v", err)
+        return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+    }
 
-	patient := new(models.Patient)
-	if err := c.BodyParser(patient); err != nil {
-		log.Printf("Error parsing patient data: %v", err)
-		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
-	}
+    result := db.Create(patient)
+    if result.Error != nil {
+        log.Printf("Error creating patient: %v", result.Error)
+        return c.Status(500).JSON(fiber.Map{"error": "Could not create patient"})
+    }
 
-	result := db.Create(patient)
-	if result.Error != nil {
-		log.Printf("Error creating patient: %v", result.Error)
-		return c.Status(500).JSON(fiber.Map{"error": "Could not create patient"})
-	}
+    // Handle doctor associations
+    for _, doctor := range patient.Doctors {
+        existingDoctor := new(models.Doctor)
+        if err := db.Where("id = ?", doctor.ID).First(existingDoctor).Error; err != nil {
+            log.Printf("Error fetching doctor: %v", err)
+        } else {
+            db.Model(patient).Association("Doctors").Append(existingDoctor)
+        }
+    }
 
-	return c.JSON(fiber.Map{"message": "Patient created successfully", "patient": patient})
+    return c.JSON(fiber.Map{"message": "Patient created successfully", "patient": patient})
 }
 
 func UpdatePatient(c *fiber.Ctx) error {
-	
-	db := database.InitDB()
+    db := database.InitDB()
 
-	patientID := c.Params("id")
+    patientID := c.Params("id")
 
-	patient := new(models.Patient)
-	result := db.Preload("doctors").Where("id = ?", patientID).First(&patient)
-	if result.Error != nil {
-		log.Printf("Error fetching patient: %v", result.Error)
-		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch patient"})
-	}
+    patient := new(models.Patient)
+    result := db.Preload("Doctors").Where("id = ?", patientID).First(&patient)
+    if result.Error != nil {
+        log.Printf("Error fetching patient: %v", result.Error)
+        return c.Status(500).JSON(fiber.Map{"error": "Could not fetch patient"})
+    }
 
-	newPatient := new(models.Patient)
-	if err := c.BodyParser(&newPatient); err != nil {
-		log.Printf("Error parsing patient data: %v", err)
-		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
-	}
+    newPatient := new(models.Patient)
+    if err := c.BodyParser(&newPatient); err != nil {
+		log.Println(c.Body())
+        log.Printf("Error parsing patient data: %v", err)
+        return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+    }
 
-	patient.Name = newPatient.Name
-	patient.Phone = newPatient.Phone
-	patient.Email = newPatient.Email
-	patient.Address = newPatient.Address
-	patient.State = newPatient.State
-	patient.City = newPatient.City
-	patient.Zip = newPatient.Zip
-	patient.Country = newPatient.Country
-	patient.Sex = newPatient.Sex
-	patient.Dob = newPatient.Dob
-	patient.Active = newPatient.Active
+    patient.Name = newPatient.Name
+    patient.Phone = newPatient.Phone
+    patient.Email = newPatient.Email
+    patient.Address = newPatient.Address
+    patient.State = newPatient.State
+    patient.City = newPatient.City
+    patient.Zip = newPatient.Zip
+    patient.Country = newPatient.Country
+    patient.Sex = newPatient.Sex
+    patient.Dob = newPatient.Dob
+    patient.Active = newPatient.Active
 
     // Clear existing doctor relationships
     db.Model(&patient).Association("Doctors").Clear()
@@ -92,29 +132,81 @@ func UpdatePatient(c *fiber.Ctx) error {
         if err := db.Where("id = ?", doctor.ID).First(existingDoctor).Error; err != nil {
             log.Printf("Error fetching doctor: %v", err)
         } else {
-            patient.Doctors = append(patient.Doctors, *existingDoctor)
+            db.Model(patient).Association("Doctors").Append(existingDoctor)
         }
     }
 
-	// for _, doctor := range newPatient.Doctors {
-	// 	existingDoctor := new(models.Doctor)
-	// 	if err := db.Where("id = ?", doctor.ID).First(patient).Error; err != nil {
-	// 		log.Printf("Error fetching doctor: %v", err)
-	// 		patient.Doctors = append(patient.Doctors, doctor)
-	// 	} else {
-	// 		db.Model(existingDoctor).Updates(doctor)
-	// 	}
-		
-	// }
+    result = db.Save(&patient)
+    if result.Error != nil {
+        log.Printf("Error updating patient: %v", result.Error)
+        return c.Status(500).JSON(fiber.Map{"error": "Could not update patient"})
+    }
 
-	result = db.Save(&patient)
-	if result.Error != nil {
-		log.Printf("Error updating patient: %v", result.Error)
-		return c.Status(500).JSON(fiber.Map{"error": "Could not update patient"})
-	}
-
-	return c.JSON(fiber.Map{"message": "Patient updated successfully", "patient": patient})
+    return c.JSON(fiber.Map{"message": "Patient updated successfully", "patient": patient})
 }
+// func UpdatePatient(c *fiber.Ctx) error {
+	
+// 	db := database.InitDB()
+
+// 	patientID := c.Params("id")
+
+// 	patient := new(models.Patient)
+// 	result := db.Preload("doctors").Where("id = ?", patientID).First(&patient)
+// 	if result.Error != nil {
+// 		log.Printf("Error fetching patient: %v", result.Error)
+// 		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch patient"})
+// 	}
+
+// 	newPatient := new(models.Patient)
+// 	if err := c.BodyParser(&newPatient); err != nil {
+// 		log.Printf("Error parsing patient data: %v", err)
+// 		return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+// 	}
+
+// 	patient.Name = newPatient.Name
+// 	patient.Phone = newPatient.Phone
+// 	patient.Email = newPatient.Email
+// 	patient.Address = newPatient.Address
+// 	patient.State = newPatient.State
+// 	patient.City = newPatient.City
+// 	patient.Zip = newPatient.Zip
+// 	patient.Country = newPatient.Country
+// 	patient.Sex = newPatient.Sex
+// 	patient.Dob = newPatient.Dob
+// 	patient.Active = newPatient.Active
+
+//     // Clear existing doctor relationships
+//     db.Model(&patient).Association("Doctors").Clear()
+
+//     // Add new doctor relationships
+//     for _, doctor := range newPatient.Doctors {
+//         existingDoctor := new(models.Doctor)
+//         if err := db.Where("id = ?", doctor.ID).First(existingDoctor).Error; err != nil {
+//             log.Printf("Error fetching doctor: %v", err)
+//         } else {
+//             patient.Doctors = append(patient.Doctors, *existingDoctor)
+//         }
+//     }
+
+// 	// for _, doctor := range newPatient.Doctors {
+// 	// 	existingDoctor := new(models.Doctor)
+// 	// 	if err := db.Where("id = ?", doctor.ID).First(patient).Error; err != nil {
+// 	// 		log.Printf("Error fetching doctor: %v", err)
+// 	// 		patient.Doctors = append(patient.Doctors, doctor)
+// 	// 	} else {
+// 	// 		db.Model(existingDoctor).Updates(doctor)
+// 	// 	}
+		
+// 	// }
+
+// 	result = db.Save(&patient)
+// 	if result.Error != nil {
+// 		log.Printf("Error updating patient: %v", result.Error)
+// 		return c.Status(500).JSON(fiber.Map{"error": "Could not update patient"})
+// 	}
+
+// 	return c.JSON(fiber.Map{"message": "Patient updated successfully", "patient": patient})
+// }
 
 func DeletePatient(c *fiber.Ctx) error {
 	db := database.InitDB()

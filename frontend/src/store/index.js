@@ -6,7 +6,8 @@ export default createStore({
     state: {
         devices: [],
         leads: [],
-        doctors: []
+        doctors: [],
+        patient: {},
     },
     getters:{
         doctors: state => state.doctors,
@@ -20,6 +21,9 @@ export default createStore({
         },
         setDoctors(state, doctors) {
             state.doctors = doctors
+        },
+        setPatient(state, patient) {
+            state.patient = patient
         }
     },
     actions: {
@@ -37,6 +41,12 @@ export default createStore({
             // fetch doctors from server and commit the mutation
             const response = await axios.get('/api/doctorsList')
             commit('setDoctors', response.data)
+        },
+        async fetchPatient({ commit }, patientId) {
+            // fetch patient from server and commit the mutation
+            console.log(patientId)
+            const response = await axios.get(`/api/patients/${patientId}`)
+            commit('setPatient', response.data)
         }
     },
     modules: {}

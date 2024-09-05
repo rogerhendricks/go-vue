@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css";
+import "vue-multiselect/dist/vue-multiselect.css"
 import store from './store'
 
 
