@@ -3,18 +3,21 @@ import { ref, onMounted, computed } from 'vue'
 import axios from '../../axiosConfig'
 import { useRoute } from 'vue-router'
 import PatientDetails from './partials/PatientDetails.vue';
-
 import { useStore } from 'vuex'
+
 const route = useRoute()
-
 const store = useStore()
-
 const doctorsFromStore = computed(() => store.state.doctors.doctors || []) 
 const devicesFromStore = computed(() => store.state.devices.devices || [])
+const patient = computed(() => store.state.patient.patient || {})
+const isLoading = computed(() => store.state.isLoading)
 
 onMounted(async () => {
   const patientId = route.params.id
+  store.commit('setLoading', true)
   await store.dispatch('fetchPatient', patientId)
+  store.commit('setLoading', false)
+  console.log('patient from patient.vue', store.state.patient)
   if (doctorsFromStore.value.length === 0) {
     await store.dispatch('fetchDoctors')
   }
@@ -24,8 +27,11 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div class="">
-    <PatientDetails/>
+  <div v-if="!isLoading">
+    <PatientDetails v-if="Object.keys(patient).length" :patient="patient"/>
+  </div>
+  <div v-else>
+    <p>Loading...</p>
   </div>
   <div class="row">
     <div class="col-md-2">

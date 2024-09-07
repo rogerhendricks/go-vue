@@ -8,6 +8,7 @@ export default createStore({
         leads: [],
         doctors: [],
         patient: {},
+        isLoading: false
     },
     getters:{
         doctors: state => state.doctors,
@@ -24,30 +25,45 @@ export default createStore({
         },
         setPatient(state, patient) {
             state.patient = patient
-        }
+        },
+        setLoading(state, isLoading) {
+          state.isLoading = isLoading
+        },
     },
     actions: {
         async fetchDevices({ commit }) {
-            // fetch devices from server and commit the mutation
-            const response = await axios.get('/api/deviceList')
-            commit('setDevices', response.data)
-        },
-        async fetchLeads({ commit }) {
-            // fetch leads from server and commit the mutation
-            const response = await axios.get('/api/leads')
-            commit('setLeads', response.data)
-        },
-        async fetchDoctors({ commit }) {
-            // fetch doctors from server and commit the mutation
-            const response = await axios.get('/api/doctorsList')
-            commit('setDoctors', response.data)
-        },
-        async fetchPatient({ commit }, patientId) {
-            // fetch patient from server and commit the mutation
-            console.log(patientId)
-            const response = await axios.get(`/api/patients/${patientId}`)
-            commit('setPatient', response.data)
-        }
+            try {
+              const response = await axios.get('/api/deviceList')
+              commit('setDevices', response.data)
+            } catch (error) {
+              console.error('Error fetching devices:', error)
+            }
+          },
+          async fetchLeads({ commit }) {
+            try {
+              const response = await axios.get('/api/leads')
+              commit('setLeads', response.data)
+            } catch (error) {
+              console.error('Error fetching leads:', error)
+            }
+          },
+          async fetchDoctors({ commit }) {
+            try {
+              const response = await axios.get('/api/doctorsList')
+              commit('setDoctors', response.data)
+            } catch (error) {
+              console.error('Error fetching doctors:', error)
+            }
+          },
+          async fetchPatient({ commit }, patientId) {
+            try {
+              const response = await axios.get(`/api/patients/${patientId}`)
+              // Assuming the response contains a patient object
+              commit('setPatient', response.data)
+            } catch (error) {
+              console.error('Error fetching patient:', error)
+            }
+          }
     },
     modules: {}
 })

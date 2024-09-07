@@ -1,17 +1,19 @@
 <script setup>
 import { ref, onMounted, computed, reactive, defineProps } from 'vue'
 import axios from '../../../axiosConfig'
-import { useRoute } from 'vue-router'
+// import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import Multiselect from 'vue-multiselect'
 import { useStore } from 'vuex'
 
 const props = defineProps(['patient'])
 const store = useStore()
-const route = useRoute()
+// const route = useRoute()
 const toast = useToast()
 const doctorsFromStore = computed(() => store.state.doctors.doctors || [])
-const devicesFromStore = computed(() => store.state.devices.devices || [])
+// const devicesFromStore = computed(() => store.state.devices.devices || [])
+// const patient = computed(() => store.state.patient.patient)
+
 
 const formData = reactive({
     name: props.patient.name,
@@ -51,15 +53,14 @@ const handleSubmit = async () => {
             timeout: 2000,
         });
         store.commit('setPatient', response.data.patient)
+        console.log('Updated patient:', store.state.patient);
+
     } catch (error) {
         console.error('Error updating patient:', error)
         toast.error('Failed to update patient',{
             timeout: 2000,
         });
     }
-}
-const handleInput = (event) => {
-  formData.value[event.target.name] = event.target.value
 }
 </script>
 <template>
@@ -138,7 +139,7 @@ const handleInput = (event) => {
         </div>
         <div class="row mb-3">
             <div class="col">
-                <button type="submit" class="btn btn-secondary">Update</button>
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Update</button>
             </div>
         </div>
     </form>
