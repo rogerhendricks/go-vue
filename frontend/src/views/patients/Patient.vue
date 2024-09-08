@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import axios from '../../axiosConfig'
 import { useRoute } from 'vue-router'
 import PatientDetails from './partials/PatientDetails.vue';
@@ -12,9 +12,14 @@ const devicesFromStore = computed(() => store.state.devices.devices || [])
 const patient = computed(() => store.state.patient.patient || {})
 const isLoading = computed(() => store.state.isLoading)
 
+// watch(patient, (newPatient) => {
+//   console.log('Updated patient data:', newPatient);
+// });
+
 onMounted(async () => {
   const patientId = route.params.id
   store.commit('setLoading', true)
+
   await store.dispatch('fetchPatient', patientId)
   store.commit('setLoading', false)
   console.log('patient from patient.vue', store.state.patient)
@@ -28,7 +33,7 @@ onMounted(async () => {
 </script>
 <template>
   <div v-if="!isLoading">
-    <PatientDetails v-if="Object.keys(patient).length" :patient="patient"/>
+    <PatientDetails v-show="Object.keys(patient).length" :patient="patient"/>
   </div>
   <div v-else>
     <p>Loading...</p>
@@ -48,7 +53,7 @@ onMounted(async () => {
       </div>
       <div class="col">
         <span>Doctors List:</span> 
-        <div v-for="doctor in doctorsFromStore">
+        <div v-for="doctor in doctorsFromStore" :key="doctor.id">
           {{ doctor.name }}
         </div>
       </div>

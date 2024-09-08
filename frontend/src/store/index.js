@@ -24,7 +24,8 @@ export default createStore({
             state.doctors = doctors
         },
         setPatient(state, patient) {
-            state.patient = patient
+          // console.log('Setting patient in store:', patient);
+            state.patient = { ...patient}
         },
         setLoading(state, isLoading) {
           state.isLoading = isLoading
@@ -63,7 +64,15 @@ export default createStore({
             } catch (error) {
               console.error('Error fetching patient:', error)
             }
-          }
+          },
+          // async updatePatient({ commit }, patient) {
+          //   try {
+          //     await axios.put(`/api/patients/${patient.id}`, patient)
+          //     commit('setPatient', patient)
+          //   } catch (error) {
+          //     console.error('Error updating patient:', error)
+          //   }
+          // }
     },
     modules: {}
 })
