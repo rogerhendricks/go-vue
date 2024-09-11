@@ -80,30 +80,13 @@ function openEditModal(device) {
     showModal('editDeviceModal')
 }
 
-// function openEditModal(device) {
-//   editedDevice.value = { 
-//     id: device.id,
-//     implant_date: device.implant_date,
-//     explant_date: device.explant_date || '', // Handle null or empty values
-//     device_id: device.device_id,
-//     doctor_id: device.doctor_id
-//   };
-//   showModal('editDeviceModal');
-// }
-
-
 async function updateDevice() {
     try {
         const response = await axios.put(`/api/implantedDevices/${editedDevice.value.ID}`, editedDevice.value)
         const editedDeviceId = Number(editedDevice.value.ID);
-        // console.log('ImplantedDevices: ',implantedDevices.value, ' Edited Device ID:', editedDeviceId)
-        console.log('Response data:', response.data.implantedDevice)
         const index = implantedDevices.value.findIndex(device => device.ID === editedDeviceId);
-        console.log('Found Index:', index, 'Device:', implantedDevices.value[index]);
         if (index !== -1) {
-          // Update the device in the array
           implantedDevices.value[index] = response.data.implantedDevice; // Assuming the response contains the updated device
-          console.log('Updated Implanted Devices:', implantedDevices.value)
         } else {
           console.warn('API response does not contain a valid device object');
         }
@@ -116,7 +99,7 @@ async function updateDevice() {
 async function deleteDevice(deviceId) {
     try {
         await axios.delete(`/api/implantedDevices/${deviceId}`)
-        implantedDevices.value = implantedDevices.value.filter(d => d.id !== deviceId)
+        implantedDevices.value = implantedDevices.value.filter(d => d.ID !== deviceId)
     } catch (error) {
         console.error('Error deleting device:', error)
     }
@@ -162,7 +145,7 @@ function hideModal(modalId) {
                 <div class="col">
                   <div class="btn-group">
                     <button @click="openEditModal(device)" class="btn btn-sm btn-primary">Edit</button>
-                    <button @click="deleteDevice(device.id)" class="btn btn-sm btn-danger">Delete</button>
+                    <button @click="deleteDevice(device.ID)" class="btn btn-sm btn-danger">Delete</button>
                   </div>
                 </div>
               </div>
