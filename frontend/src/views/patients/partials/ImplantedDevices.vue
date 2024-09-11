@@ -96,14 +96,23 @@ async function updateDevice() {
     }
 }
 
-async function deleteDevice(deviceId) {
-    try {
-        await axios.delete(`/api/implantedDevices/${deviceId}`)
-        implantedDevices.value = implantedDevices.value.filter(d => d.ID !== deviceId)
-    } catch (error) {
-        console.error('Error deleting device:', error)
+function confirmDelete(deviceId) {
+    if (window.confirm('Do you want to delete this device?')) {
+      deleteDevice(deviceId)
     }
-}
+  }
+
+  async function deleteDevice(deviceId) {
+      try {
+          await axios.delete(`/api/implantedDevices/${deviceId}`)
+          implantedDevices.value = implantedDevices.value.filter(d => d.ID !== deviceId)
+      } catch (error) {
+          console.error('Error deleting device:', error)
+      }
+  }
+
+
+
 
 function showModal(modalId) {
     const modal = new bootstrap.Modal(document.getElementById(modalId))
@@ -126,10 +135,9 @@ function hideModal(modalId) {
         </div>
       </div>
       <div v-if="loading" class="col">Loading...</div>
-      <div class="col" v-else>
-        <div class="row">
-          <div v-for="device in implantedDevices" :key="device.id">
-              <div class="text-bg-secondary p-3 rounded-2 mb-3">
+      <div class="col px-4" v-else>
+        <div v-for="device in implantedDevices" :key="device.id">
+          <div class="row d-flex flex-wrap text-bg-secondary p-3 rounded-2 mb-3"> 
                 <div class="col">
                   <b>Implant Date:</b> {{ device.implant_date }}
                 </div>
@@ -145,10 +153,10 @@ function hideModal(modalId) {
                 <div class="col">
                   <div class="btn-group">
                     <button @click="openEditModal(device)" class="btn btn-sm btn-primary">Edit</button>
-                    <button @click="deleteDevice(device.ID)" class="btn btn-sm btn-danger">Delete</button>
+                    <!-- <button @click="deleteDevice(device.ID)" class="btn btn-sm btn-danger">Delete</button> -->
+                    <button @click="confirmDelete(device.ID)" class="btn btn-sm btn-danger">Delete</button>
                   </div>
                 </div>
-              </div>
           </div>
         </div>
       </div>
@@ -192,7 +200,6 @@ function hideModal(modalId) {
       </div>
     </div>
   </div>
-
     <!-- Edit Device Modal -->
     <div class="modal fade" id="editDeviceModal" tabindex="-1" aria-labelledby="editDeviceModalLabel" aria-hidden="true">
       <div class="modal-dialog">
