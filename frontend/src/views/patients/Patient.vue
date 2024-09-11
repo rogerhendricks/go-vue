@@ -47,17 +47,5 @@ onMounted(async () => {
     </div>
   </div>
 
-  <div class="row text-bg-secondary p-3">
-      <div class="col">
-        <span>Device list</span> {{$store.state.devices}}    
-      </div>
-      <div class="col">
-        <span>Doctors List:</span> 
-        <div v-for="doctor in doctorsFromStore" :key="doctor.id">
-          {{ doctor.name }}
-        </div>
-      </div>
-  </div>
-
   <!-- modal dialog for edit patient -->
 </template>

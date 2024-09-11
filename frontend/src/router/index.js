@@ -10,6 +10,7 @@ import DocorIndex from '../views/doctors/Index.vue'
 import Doctor from '../views/doctors/Doctor.vue'
 import PatientIndex from '../views/patients/Index.vue'
 import Patient from '../views/patients/Patient.vue'
+import ImplantedDevices from '../views/patients/partials/ImplantedDevices.vue'
 
 const routes = [
   {
@@ -73,6 +74,16 @@ const routes = [
     name: 'Patient',
     component: Patient,
     meta: {requiresAuth: true},
+  },
+  {
+    path: '/patients/:id/implanted-devices',
+    name: 'ImplantedDevices',
+    component: ImplantedDevices,
+    meta: {requiresAuth: true},
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/'
   }
 ]
 

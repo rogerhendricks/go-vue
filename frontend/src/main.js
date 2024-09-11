@@ -3,7 +3,16 @@ import router from './router'
 import './style.css'
 import App from './App.vue'
 import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap"
+// import "bootstrap"
+import * as bootstrap from "bootstrap"
+// // Import Bootstrap CSS
+// import 'bootstrap/dist/css/bootstrap.min.css';
+
+// // Import Bootstrap JS
+// import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+// Make Bootstrap available globally
+window.bootstrap = bootstrap;
+
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css";
 import "vue-multiselect/dist/vue-multiselect.css"

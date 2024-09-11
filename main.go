@@ -29,7 +29,7 @@ func main() {
     }
 
     // Migrate the schema
-    db.AutoMigrate(&models.User{}, &models.Device{}, &models.Lead{}, &models.Doctor{}, &models.Address{} ,&models.Patient{})
+    db.AutoMigrate(&models.User{}, &models.Device{}, &models.Lead{}, &models.Doctor{}, &models.Address{} ,&models.Patient{}, &models.ImplantedDevice{})
 
     
     app := fiber.New()
@@ -94,11 +94,17 @@ func SetupRoutes(app *fiber.App) {
 	api.Delete("/doctors/:id", controllers.DeleteDoctor)
     // Patients
     api.Get("/patients", controllers.GetPatients)
-    app.Get("/api/patients/search", controllers.SearchPatients)
+    app.Get("/patients/search", controllers.SearchPatients)
     api.Post("/patients", controllers.CreatePatient)
     api.Get("/patients/:id", controllers.GetPatient)
     api.Put("/patients/:id", controllers.UpdatePatient)
     api.Delete("/patients/:id", controllers.DeletePatient)
+    // Implanted Devices
+    api.Get("/:id/implantedDevices", controllers.GetImplantedDevices)
+    api.Post("/:id/implantedDevices", controllers.CreateImplantedDevice)
+    api.Get("/implantedDevices/:id", controllers.GetImplantedDevice)
+    api.Put("/implantedDevices/:id", controllers.UpdateImplantedDevice)
+    api.Delete("/implantedDevices/:id", controllers.DeleteImplantedDevice)
     // Lists
     api.Get("/deviceList", controllers.GetDevicesList)
     api.Get("/doctorsList", controllers.GetDoctorsList)

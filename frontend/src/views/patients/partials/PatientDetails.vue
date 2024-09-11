@@ -5,6 +5,8 @@ import axios from '../../../axiosConfig'
 import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import Multiselect from 'vue-multiselect'
+import ImplantedDevices from './ImplantedDevices.vue'
+import ImplantedLeads from './ImplantedLeads.vue'
 // import EditForm from './EditForm.vue'
 const props = defineProps({
   patient: {
@@ -140,9 +142,12 @@ const handleSubmit = async () => {
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="nav-devices" role="tabpanel" aria-labelledby="nav-devices-tab" tabindex="0">...
+        <div class="tab-pane fade" id="nav-devices" role="tabpanel" aria-labelledby="nav-devices-tab" tabindex="0">
+            <ImplantedDevices />
         </div>
-        <div class="tab-pane fade" id="nav-leads" role="tabpanel" aria-labelledby="nav-leads-tab" tabindex="0">...</div>
+        <div class="tab-pane fade" id="nav-leads" role="tabpanel" aria-labelledby="nav-leads-tab" tabindex="0">
+            <ImplantedLeads />
+        </div>
     </div>
 
     <!-- Modal -->
