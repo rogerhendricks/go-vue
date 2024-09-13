@@ -42,7 +42,7 @@ export default createStore({
           },
           async fetchLeads({ commit }) {
             try {
-              const response = await axios.get('/api/leads')
+              const response = await axios.get('/api/leadList')
               commit('setLeads', response.data)
             } catch (error) {
               console.error('Error fetching leads:', error)

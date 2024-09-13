@@ -59,7 +59,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <span>Create Form</span>
+  <span>Create Patient</span>
   <form @submit.prevent="handleSubmit">
     <div class="row mt-2">
       <div class="col">

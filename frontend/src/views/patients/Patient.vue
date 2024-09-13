@@ -9,6 +9,7 @@ const route = useRoute()
 const store = useStore()
 const doctorsFromStore = computed(() => store.state.doctors.doctors || []) 
 const devicesFromStore = computed(() => store.state.devices.devices || [])
+const leadsFromStore = computed(() => store.state.leads.leads || [])
 const patient = computed(() => store.state.patient.patient || {})
 const isLoading = computed(() => store.state.isLoading)
 
@@ -22,12 +23,14 @@ onMounted(async () => {
 
   await store.dispatch('fetchPatient', patientId)
   store.commit('setLoading', false)
-  console.log('patient from patient.vue', store.state.patient)
   if (doctorsFromStore.value.length === 0) {
     await store.dispatch('fetchDoctors')
   }
   if (devicesFromStore.value.length === 0) {
     await store.dispatch('fetchDevices')
+  }
+  if (leadsFromStore.value.length === 0) {
+    await store.dispatch('fetchLeads')
   }
 })
 </script>

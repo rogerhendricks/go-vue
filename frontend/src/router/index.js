@@ -11,6 +11,7 @@ import Doctor from '../views/doctors/Doctor.vue'
 import PatientIndex from '../views/patients/Index.vue'
 import Patient from '../views/patients/Patient.vue'
 import ImplantedDevices from '../views/patients/partials/ImplantedDevices.vue'
+import ImplantedLeads from '../views/patients/partials/ImplantedLeads.vue'
 
 const routes = [
   {
@@ -79,6 +80,12 @@ const routes = [
     path: '/patients/:id/implanted-devices',
     name: 'ImplantedDevices',
     component: ImplantedDevices,
+    meta: {requiresAuth: true},
+  },
+  {
+    path: '/patients/:id/implanted-leads',
+    name: 'ImplantedLeads',
+    component: ImplantedLeads,
     meta: {requiresAuth: true},
   },
   {

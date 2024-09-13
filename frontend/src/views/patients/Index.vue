@@ -16,7 +16,8 @@
   
   async function getPatientsFromSearch() {
     try {
-      const response = await axios.get('/api/patients', {
+      console.log('searchTerm', searchTerm.value)
+      const response = await axios.get('/api/search/patients', {
         params: {
           search: searchTerm.value
         }
@@ -39,7 +40,7 @@
     </div>
     <div class="col-8">
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-button">
+        <input v-model="searchTerm" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-button">
         <button class="btn btn-outline-secondary" type="button" id="search-button" @click="getPatientsFromSearch">Search</button>
       </div>
       <div>

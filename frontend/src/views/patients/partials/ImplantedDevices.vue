@@ -1,10 +1,13 @@
 <script setup>
 
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
-
 import axios from '../../../axiosConfig'
 import { useRoute } from 'vue-router'
+import {useToast} from 'vue-toastification';
+
+const toast = useToast();
+
 const route = useRoute()
 const store = useStore()
 const doctorsFromStore = computed(() => store.state.doctors.doctors || [])
@@ -27,7 +30,6 @@ const editedDevice = ref({
   doctor_id: ''
 });
 
-
 const implantedDevices = ref([])
 onMounted(async () => {
     getImplantedDevices()
@@ -35,6 +37,7 @@ onMounted(async () => {
         await store.dispatch('fetchDevices')
     }
 })
+
 async function getImplantedDevices() {
         loading.value = true
         const patientId = route.params.id
@@ -69,8 +72,14 @@ async function createDevice() {
           doctor_id: '',
          }
         hideModal('createDeviceModal')
+        toast.success('Device created successfully',{
+            timeout: 2000,
+        });
     } catch (error) {
         console.error('Error creating device:', error)
+        toast.error('Failed to create device',{
+            timeout: 2000,
+        });
     }
 }
 
@@ -91,33 +100,42 @@ async function updateDevice() {
           console.warn('API response does not contain a valid device object');
         }
         hideModal('editDeviceModal')
+        toast.success('Device updated successfully',{
+            timeout: 2000,
+        });
     } catch (error) {
+      toast.error('Failed to update device',{
+            timeout: 2000,
+        });
         console.error('Error updating device:', error)
     }
 }
 
-function confirmDelete(deviceId) {
-    if (window.confirm('Do you want to delete this device?')) {
-      deleteDevice(deviceId)
+  function confirmDelete(deviceId) {
+      if (window.confirm('Do you want to delete this device?')) {
+        deleteDevice(deviceId)
+      }
     }
-  }
 
   async function deleteDevice(deviceId) {
       try {
           await axios.delete(`/api/implantedDevices/${deviceId}`)
           implantedDevices.value = implantedDevices.value.filter(d => d.ID !== deviceId)
-      } catch (error) {
+          toast.success('Device deleted successfully',{
+            timeout: 2000,
+        });
+        } catch (error) {
+          toast.error('Error deleting device',{
+            timeout: 2000,
+        });
           console.error('Error deleting device:', error)
       }
   }
 
-
-
-
-function showModal(modalId) {
-    const modal = new bootstrap.Modal(document.getElementById(modalId))
-    modal.show()
-}
+  function showModal(modalId) {
+      const modal = new bootstrap.Modal(document.getElementById(modalId))
+      modal.show()
+  }
 
 function hideModal(modalId) {
     const modalEl = document.getElementById(modalId)
@@ -153,7 +171,6 @@ function hideModal(modalId) {
                 <div class="col">
                   <div class="btn-group">
                     <button @click="openEditModal(device)" class="btn btn-sm btn-primary">Edit</button>
-                    <!-- <button @click="deleteDevice(device.ID)" class="btn btn-sm btn-danger">Delete</button> -->
                     <button @click="confirmDelete(device.ID)" class="btn btn-sm btn-danger">Delete</button>
                   </div>
                 </div>

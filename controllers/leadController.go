@@ -21,6 +21,19 @@ func GetLeads(c *fiber.Ctx) error{
     return c.JSON(fiber.Map{"leads": leads})
 }
 
+func GetLeadsList(c *fiber.Ctx) error {
+    db := database.InitDB()
+
+    var leads []models.Lead
+    result := db.Select("ID", "manufacturer", "name").Find(&leads)
+    if result.Error != nil {
+        log.Printf("Error fetching leads: %v", result.Error)
+        return c.Status(500).JSON(fiber.Map{"error": "Could not fetch list of leads"})
+    }
+
+    return c.JSON(fiber.Map{"leads": leads})
+}
+
 func GetLead(c *fiber.Ctx) error {
     db := database.InitDB()
 
