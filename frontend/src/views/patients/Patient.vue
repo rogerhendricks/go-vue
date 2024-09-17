@@ -3,6 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import axios from '../../axiosConfig'
 import { useRoute } from 'vue-router'
 import PatientDetails from './partials/PatientDetails.vue';
+import Index from '../reports/Index.vue'
 import { useStore } from 'vuex'
 
 const route = useRoute()
@@ -42,13 +43,14 @@ onMounted(async () => {
     <p>Loading...</p>
   </div>
   <div class="row">
-    <div class="col-md-2">
-      <span>Report List</span>
-    </div>
-    <div class="col-md-10">
+    <div class="col">
       <span>Report Details</span>
+      <div v-if="!isLoading">
+        <Index :patient="patient"/>
+      </div>
+      <div v-else>
+        <p>Loading...</p>
+      </div>
     </div>
   </div>
-
-  <!-- modal dialog for edit patient -->
 </template>

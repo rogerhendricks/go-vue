@@ -33,7 +33,8 @@ func main() {
         &models.User{}, &models.Device{}, 
         &models.Lead{}, &models.Doctor{}, 
         &models.Address{} ,&models.Patient{}, 
-        &models.ImplantedDevice{}, &models.ImplantedLead{},)
+        &models.ImplantedDevice{}, &models.ImplantedLead{},
+        &models.Report{},)
 
     
     app := fiber.New()
@@ -115,6 +116,14 @@ func SetupRoutes(app *fiber.App) {
     api.Get("/implantedLeads/:id", controllers.GetImplantedLead)
     api.Put("/implantedLeads/:id", controllers.UpdateImplantedLead)
     api.Delete("/implantedLeads/:id", controllers.DeleteImplantedLead)
+
+    // Reports
+    api.Get("/:id/reports", controllers.GetReports)
+    api.Post("/:id/reports", controllers.CreateReport)
+    api.Get("/reports/:id", controllers.GetReport)
+    api.Put("/reports/:id", controllers.UpdateReport)
+    api.Delete("/reports/:id", controllers.DeleteReport)
+
 
     // Lists
     api.Get("/deviceList", controllers.GetDevicesList)

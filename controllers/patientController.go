@@ -23,18 +23,14 @@ func GetPatients(c *fiber.Ctx) error {
 func SearchPatients(c *fiber.Ctx) error {
     db := database.InitDB()
 
-
     searchTerm := c.Query("search", "")
-    log.Printf("Search term: %v", searchTerm)
     var patients []models.Patient
     result := db.Where("name LIKE ?", "%" + searchTerm + "%").Find(&patients)
-    // result := db.Select("id", "Name", "Phone").Find(&patients)
     if result.Error != nil {
 		log.Printf("Error fetching patients: %v", result.Error)
 		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch patients"})
 	}
     return c.JSON(fiber.Map{"patients": patients})
-    // return c.JSON(patients)
 }
 
 

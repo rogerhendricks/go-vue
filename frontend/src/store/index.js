@@ -8,6 +8,7 @@ export default createStore({
         leads: [],
         doctors: [],
         patient: {},
+        reports: [],
         isLoading: false
     },
     getters:{
@@ -30,6 +31,9 @@ export default createStore({
         setLoading(state, isLoading) {
           state.isLoading = isLoading
         },
+        setReports(state, reports) {
+          state.reports = reports
+        }
     },
     actions: {
         async fetchDevices({ commit }) {
@@ -65,6 +69,14 @@ export default createStore({
               console.error('Error fetching patient:', error)
             }
           },
+          async fetchReports({ commit }, patientId) {
+            try {
+              const response = await axios.get(`/api/${patientId}/reports`)
+              commit('setReports', response.data)
+            } catch (error) {
+              console.error('Error fetching reports:', error)
+            }
+          }
           // async updatePatient({ commit }, patient) {
           //   try {
           //     await axios.put(`/api/patients/${patient.id}`, patient)

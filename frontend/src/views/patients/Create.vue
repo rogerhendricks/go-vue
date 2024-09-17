@@ -65,6 +65,9 @@ onMounted(() => {
       <div class="col">
         <input class="form-control" v-model="patient.name" type="text" placeholder="Name" />
       </div>
+      <div class="col">
+        <input class="form-control"  type="date" v-model="patient.dob" placeholder="Date of Birth" />
+      </div>
     </div>
     <div class="row mt-2">      
       <div class="col">

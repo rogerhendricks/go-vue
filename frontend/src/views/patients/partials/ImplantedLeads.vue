@@ -1,4 +1,5 @@
 <script setup>
+
 import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import axios from '../../../axiosConfig'
@@ -44,7 +45,7 @@ async function getImplantedLeads() {
         try {
          const response = await axios.get(`/api/${patientId}/implantedLeads`)
          implantedLeads.value = response.data.implantedLeads
-            console.log('Implanted Leads:', implantedLeads.value)
+            // console.log('Implanted Leads:', implantedLeads.value)
         } catch (error) {
             console.error('Error fetching implanted leads:', error)
         } finally {
@@ -73,7 +74,6 @@ async function createLead() {
             patient_id: patientId,
             doctor_id: '', 
         }
-        console.log('Created lead:', response.data)
         hideModal('createLeadModal')
         toast.success('Lead created successfully',{
             timeout: 2000,
@@ -95,14 +95,6 @@ function openEditModal(lead) {
 async function updateLead() {
     const patientId = Number(route.params.id)
     try {
-        // const response = await axios.put(`/api/implantedLeads/${editedLead.value.ID}`, {
-        //     implant_date: editedLead.value.implant_date,
-        //     explant_date: editedLead.value.explant_date || null, // Send null for optional fields
-        //     isActive: editedLead.value.isActive,
-        //     lead_id: editedLead.value.lead_id,
-        //     patient_id: patientId, // Send patient_id as a number
-        //     doctor_id: editedLead.value.doctor_id
-        // })
         const response = await axios.put(`/api/implantedLeads/${editedLead.value.ID}`, editedLead.value)
         const editedLeadId = Number(editedLead.value.ID);
         const index = implantedLeads.value.findIndex(lead => lead.ID === editedLeadId)

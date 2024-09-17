@@ -44,7 +44,7 @@ async function getImplantedDevices() {
         try {
          const response = await axios.get(`/api/${patientId}/implantedDevices`)
          implantedDevices.value = response.data.implantedDevices
-            console.log('Implanted Devices:', implantedDevices.value)
+            // console.log('Implanted Devices:', implantedDevices.value)
         } catch (error) {
             console.error('Error fetching implanted devices:', error)
         } finally {
@@ -62,8 +62,7 @@ async function createDevice() {
             patient_id: patientId, // Send patient_id as a number
             doctor_id: newDevice.value.doctor_id
         });        
-        
-        implantedDevices.value.push(response.data.device)
+        implantedDevices.value.push(response.data.implantedDevice)
         newDevice.value = { 
           implant_date: '',
           explant_date: '',
@@ -142,7 +141,6 @@ function hideModal(modalId) {
     const modal = bootstrap.Modal.getInstance(modalEl)
     modal.hide()
 }
-
 </script>
 <template>
   <div class="p-2">

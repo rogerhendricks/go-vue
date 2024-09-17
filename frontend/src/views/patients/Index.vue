@@ -57,8 +57,8 @@
           <tbody>
             <tr v-for="patient in patients.patients" :key="patient.ID">
               <th scope="row">{{ patient.ID }}</th>
-              <td>{{ patient.name }}
-                <router-link :to="'/patients/' + patient.ID" class="btn btn-primary">View</router-link>
+              <td>
+                <router-link :to="'/patients/' + patient.ID" class="patient-list">{{ patient.name }}</router-link>
               </td>
               <td>{{ patient.phone }}</td>
               <!-- <td>
@@ -94,3 +94,17 @@
 
   <router-link to="/patients/create">Create Patient</router-link> -->
 </template>
+<style>
+.patient-list:link { 
+  text-decoration: none; 
+} 
+.patient-list:visited { 
+  text-decoration: none; 
+} 
+.patient-list:hover { 
+  text-decoration: none; 
+} 
+.patient-list:active { 
+  text-decoration: none; 
+}
+</style>

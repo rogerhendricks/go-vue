@@ -162,76 +162,82 @@ const handleSubmit = async () => {
         <form @submit.prevent="handleSubmit">
             <div class="modal-body">
                 <div class="row mb-3">
-            <div class="col">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" v-model="formData.name">
-            </div>
-            <div class="col">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" v-model="formData.email">
-            </div>
-            <div class="col">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" v-model="formData.phone">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" v-model="formData.address">
-            </div>
-            <div class="col">
-                <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" id="city" v-model="formData.city">
-            </div>
-            <div class="col">
-                <label for="state" class="form-label">State</label>
-                <input type="text" class="form-control" id="state" v-model="formData.state">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label for="zip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="zip" v-model="formData.zip">
-            </div>
-            <div class="col">
-                <label for="country" class="form-label">Country</label>
-                <input type="text" class="form-control" id="country" v-model="formData.country">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label  class="form-label">Doctors</label>
-                <multiselect 
-                v-if="doctorsFromStore.length > 0"
-                class="custom__tag multiselect" 
-                v-model="formData.doctors" 
-                
-                
-                :options="doctorsFromStore" 
-                :multiple="true" 
-                :close-on-select="false" 
-                :clear-on-select="false"            
-                :preserve-search="true" 
-                placeholder="Pick some" 
-                label="name" 
-                track-by="ID" 
-                :preselect-first="true">
-                <template #selection="{ values, search, isOpen }">
-                    <span class="multiselect__single"
-                        v-if="values.length"
-                        v-show="!isOpen">{{ values.length }} options selected</span>
-                </template>
-                <template #option="{ option, search, id }">
-                    <span :id="id"
-                        class="option"
-                        :class="{ 'option--selected': formData.doctors.includes(option) }">
-                    {{ option.name }}
-                    </span>
-                </template>
-                </multiselect>
-            </div>  
-        </div>
+                    <div class="col">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" v-model="formData.name">
+                    </div>
+                    <div class="col">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" v-model="formData.dob">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" v-model="formData.email">
+                    </div>
+                    <div class="col">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" v-model="formData.phone">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" v-model="formData.address">
+                    </div>
+                    <div class="col">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" v-model="formData.city">
+                    </div>
+                    <div class="col">
+                        <label for="state" class="form-label">State</label>
+                        <input type="text" class="form-control" id="state" v-model="formData.state">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="zip" class="form-label">Zip</label>
+                        <input type="text" class="form-control" id="zip" v-model="formData.zip">
+                    </div>
+                    <div class="col">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" v-model="formData.country">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label  class="form-label">Doctors</label>
+                        <multiselect 
+                        v-if="doctorsFromStore.length > 0"
+                        class="custom__tag multiselect" 
+                        v-model="formData.doctors" 
+                        
+                        
+                        :options="doctorsFromStore" 
+                        :multiple="true" 
+                        :close-on-select="false" 
+                        :clear-on-select="false"            
+                        :preserve-search="true" 
+                        placeholder="Pick some" 
+                        label="name" 
+                        track-by="ID" 
+                        :preselect-first="true">
+                        <template #selection="{ values, search, isOpen }">
+                            <span class="multiselect__single"
+                                v-if="values.length"
+                                v-show="!isOpen">{{ values.length }} options selected</span>
+                        </template>
+                        <template #option="{ option, search, id }">
+                            <span :id="id"
+                                class="option"
+                                :class="{ 'option--selected': formData.doctors.includes(option) }">
+                            {{ option.name }}
+                            </span>
+                        </template>
+                        </multiselect>
+                    </div>  
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
