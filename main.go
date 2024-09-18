@@ -54,6 +54,8 @@ func main() {
 
     SetupRoutes(app)
 
+    app.Static("/uploads", "./uploads")
+    
 	app.Use("/", filesystem.New(filesystem.Config{
 		Root:   http.FS(distDir),
 		PathPrefix: "frontend/dist",

@@ -31,8 +31,8 @@ const handleFileUpload = (e) => {
   for (const file of pdfFiles) {
     const fileData = await file.arrayBuffer()
     const doc = await PDFDocument.load(fileData)
-    const [copiedPage] = await pdfDoc.copyPages(doc, doc.getPageIndices())
-    copiedPage.forEach(page => pdfDoc.addPage(page))
+    const copiedPages = await pdfDoc.copyPages(doc, doc.getPageIndices())
+    copiedPages.forEach(page => pdfDoc.addPage(page))
   }
 
   const mergedPdfBytes = await pdfDoc.save()

@@ -16,67 +16,39 @@ const store = useStore()
 const patient = computed(() => store.state.patient.patient || {})
 const reportList = computed(() => store.state.reports.reports || [])
 const isLoading = computed(() => store.state.isLoading)
-
 let selectedReportId = ref(null)
-// console.log('Selected report:', selectedReportId)
-// watch(() => props.patient, (newVal, oldVal) => {
-//   if (newVal && newVal.ID) {
-//     getPatientReports()
-//   }
-// }, { immediate: true })
-
-
 const patientReports = ref([])
+
 onMounted(async () => {
     await store.dispatch('fetchReports', props.patient.ID)
-    // getPatientReports()
 })
 
-// async function getPatientReports() {
-//     try {
-//         const response = await axios.get(`/api/${props.patient.ID}/reports`)
-//         console.log('Patient reports:', response.data.reports)
-//         patientReports.value = response.data.reports
-//     } catch (error) {
-//         console.error('Error fetching patient reports:', error)
-//         toast.error('Error fetching patient reports')
-//     }
-// }
-    let showForm = ref(false)
-    const toggleForm = ()=> {
-      showForm.value = !showForm.value
+let showForm = ref(false)
+const toggleForm = ()=> {
+    showForm.value = !showForm.value
+}
+const selectReport = (id) => {
+    if(showForm.value) {
+        showForm.value = false
     }
-    const selectReport = (id) => {
-        if(showForm.value) {
-            showForm.value = false
-        }
-      selectedReportId.value = id
-      console.log('Selected report:', selectedReportId.value)
-    }
+    selectedReportId.value = id
+    console.log('Selected report:', selectedReportId.value)
+}
 </script>
 <template>
     <div class="row">
         <div class="col-md-2">
-            
                 <button class="btn btn-secondary mb-2" @click="toggleForm">Create</button>
                 <div v-for="report in reportList" :key="report.ID">
                     <button type="button" class="btn" @click="selectReport(report.ID)">{{ report.report_date }}</button>
                 </div>
-    
-
         </div>
         <div class="col-md-10">
-            Report Details Side
-            <div v-if="!isLoading">
-                <div v-if="showForm">
-                    <CreateForm  :patient="props.patient"  />
-                </div>
-                <div v-else>
-                    <Report v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient"/>
-                </div>
+            <div v-if="showForm">
+                <CreateForm  :patient="props.patient"  />
             </div>
             <div v-else>
-                <p>Loading...</p>
+                <Report v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient"/>
             </div>
         </div>
     </div>

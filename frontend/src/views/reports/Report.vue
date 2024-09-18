@@ -1,21 +1,16 @@
 <script setup>
 import { ref, onMounted, computed, watch, defineProps } from 'vue'
 import axios from '../../axiosConfig'
-import { useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+// import { useRoute } from 'vue-router'
+// import { useStore } from 'vuex'
 import {useToast} from 'vue-toastification';
-import UpdatForm from './partials/UpdateForm.vue'
+// import UpdatForm from './partials/UpdateForm.vue'
 
 const toast = useToast();
-const route = useRoute()
-const store = useStore()
-
 const props = defineProps(['patient', 'report_id'])
-const isLoading = computed(() => store.state.isLoading)
 const patientReport = ref({})
 const reportId = computed(() => props.report_id);
 
-// Function to fetch the report
 const fetchReport = async (reportId) => {
   try {
     const response = await axios.get(`/api/reports/${reportId}/`)
@@ -29,17 +24,21 @@ const fetchReport = async (reportId) => {
   }
 }
 
-// Fetch report on mount
 onMounted(async () => {
     console.log('Mounted: report_id is', props.report_id); 
     await fetchReport(props.report_id)
 })
-watch(() => reportId, async (newReportId) => {
+watch(() => props.report_id, async (newReportId) => {
   if (newReportId) {
     console.log('Report ID changed:', newReportId)
     await fetchReport(newReportId)
   }
 })
+
+function getFileLink(filePath) {
+      // console.log('File path:', filePath)
+      return `https://dev.nuttynarwhal.com/${filePath}`
+  }
 
 </script>
 <template>
@@ -49,6 +48,13 @@ watch(() => reportId, async (newReportId) => {
             <div v-if="patientReport">
                 <p>Report ID: {{ patientReport.ID }}</p>
                 <p>Report Date: {{ patientReport.report_date }}</p>
+                <p>Report Type: {{ patientReport.file_path }}</p>
+                <a 
+                    :href="getFileLink(patientReport.file_path)" 
+                    target="_blank" 
+                    rel="noopener noreferrer">
+                    Open Report
+                </a>
             </div>
             <div v-else>
                 <p>No report data available.</p>

@@ -59,7 +59,7 @@ func CreateReport(c *fiber.Ctx) error {
     }
 
     // Create directories if they don't exist
-    dirPath := filepath.Join(".", fmt.Sprint(patientID), reportDate)
+    dirPath := filepath.Join("uploads", fmt.Sprint(patientID), reportDate)
     if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
         return fiber.NewError(fiber.StatusInternalServerError, "Failed to create directory")
     }
@@ -118,7 +118,7 @@ func UpdateReport(c *fiber.Ctx) error {
         }
 
         // Create directories if they don't exist
-        dirPath := filepath.Join(".", fmt.Sprint(patientID), reportDate)
+        dirPath := filepath.Join("uploads", fmt.Sprint(patientID), reportDate)
         if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
             return fiber.NewError(fiber.StatusInternalServerError, "Failed to create directory")
         }
