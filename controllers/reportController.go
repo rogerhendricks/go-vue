@@ -3,9 +3,11 @@ package controllers
 import (
 	"fmt"
 	"log"
+	"mime/multipart"
 	"os"
 	"path/filepath"
 	"strconv"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/rogerhendricks/go-vue/database"
 	"github.com/rogerhendricks/go-vue/models"
@@ -91,8 +93,9 @@ func CreateReport(c *fiber.Ctx) error {
 
 
 func UpdateReport(c *fiber.Ctx) error {
-	db := database.InitDB()
+    db := database.InitDB()
 
+    reportId := c.Params("id")
     // Get patient_id and report_date from the form
     patientIDStr := c.FormValue("patient_id")
     reportDate := c.FormValue("report_date")
@@ -104,17 +107,22 @@ func UpdateReport(c *fiber.Ctx) error {
     }
 
     // Find the existing report
-    var report models.Report
-    if err := db.Where("patient_id = ? AND report_date = ?", patientID, reportDate).First(&report).Error; err != nil {
+    report := new(models.Report)
+    if err := db.Where("id = ?", reportId).First(&report).Error; err != nil {
         return fiber.NewError(fiber.StatusNotFound, "Report not found")
     }
-
-    // Handle file upload (optional)
+    
+    // Handle file upload
     file, err := c.FormFile("file")
     if err == nil {
-        // If a new file is uploaded, remove the old file
-        if report.FilePath != "" {
-            os.Remove(report.FilePath) // Optionally handle errors here
+        // If a new file is uploaded, choose to overwrite or append
+        appendFile := c.FormValue("append") == "true"
+
+        if !appendFile {
+            // Overwrite: remove the old file
+            if report.FilePath != "" {
+                os.Remove(report.FilePath) // Optionally handle errors here
+            }
         }
 
         // Create directories if they don't exist
@@ -123,19 +131,27 @@ func UpdateReport(c *fiber.Ctx) error {
             return fiber.NewError(fiber.StatusInternalServerError, "Failed to create directory")
         }
 
-        // Generate new file path and save file
         newFilePath := filepath.Join(dirPath, file.Filename)
-        if err := c.SaveFile(file, newFilePath); err != nil {
-            return fiber.NewError(fiber.StatusInternalServerError, "Failed to save file")
-        }
 
-        // Update file path in the report
-        report.FilePath = newFilePath
+        // Save the file (either overwrite or append)
+        if appendFile {
+            // Append logic for PDF (or any file type)
+            err = appendToFile(report.FilePath, file)
+            if err != nil {
+                return fiber.NewError(fiber.StatusInternalServerError, "Failed to append to file")
+            }
+        } else {
+            // Overwrite the old file by saving the new one
+            if err := c.SaveFile(file, newFilePath); err != nil {
+                return fiber.NewError(fiber.StatusInternalServerError, "Failed to save file")
+            }
+            report.FilePath = newFilePath
+        }
     }
 
     // Optionally update other fields (e.g., report date)
-    if newReportDate := c.FormValue("new_report_date"); newReportDate != "" {
-        report.ReportDate = newReportDate
+    if reportDate := c.FormValue("report_date"); reportDate != "" {
+        report.ReportDate = reportDate
     }
 
     // Save the updated report
@@ -170,3 +186,36 @@ func DeleteReport(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"message": "Report deleted successfully"})
 }
 
+
+
+// Function to append content to an existing file
+func appendToFile(filePath string, fileHeader *multipart.FileHeader) error {
+    // Open the existing file in append mode
+    existingFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_APPEND, 0644)
+    if err != nil {
+        return err
+    }
+    defer existingFile.Close()
+
+    // Open the uploaded file
+    uploadedFile, err := fileHeader.Open()
+    if err != nil {
+        return err
+    }
+    defer uploadedFile.Close()
+
+    // Read the contents of the uploaded file
+    fileData := make([]byte, fileHeader.Size)
+    _, err = uploadedFile.Read(fileData)
+    if err != nil {
+        return err
+    }
+
+    // Append the uploaded file's data to the existing file
+    _, err = existingFile.Write(fileData)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}

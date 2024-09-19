@@ -4,9 +4,7 @@ import axios from '../../../axiosConfig'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { PDFDocument } from 'pdf-lib'
-import { useToast } from 'vue-toastification'
 
-const toast = useToast()
 const route = useRoute()
 const store = useStore()
 const report = computed(() => store.state.report)

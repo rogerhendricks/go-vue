@@ -2,10 +2,11 @@
 import { ref, onMounted, computed, watch, defineProps } from 'vue'
 import axios from '../../axiosConfig'
 // import { useRoute } from 'vue-router'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 import {useToast} from 'vue-toastification';
-// import UpdatForm from './partials/UpdateForm.vue'
+import UpdatForm from './partials/UpdateForm.vue'
 
+const store = useStore()
 const toast = useToast();
 const props = defineProps(['patient', 'report_id'])
 const patientReport = ref({})
@@ -16,6 +17,7 @@ const fetchReport = async (reportId) => {
     const response = await axios.get(`/api/reports/${reportId}/`)
     console.log('Patient report:', response.data.report)
     patientReport.value = response.data.report
+    store.commit('setReport', response.data.report);
   } catch (error) {
     console.error('Error fetching report:', error)
     toast.error('Error fetching report',{
@@ -45,6 +47,7 @@ function getFileLink(filePath) {
     <div class="row">
         <div class="col">
             <span>Report Side</span>
+            <router-link :to="{ name: 'UpdateReport', params: { id: patientReport.ID }}" class="btn">Update Report</router-link>
             <div v-if="patientReport">
                 <p>Report ID: {{ patientReport.ID }}</p>
                 <p>Report Date: {{ patientReport.report_date }}</p>

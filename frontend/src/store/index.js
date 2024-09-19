@@ -33,7 +33,10 @@ export default createStore({
         },
         setReports(state, reports) {
           state.reports = reports
-        }
+        },
+        setReport(state, report) {
+          state.report = report;
+        },
     },
     actions: {
         async fetchDevices({ commit }) {
@@ -75,6 +78,14 @@ export default createStore({
               commit('setReports', response.data)
             } catch (error) {
               console.error('Error fetching reports:', error)
+            }
+          },
+          async fetchReport({ commit }, id) {
+            try {
+              const response = await axios.get(`/api/reports/${id}`)
+              commit('setReport', response.data)
+            } catch (error) {
+              console.error('Error fetching report:', error)
             }
           }
           // async updatePatient({ commit }, patient) {
