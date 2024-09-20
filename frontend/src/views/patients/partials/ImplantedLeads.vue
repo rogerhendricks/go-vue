@@ -64,8 +64,8 @@ async function createLead() {
             patient_id: patientId, // Send patient_id as a number
             doctor_id: newLead.value.doctor_id
         })
-        // console.log('Response:', response.data.implantedLead)
         implantedLeads.value.push(response.data.implantedLead)
+        console.log('New implanted leads:', implantedLeads.value)
         newLead.value = { 
             implant_date: '',
             explant_date: '',

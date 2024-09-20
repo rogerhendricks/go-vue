@@ -44,6 +44,16 @@ func CreateImplantedLead(c *fiber.Ctx) error {
 		log.Printf("Error creating implanted lead: %v", result.Error)
 		return c.Status(500).JSON(fiber.Map{"error": "Could not create implanted lead"})
 	}
+	// Fetch the newly created implantedLead with its related data (Lead, Doctor, Patient)
+	err := db.Preload("Lead").
+	Preload("Doctor").
+	Preload("Patient").
+	First(&implantedLead, implantedLead.ID).Error
+	if err != nil {
+		log.Printf("Error fetching related data for implanted lead: %v", err)
+		return c.Status(500).JSON(fiber.Map{"error": "Could not load related data"})
+	}
+
 	return c.JSON(fiber.Map{"implantedLead": implantedLead})
 }
 
