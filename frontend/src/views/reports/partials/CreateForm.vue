@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, onMounted, computed, watch, defineProps } from 'vue'
+import { ref, onMounted, computed, watch, defineProps, toRefs, defineEmits } from 'vue'
 import axios from '../../../axiosConfig'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
@@ -10,6 +10,7 @@ import { PDFDocument } from 'pdf-lib'
 const store = useStore()
 const toast = useToast();
 const props = defineProps(['patient'])
+const emit = defineEmits(['report-created'])
 
 const initialFormData = ref({
       report_date: '',
@@ -57,6 +58,7 @@ const handleSubmit = async () => {
         toast.success('Report created successfully',{
             timeout: 2000,
         })
+        emit('report-created')
         formData.value = { ...initialFormData };
         files.value = []
       } catch (error) {

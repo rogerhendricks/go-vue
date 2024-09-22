@@ -2,12 +2,13 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import axios from '../../../axiosConfig'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { PDFDocument } from 'pdf-lib'
 import { useToast } from 'vue-toastification'
 
 const toast = useToast()
 const route = useRoute()
+const router = useRouter()
 const store = useStore()
 const report = computed(() => store.state.report)
 
@@ -82,9 +83,16 @@ const handleSubmit = async () => {
 const handleFileUpload = (event) => {
   formData.value.files = event.target.files
 }
+function goBackUsingBack() {
+      if (router) {
+        router.back();
+      }
+    }
+
 </script>
 
 <template>
+  <button class="btn" type="button" @click="goBackUsingBack">Go Back </button>
   <div class="row">
     <div class="col">
       <form @submit.prevent="handleSubmit">
@@ -105,7 +113,6 @@ const handleFileUpload = (event) => {
             type="file"
             id="file_path"
             multiple
-            required
             @change="handleFileUpload"
           />
         </div>

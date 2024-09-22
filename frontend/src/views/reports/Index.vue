@@ -34,18 +34,25 @@ const selectReport = (id) => {
     selectedReportId.value = id
     console.log('Selected report:', selectedReportId.value)
 }
+
+const handleReportCreated = async () => {
+  // Fetch the updated reports after creating a new one
+  await store.dispatch('fetchReports', props.patient.ID)
+  showForm.value = false // Close the form after creation
+}
+
 </script>
 <template>
     <div class="row">
         <div class="col-md-2">
-                <button class="btn btn-secondary mb-2" @click="toggleForm">Create</button>
-                <div v-for="report in reportList" :key="report.ID">
-                    <button type="button" class="btn" @click="selectReport(report.ID)">{{ report.report_date }}</button>
-                </div>
+            <button class="btn btn-secondary mb-2" @click="toggleForm">Create</button>
+            <div v-for="report in reportList" :key="report.ID">
+                <button type="button" class="btn" @click="selectReport(report.ID)">{{ report.report_date }}</button>
+            </div>
         </div>
         <div class="col-md-10">
             <div v-if="showForm">
-                <CreateForm  :patient="props.patient"  />
+                <CreateForm  :patient="props.patient" @report-created="handleReportCreated"/>
             </div>
             <div v-else>
                 <Report v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient"/>
