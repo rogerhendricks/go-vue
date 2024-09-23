@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import {useToast} from 'vue-toastification';
 import CreateForm from './partials/CreateForm.vue'
-import UpdatForm from './partials/UpdateForm.vue'
+import UpdateForm from './partials/UpdateForm.vue'
 import Report from './Report.vue'
 
 
@@ -55,7 +55,8 @@ const handleReportCreated = async () => {
                 <CreateForm  :patient="props.patient" @report-created="handleReportCreated"/>
             </div>
             <div v-else>
-                <Report v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient"/>
+                <!-- <Report v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient"/> -->
+                <UpdateForm v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient"/>
             </div>
         </div>
     </div>

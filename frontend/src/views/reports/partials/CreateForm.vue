@@ -5,7 +5,7 @@ import axios from '../../../axiosConfig'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import {useToast} from 'vue-toastification';
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 
 const store = useStore()
 const toast = useToast();
@@ -73,8 +73,53 @@ const handleSubmit = async () => {
         formData.value[event.target.name] = event.target.value
     }
 
+
+const createPDF = async () => {
+  try {
+    // Fetch the 'report.pdf' template
+    // const templateResponse = await axios.get('/report.pdf', { responseType: 'arraybuffer' })
+    // const templateBytes = new Uint8Array(templateResponse.data)
+    // Load the template into a PDFDocument
+    // const pdfDoc = await PDFDocument.load(templateBytes)
+
+    const pdfDoc = await PDFDocument.create()
+    const page = pdfDoc.addPage()
+
+    // Get the form fields
+    const { report_date, file_path, patient, files } = formData.value
+
+    // Add the form fields to the PDF
+    // const page = pdfDoc.getPages()[0]
+    const { width, height } = page.getSize()
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
+    const color = rgb(0, 0, 0)
+    page.drawText(report_date, { x: 50, y: height - 70, size: 50, font, color })
+    // Add more fields as needed...
+
+    // Serialize the PDFDocument to bytes
+    const pdfBytes = await pdfDoc.save()
+
+    // Create a Blob from the bytes
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+
+    // Create a URL for the Blob
+    const url = URL.createObjectURL(blob)
+
+    // Return the URL
+    window.open(url, '_blank')
+    return url
+  } catch (error) {
+    console.error('Error creating PDF:', error)
+    toast.error('Error creating PDF', {
+      timeout: 2000
+    })
+  }
+}
+
+
 </script>
 <template>
+    <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
       <form @submit.prevent="handleSubmit">
         <div class="mb-3">
             <label for="report_date" class=""form-label>Report Date:</label>

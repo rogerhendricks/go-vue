@@ -1,17 +1,19 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed, watch, defineProps } from 'vue'
 import axios from '../../../axiosConfig'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { useToast } from 'vue-toastification'
+
+const props = defineProps(['patient', 'report_id'])
 
 const toast = useToast()
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
 const report = computed(() => store.state.report)
-
+const patientReport = ref({})
 const formData = ref({
   report_date: '',
   file_path: '',
@@ -27,17 +29,27 @@ watch(report, (newReport) => {
     formData.value.patient = newReport.patient_id
   }
 })
+watch(() => props.report_id, async (newReportId) => {
+  if (newReportId) {
+    console.log('Report ID changed:', newReportId)
+    await fetchReport(newReportId)
+  }
+})
+const fetchReport = async (reportId) => {
+  try {
+    const response = await axios.get(`/api/reports/${reportId}/`)
+    patientReport.value = response.data.report
+    store.commit('setReport', response.data.report);
+  } catch (error) {
+    console.error('Error fetching report:', error)
+    toast.error('Error fetching report',{
+        timeout: 2000
+    })
+  }
+}
 
 onMounted(async () => {
-  // Fetch the report if it's not already in the store
-  if (!report.value) {
-    await store.dispatch('fetchReport', route.params.id)
-  } else {
-    // Populate form data if report is already available
-    formData.value.report_date = report.value.report_date
-    formData.value.file_path = report.value.file_path
-    formData.value.patient = report.value.patient_id
-  }
+  await fetchReport(props.report_id)
 })
 
 const handleSubmit = async () => {
@@ -83,16 +95,66 @@ const handleSubmit = async () => {
 const handleFileUpload = (event) => {
   formData.value.files = event.target.files
 }
-function goBackUsingBack() {
-      if (router) {
-        router.back();
-      }
-    }
+
+// function goBackUsingBack() {
+//       if (router) {
+//         router.back();
+//       }
+// }
+
+function getFileLink(filePath) {
+      // console.log('File path:', filePath)
+      return `https://dev.nuttynarwhal.com/${filePath}`
+}
+
+const createPDF = async () => {
+  try {
+    // Fetch the 'report.pdf' template
+    // const templateResponse = await axios.get('/report.pdf', { responseType: 'arraybuffer' })
+    // const templateBytes = new Uint8Array(templateResponse.data)
+    // Load the template into a PDFDocument
+    // const pdfDoc = await PDFDocument.load(templateBytes)
+
+    const pdfDoc = await PDFDocument.create()
+    const page = pdfDoc.addPage()
+
+    // Get the form fields
+    const { report_date, file_path, patient, files } = formData.value
+
+    // Add the form fields to the PDF
+    // const page = pdfDoc.getPages()[0]
+    const { width, height } = page.getSize()
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
+    const color = rgb(0, 0, 0)
+    page.drawText(report_date, { x: 50, y: height - 70, size: 50, font, color })
+    // Add more fields as needed...
+
+    // Serialize the PDFDocument to bytes
+    const pdfBytes = await pdfDoc.save()
+
+    // Create a Blob from the bytes
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' })
+
+    // Create a URL for the Blob
+    const url = URL.createObjectURL(blob)
+
+    // Return the URL
+    window.open(url, '_blank')
+    return url
+  } catch (error) {
+    console.error('Error creating PDF:', error)
+    toast.error('Error creating PDF', {
+      timeout: 2000
+    })
+  }
+}
+
 
 </script>
 
 <template>
-  <button class="btn" type="button" @click="goBackUsingBack">Go Back </button>
+  <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
+  <!-- <button class="btn" type="button" @click="goBackUsingBack">Go Back </button> -->
   <div class="row">
     <div class="col">
       <form @submit.prevent="handleSubmit">
@@ -107,7 +169,14 @@ function goBackUsingBack() {
           />
         </div>
         <div class="mb-3">
-          <label for="file_path" class="form-label">Files:</label>
+          <label for="file_path" class="form-label">Files:
+                            <a 
+                    :href="getFileLink(formData.file_path)" 
+                    target="_blank" 
+                    rel="noopener noreferrer">
+                    Open Report
+                </a>
+          </label>
           <input
             class="form-control"
             type="file"
