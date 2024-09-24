@@ -39,7 +39,7 @@ func GetPatient(c *fiber.Ctx) error {
 
 	patientID := c.Params("id")
 	var patient models.Patient
-	result := db.Preload("Doctors").Where("id = ?", patientID).First(&patient)
+	result := db.Preload("Doctors.Addresses").Where("id = ?", patientID).First(&patient)
 	if result.Error != nil {
 		log.Printf("Error fetching patient: %v", result.Error)
 		return c.Status(500).JSON(fiber.Map{"error": "Could not fetch patient"})

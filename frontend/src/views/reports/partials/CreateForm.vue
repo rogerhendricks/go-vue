@@ -12,6 +12,16 @@ const toast = useToast();
 const props = defineProps(['patient'])
 const emit = defineEmits(['report-created'])
 
+
+// Create refs for the selected doctor and address
+const selectedDoctor = ref(props.patient.Doctors[0])
+const selectedAddress = ref(selectedDoctor.value.Addresses[0])
+
+// Watch for changes in the selected doctor and update the selected address
+watch(selectedDoctor, (newDoctor) => {
+  selectedAddress.value = newDoctor.Addresses[0]
+})
+
 const initialFormData = ref({
       report_date: '',
       file_path: '',
@@ -26,7 +36,7 @@ const handleFileUpload = (e) => {
       // formData.value.file_path = file
     }
 
-  const mergePDFs = async (pdfFiles) => {
+const mergePDFs = async (pdfFiles) => {
   const pdfDoc = await PDFDocument.create()
   
   for (const file of pdfFiles) {
@@ -69,7 +79,7 @@ const handleSubmit = async () => {
       }
     }
 
-    function handleInput(event) {
+function handleInput(event) {
         formData.value[event.target.name] = event.target.value
     }
 
@@ -94,6 +104,8 @@ const createPDF = async () => {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
     const color = rgb(0, 0, 0)
     page.drawText(report_date, { x: 50, y: height - 70, size: 50, font, color })
+    page.drawText(`Doctor: ${selectedDoctor.value.name}`, { x: 50, y: height - 100, size: 50, font, color })
+    page.drawText(`Address: ${selectedAddress.value.street}`, { x: 50, y: height - 200, size: 50, font, color })
     // Add more fields as needed...
 
     // Serialize the PDFDocument to bytes
@@ -119,7 +131,29 @@ const createPDF = async () => {
 
 </script>
 <template>
-    <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
+
+  <div class="row">
+    <div class="col">
+      <!-- Doctor selection -->
+      <select class="form-select" v-model="selectedDoctor">
+        <option v-for="doctor in props.patient.Doctors" :key="doctor.id" :value="doctor">
+          {{ doctor.name }}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+      <!-- Address selection -->
+      <select class="form-select" v-model="selectedAddress">
+        <option v-for="address in selectedDoctor.Addresses" :key="address.id" :value="address">
+          {{ address.street }} {{ address.city }} {{ address.state }} {{ address.zip }}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
+    </div>
+  </div>
+
       <form @submit.prevent="handleSubmit">
         <div class="mb-3">
             <label for="report_date" class=""form-label>Report Date:</label>
