@@ -53,6 +53,10 @@ func CreateReport(c *fiber.Ctx) error {
     // Get patient_id and report_date
     patientIDStr := c.FormValue("patient_id")
     reportDate := c.FormValue("report_date")
+    reportType := c.FormValue("report_type")
+    reportStatus := c.FormValue("report_status")
+    currentDependency := c.FormValue("current_dependency")
+    currentHeartRate := c.FormValue("current_heart_rate")
     
     // Convert patient_id to uint
     patientID, err := strconv.ParseUint(patientIDStr, 10, 32)
@@ -75,10 +79,19 @@ func CreateReport(c *fiber.Ctx) error {
     }
 
     // Save the report in the database
+    currentHeartRateInt, err := strconv.Atoi(currentHeartRate)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid current heart rate")
+    }
+
     report := models.Report{
-        ReportDate: reportDate,
-        PatientID:  uint(patientID),
-        FilePath:   filePath,
+        ReportDate:        reportDate,
+        ReportType:        reportType,
+        ReportStatus:      reportStatus,
+        CurrentHeartRate:  currentHeartRateInt,
+        CurrentDependency: currentDependency,
+        PatientID:         uint(patientID),
+        FilePath:          filePath,
     }
     if err := db.Create(&report).Error; err != nil {
         return fiber.NewError(fiber.StatusInternalServerError, "Failed to save report to database")

@@ -7,4 +7,5 @@ type User struct {
     Username string `gorm:"uniqueIndex" json:"username"`
 	Fullname  string    `json:"fullname"`
     Password string
+    Reports []Report `gorm:"foreignKey:AuthorID"`
 }

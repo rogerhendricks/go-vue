@@ -24,6 +24,9 @@ watch(selectedDoctor, (newDoctor) => {
 
 const initialFormData = ref({
       report_date: '',
+      report_type: '',
+      current_dependency: '',
+      current_heart_rate: '',
       file_path: '',
       patient_id: props.patient.ID
     })
@@ -57,6 +60,9 @@ const handleSubmit = async () => {
         const form = new FormData()
         form.append('report_date', formData.value.report_date)
         form.append('patient_id', formData.value.patient_id)
+        form.append('report_type', formData.value.report_type)
+        form.append('current_dependency', formData.value.current_dependency)
+        form.append('current_heart_rate', formData.value.current_heart_rate)
         form.append('file', mergedPdfBlob, 'merged_report.pdf')
 
         const response = await axios.post(`/api/${props.patient.ID}/reports`, form, {
@@ -160,8 +166,28 @@ const createPDF = async () => {
             <input id="report_date" class="form-control" v-model="formData.report_date" type="date" required input="handleInput">
         </div>
         <div class="mb-3">
+          <label for="report_type" class="form-label">Report Type:</label>
+          <select class="form-select" id="report_type" v-model="formData.report_type" required @change="handleInput">
+            <option value="in_clinic">In Clinic</option>
+            <option value="hospital">Hospital</option>
+            <option value="remote">Remote</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="current_dependency" class="form-label">Dependent</label>
+          <select class="form-select" v-model="formData.current_dependency" name="current_dependency" id="current_dependency">
+            <option value="dependent">Dependent</option>
+            <option value="non_dependent">Non Dependent</option>
+            <option value="unknown">Unkown</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="current_heart_rate" class="form-label">Heart Rate</label>
+          <input type="number" v-model="formData.current_heart_rate" name="current_heart_rate" id="current_heart_rate">
+        </div>
+        <div class="mb-3">
           <label for="file_path" class="form-label">Files:</label>
-          <input class="form-control" type="file" id="file_path"  multiple required @change="handleFileUpload">
+          <input class="form-control" type="file" id="file_path"  multiple @change="handleFileUpload">
         </div>
         <div class="mb-3">
           <button class="btn btn-primary" type="submit">Submit</button>

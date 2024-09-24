@@ -29,13 +29,15 @@ func main() {
     }
 
     // Migrate the schema
-    db.AutoMigrate(
+    err = db.AutoMigrate(
         &models.User{}, &models.Device{}, 
         &models.Lead{}, &models.Doctor{}, 
         &models.Address{} ,&models.Patient{}, 
         &models.ImplantedDevice{}, &models.ImplantedLead{},
         &models.Report{},)
-
+    if err != nil {
+            log.Fatalf("Failed to migrate Report: %v", err)
+    }
     
     app := fiber.New()
     app.Use(cors.New(cors.Config{

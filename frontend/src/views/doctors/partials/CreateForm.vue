@@ -54,7 +54,6 @@ const handleSubmit = async () => {
 </script>
 <template>
     <div>
-      <h1>Create Doctor</h1>
       <form @submit.prevent="handleSubmit">
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
