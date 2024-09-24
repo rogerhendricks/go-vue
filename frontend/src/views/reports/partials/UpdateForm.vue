@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch, defineProps } from 'vue'
 import axios from '../../../axiosConfig'
 import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute} from 'vue-router'
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { useToast } from 'vue-toastification'
 
@@ -10,7 +10,7 @@ const props = defineProps(['patient', 'report_id'])
 
 const toast = useToast()
 const route = useRoute()
-const router = useRouter()
+
 const store = useStore()
 const report = computed(() => store.state.report)
 const patientReport = ref({})
@@ -19,6 +19,15 @@ const formData = ref({
   file_path: '',
   patient: null,
   files: null,
+})
+
+// Create refs for the selected doctor and address
+const selectedDoctor = ref(props.patient.Doctors[0])
+const selectedAddress = ref(selectedDoctor.value.Addresses[0])
+
+// Watch for changes in the selected doctor and update the selected address
+watch(selectedDoctor, (newDoctor) => {
+  selectedAddress.value = newDoctor.Addresses[0]
 })
 
 // Watch for when the report is fetched and update formData accordingly
@@ -96,11 +105,6 @@ const handleFileUpload = (event) => {
   formData.value.files = event.target.files
 }
 
-// function goBackUsingBack() {
-//       if (router) {
-//         router.back();
-//       }
-// }
 
 function getFileLink(filePath) {
       // console.log('File path:', filePath)
@@ -127,7 +131,8 @@ const createPDF = async () => {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
     const color = rgb(0, 0, 0)
     page.drawText(report_date, { x: 50, y: height - 70, size: 50, font, color })
-    // Add more fields as needed...
+    page.drawText(`Doctor: ${selectedDoctor.value.name}`, { x: 50, y: height - 100, size: 50, font, color })
+    page.drawText(`Address: ${selectedAddress.value.street}`, { x: 50, y: height - 200, size: 50, font, color })
 
     // Serialize the PDFDocument to bytes
     const pdfBytes = await pdfDoc.save()
@@ -153,8 +158,27 @@ const createPDF = async () => {
 </script>
 
 <template>
-  <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
-  <!-- <button class="btn" type="button" @click="goBackUsingBack">Go Back </button> -->
+    <div class="row">
+    <div class="col">
+      <!-- Doctor selection -->
+      <select class="form-select" v-model="selectedDoctor">
+        <option v-for="doctor in props.patient.Doctors" :key="doctor.id" :value="doctor">
+          {{ doctor.name }}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+      <!-- Address selection -->
+      <select class="form-select" v-model="selectedAddress">
+        <option v-for="address in selectedDoctor.Addresses" :key="address.id" :value="address">
+          {{ address.street }} {{ address.city }} {{ address.state }} {{ address.zip }}
+        </option>
+      </select>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <form @submit.prevent="handleSubmit">
