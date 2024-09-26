@@ -8,6 +8,9 @@ import {useToast} from 'vue-toastification';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 
 const store = useStore()
+// const currentUser = computed(() => store.state.user)
+const currentUser = JSON.parse(localStorage.getItem('user') || 'null')
+// console.log(currentUser)
 const toast = useToast();
 const props = defineProps(['patient'])
 const emit = defineEmits(['report-created'])
@@ -27,6 +30,7 @@ const initialFormData = ref({
       report_type: '',
       current_dependency: '',
       current_heart_rate: '',
+      author_id : currentUser.ID,
       file_path: '',
       patient_id: props.patient.ID
     })
@@ -58,6 +62,7 @@ const handleSubmit = async () => {
       try {
         const mergedPdfBlob = await mergePDFs(files.value)
         const form = new FormData()
+        form.append('author_id', currentUser.ID)
         form.append('report_date', formData.value.report_date)
         form.append('patient_id', formData.value.patient_id)
         form.append('report_type', formData.value.report_type)
@@ -137,7 +142,6 @@ const createPDF = async () => {
 
 </script>
 <template>
-
   <div class="row">
     <div class="col">
       <!-- Doctor selection -->

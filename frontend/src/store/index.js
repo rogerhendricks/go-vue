@@ -37,6 +37,24 @@ export default createStore({
         setReport(state, report) {
           state.report = report;
         },
+        removeReport(state, reportId) {
+          if (Array.isArray(state.reports)) {
+            state.reports = [...state.reports.filter(report => report.ID !== reportId)]
+          }
+        }
+        // REMOVE_REPORT(state, reportId) {
+        //   state.reports = state.reports.filter(report => report.ID !== reportId)
+        // }
+        // removeReport(state, reportId) {
+        //   if (Array.isArray(state.reports)) {
+        //     state.reports = state.reports.filter(report => report.ID !== reportId)
+        //   }
+        // }
+        // removeReport(state, reportId) {
+        //   if (state.reports.hasOwnProperty(reportId)) {
+        //     delete state.reports[reportId]
+        //   }
+        // }
     },
     actions: {
         async fetchDevices({ commit }) {
@@ -87,7 +105,15 @@ export default createStore({
             } catch (error) {
               console.error('Error fetching report:', error)
             }
-          }
+          },
+          // async deleteReport({ commit }, reportId) {
+          //   try {
+          //     await axios.delete(`/api/reports/${reportId}`)
+          //     commit('removeReport', reportId)
+          //   } catch (error) {
+          //     console.error('Error deleting report:', error)
+          //   }
+          // }
           // async updatePatient({ commit }, patient) {
           //   try {
           //     await axios.put(`/api/patients/${patient.id}`, patient)

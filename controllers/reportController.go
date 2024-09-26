@@ -51,6 +51,8 @@ func CreateReport(c *fiber.Ctx) error {
     }
 
     // Get patient_id and report_date
+    // authorId := c.Locals("user").(*models.User).ID
+    authorIdStr := c.FormValue("author_id")
     patientIDStr := c.FormValue("patient_id")
     reportDate := c.FormValue("report_date")
     reportType := c.FormValue("report_type")
@@ -64,6 +66,11 @@ func CreateReport(c *fiber.Ctx) error {
         return fiber.NewError(fiber.StatusBadRequest, "Invalid patient ID")
     }
 
+    // Convert author_id to uint
+    authorId, err := strconv.ParseUint(authorIdStr, 10, 32)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid author ID")
+    }
     // Create directories if they don't exist
     dirPath := filepath.Join("uploads", fmt.Sprint(patientID), reportDate)
     if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
@@ -85,6 +92,7 @@ func CreateReport(c *fiber.Ctx) error {
     }
 
     report := models.Report{
+        AuthorID:          uint(authorId),
         ReportDate:        reportDate,
         ReportType:        reportType,
         ReportStatus:      reportStatus,

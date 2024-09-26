@@ -1,19 +1,20 @@
 <script setup>
-import { ref, onMounted, computed, watch, defineProps } from 'vue'
+import { ref, onMounted, computed, watch, defineProps, defineEmits } from 'vue'
 import axios from '../../../axiosConfig'
 import { useStore } from 'vuex'
-import { useRoute} from 'vue-router'
+import { useRoute, useRouter} from 'vue-router'
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { useToast } from 'vue-toastification'
 
 const props = defineProps(['patient', 'report_id'])
-
+const emit = defineEmits(['report-deleted'])
 const toast = useToast()
 const route = useRoute()
+const router = useRouter()
 
 const store = useStore()
 const report = computed(() => store.state.report)
-const patientReport = ref({})
+const patientReport = ref([])
 const formData = ref({
   report_date: '',
   file_path: '',
@@ -22,8 +23,8 @@ const formData = ref({
 })
 
 // Create refs for the selected doctor and address
-const selectedDoctor = ref(props.patient.Doctors[0])
-const selectedAddress = ref(selectedDoctor.value.Addresses[0])
+const selectedDoctor = ref(props.patient.Doctors[0] || {})
+const selectedAddress = ref(selectedDoctor.value.Addresses[0] || {})
 
 // Watch for changes in the selected doctor and update the selected address
 watch(selectedDoctor, (newDoctor) => {
@@ -101,16 +102,19 @@ const handleSubmit = async () => {
   }
 }
 
+
+// Handle file upload
 const handleFileUpload = (event) => {
   formData.value.files = event.target.files
 }
-
 
 function getFileLink(filePath) {
       // console.log('File path:', filePath)
       return `https://dev.nuttynarwhal.com/${filePath}`
 }
 
+
+// Create a PDF from the form data
 const createPDF = async () => {
   try {
     // Fetch the 'report.pdf' template
@@ -155,6 +159,25 @@ const createPDF = async () => {
 }
 
 
+// Deleting report
+function confirmDelete() {
+      if (window.confirm('Do you want to delete this report?')) {
+        deleteReport()
+      }
+    }
+
+const deleteReport = async () => {
+  try {
+    await axios.delete(`/api/reports/${props.report_id}/`)
+    await store.dispatch('deleteReport', props.report_id)
+    toast.success('Report deleted', { timeout: 2000 })
+    emit('report-deleted', props.report_id)
+    router.push(`/patients/${props.patient.ID}`)
+  } catch (error) {
+    console.error('Error deleting report:', error)
+    toast.error('Error deleting report', { timeout: 2000 })
+  }
+}
 </script>
 
 <template>
@@ -210,7 +233,8 @@ const createPDF = async () => {
           />
         </div>
         <div class="mb-3">
-          <button class="btn btn-primary" type="submit">Submit</button>
+          <button class="btn btn-primary" type="submit">Update</button>
+          <button class="btn btn-danger" type="button" @click="confirmDelete">Delete</button>
         </div>
       </form>
     </div>
