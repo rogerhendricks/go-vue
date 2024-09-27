@@ -32,15 +32,17 @@ const initialFormData = ref({
       current_heart_rate: '',
       author_id : currentUser.ID,
       file_path: '',
-      patient_id: props.patient.ID
+      patient_id: props.patient.ID,
+      files: [],
     })
 
 const formData = ref({ ...initialFormData.value })
 const files = ref([])
 
 const handleFileUpload = (e) => {
-      files.value = Array.from(e.target.files)
-      // formData.value.file_path = file
+      // files.value = Array.from(e.target.files)
+      formData.value.files = e.target.files
+      console.log('Files:', formData.value.files)
     }
 
 const mergePDFs = async (pdfFiles) => {
@@ -60,7 +62,6 @@ const mergePDFs = async (pdfFiles) => {
 
 const handleSubmit = async () => {
       try {
-        const mergedPdfBlob = await mergePDFs(files.value)
         const form = new FormData()
         form.append('author_id', currentUser.ID)
         form.append('report_date', formData.value.report_date)
@@ -68,7 +69,14 @@ const handleSubmit = async () => {
         form.append('report_type', formData.value.report_type)
         form.append('current_dependency', formData.value.current_dependency)
         form.append('current_heart_rate', formData.value.current_heart_rate)
-        form.append('file', mergedPdfBlob, 'merged_report.pdf')
+        
+        if (formData.value.files && formData.value.files.length > 0){
+          const mergedPdfBlob = await mergePDFs(files.value)
+          form.append('file', mergedPdfBlob, 'merged_report.pdf')
+        } else {
+          // If no files are selected, this will still send the form data without a file
+          console.log("No files selected, submitting form without file.")
+        }
 
         const response = await axios.post(`/api/${props.patient.ID}/reports`, form, {
           headers: {

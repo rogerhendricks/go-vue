@@ -40,6 +40,12 @@ const handleReportCreated = async () => {
   await store.dispatch('fetchReports', props.patient.ID)
   showForm.value = false // Close the form after creation
 }
+
+const handleReportUpdated = async (updatedReport) => {
+  await store.dispatch('fetchReports', props.patient.ID) // Refresh the reports list
+  selectedReportId.value = null // Reset the selected report, closing the form
+}
+
 const handleReportDeleted = async (deletedReportId) => {
   await store.dispatch('fetchReports', props.patient.ID) // Refresh the reports list
   selectedReportId.value = null // Reset the selected report, closing the form
@@ -59,7 +65,7 @@ const handleReportDeleted = async (deletedReportId) => {
             </div>
             <div v-else>
                 <!-- <Report v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient"/> -->
-                <UpdateForm v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient" @report-deleted="handleReportDeleted"/>
+                <UpdateForm v-if="selectedReportId" :report_id="selectedReportId" :patient="props.patient" @report-deleted="handleReportDeleted" @report-updated="handleReportUpdated"/>
             </div>
         </div>
     </div>

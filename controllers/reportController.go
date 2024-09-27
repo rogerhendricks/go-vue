@@ -45,13 +45,9 @@ func CreateReport(c *fiber.Ctx) error {
     db := database.InitDB()
 
     // Get file from the form
-    file, err := c.FormFile("file")
-    if err != nil {
-        return fiber.NewError(fiber.StatusBadRequest, "File is required")
-    }
+    file, _ := c.FormFile("file")
+    hasFile := file != nil
 
-    // Get patient_id and report_date
-    // authorId := c.Locals("user").(*models.User).ID
     authorIdStr := c.FormValue("author_id")
     patientIDStr := c.FormValue("patient_id")
     reportDate := c.FormValue("report_date")
@@ -71,19 +67,36 @@ func CreateReport(c *fiber.Ctx) error {
     if err != nil {
         return fiber.NewError(fiber.StatusBadRequest, "Invalid author ID")
     }
-    // Create directories if they don't exist
-    dirPath := filepath.Join("uploads", fmt.Sprint(patientID), reportDate)
-    if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
-        return fiber.NewError(fiber.StatusInternalServerError, "Failed to create directory")
+    var filePath string
+    if hasFile {
+        // Create directories if they don't exist
+        dirPath := filepath.Join("uploads", fmt.Sprint(patientID), reportDate)
+        if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
+            return fiber.NewError(fiber.StatusInternalServerError, "Failed to create directory")
+        }
+
+        // Generate the file path
+        filePath = filepath.Join(dirPath, file.Filename)
+
+        // Save the file
+        if err := c.SaveFile(file, filePath); err != nil {
+            return fiber.NewError(fiber.StatusInternalServerError, "Failed to save file")
+        }
     }
 
-    // Generate the file path
-    filePath := filepath.Join(dirPath, file.Filename)
+    // // Create directories if they don't exist
+    // dirPath := filepath.Join("uploads", fmt.Sprint(patientID), reportDate)
+    // if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
+    //     return fiber.NewError(fiber.StatusInternalServerError, "Failed to create directory")
+    // }
 
-    // Save the file
-    if err := c.SaveFile(file, filePath); err != nil {
-        return fiber.NewError(fiber.StatusInternalServerError, "Failed to save file")
-    }
+    // // Generate the file path
+    // filePath := filepath.Join(dirPath, file.Filename)
+
+    // // Save the file
+    // if err := c.SaveFile(file, filePath); err != nil {
+    //     return fiber.NewError(fiber.StatusInternalServerError, "Failed to save file")
+    // }
 
     // Save the report in the database
     currentHeartRateInt, err := strconv.Atoi(currentHeartRate)
@@ -99,8 +112,11 @@ func CreateReport(c *fiber.Ctx) error {
         CurrentHeartRate:  currentHeartRateInt,
         CurrentDependency: currentDependency,
         PatientID:         uint(patientID),
-        FilePath:          filePath,
+        FilePath:         filePath,
     }
+    // if hasFile {
+    //     report.FilePath = filePath
+    // }
     if err := db.Create(&report).Error; err != nil {
         return fiber.NewError(fiber.StatusInternalServerError, "Failed to save report to database")
     }

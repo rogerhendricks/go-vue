@@ -7,18 +7,21 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { useToast } from 'vue-toastification'
 
 const props = defineProps(['patient', 'report_id'])
-const emit = defineEmits(['report-deleted'])
+
+const currentUser = JSON.parse(localStorage.getItem('user') || 'null')
 const toast = useToast()
 const route = useRoute()
 const router = useRouter()
-
 const store = useStore()
+
+const emit = defineEmits(['report-updated', 'report-deleted'])
 const report = computed(() => store.state.report)
 const patientReport = ref([])
 const formData = ref({
   report_date: '',
   file_path: '',
   patient: null,
+  author_id : currentUser.ID,
   files: null,
 })
 
@@ -64,29 +67,33 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
   try {
-    // Create a new PDF document to merge files
-    const mergedPdfDoc = await PDFDocument.create()
-
-    // Loop through each selected file and merge them
-    for (const file of formData.value.files) {
-      const arrayBuffer = await file.arrayBuffer()
-      const pdfDoc = await PDFDocument.load(arrayBuffer)
-      const copiedPages = await mergedPdfDoc.copyPages(pdfDoc, pdfDoc.getPageIndices())
-      copiedPages.forEach((page) => mergedPdfDoc.addPage(page))
-    }
-
-    // Serialize the merged PDF into a Blob
-    const mergedPdfBytes = await mergedPdfDoc.save()
-    const mergedPdfBlob = new Blob([mergedPdfBytes], { type: 'application/pdf' })
-
-    // Create FormData and append the merged PDF Blob
     const uploadData = new FormData()
     uploadData.append('patient_id', formData.value.patient)
     uploadData.append('report_date', formData.value.report_date)
-    uploadData.append('file', mergedPdfBlob, 'merged_report.pdf')
 
-    // Send the FormData with merged PDF to the backend
-    const response = await axios.put(`/api/reports/${route.params.id}/`, uploadData, {
+    // Check if new files are selected
+    if (formData.value.files && formData.value.files.length > 0) {
+      // Create a new PDF document to merge files
+      const mergedPdfDoc = await PDFDocument.create()
+
+      // Loop through each selected file and merge them
+      for (const file of formData.value.files) {
+        const arrayBuffer = await file.arrayBuffer()
+        const pdfDoc = await PDFDocument.load(arrayBuffer)
+        const copiedPages = await mergedPdfDoc.copyPages(pdfDoc, pdfDoc.getPageIndices())
+        copiedPages.forEach((page) => mergedPdfDoc.addPage(page))
+      }
+
+      // Serialize the merged PDF into a Blob
+      const mergedPdfBytes = await mergedPdfDoc.save()
+      const mergedPdfBlob = new Blob([mergedPdfBytes], { type: 'application/pdf' })
+
+      // Append the merged PDF Blob to FormData
+      uploadData.append('file', mergedPdfBlob, 'merged_report.pdf')
+    }
+
+    // Send the FormData with or without the merged PDF to the backend
+    const response = await axios.put(`/api/reports/${props.report_id}/`, uploadData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -95,13 +102,13 @@ const handleSubmit = async () => {
     // Update the report in the Vuex store
     store.commit('setReport', response.data.report)
     console.log('Report updated:', response.data.report)
-    toast.success('Report updated', { timeout: 2000 })
+    toast.success('Report updated successfully', { timeout: 2000 })
+    emit('report-updated')
   } catch (error) {
     console.error('Error updating report:', error)
     toast.error('Error updating report', { timeout: 2000 })
   }
 }
-
 
 // Handle file upload
 const handleFileUpload = (event) => {
@@ -217,11 +224,11 @@ const deleteReport = async () => {
         </div>
         <div class="mb-3">
           <label for="file_path" class="form-label">Files:
-                            <a 
-                    :href="getFileLink(formData.file_path)" 
-                    target="_blank" 
-                    rel="noopener noreferrer">
-                    Open Report
+                <a v-if = "formData.file_path"
+                  :href="getFileLink(formData.file_path)" 
+                  target="_blank" 
+                  rel="noopener noreferrer">
+                  Open Report
                 </a>
           </label>
           <input
@@ -233,8 +240,10 @@ const deleteReport = async () => {
           />
         </div>
         <div class="mb-3">
-          <button class="btn btn-primary" type="submit">Update</button>
-          <button class="btn btn-danger" type="button" @click="confirmDelete">Delete</button>
+          <div class="btn-group">
+            <button class="btn btn-primary" type="submit">Update</button>
+            <button class="btn btn-danger" type="button" @click="confirmDelete">Delete</button>
+          </div>
         </div>
       </form>
     </div>
