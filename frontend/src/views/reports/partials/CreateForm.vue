@@ -6,15 +6,18 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import {useToast} from 'vue-toastification';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import fileImport from '../../../utils/fileImport';
+
 
 const store = useStore()
-// const currentUser = computed(() => store.state.user)
+const deviceFromStore = computed(() => store.state.device || {})
+console.log('Device from store:', deviceFromStore.value)
 const currentUser = JSON.parse(localStorage.getItem('user') || 'null')
-// console.log(currentUser)
 const toast = useToast();
 const props = defineProps(['patient'])
 const emit = defineEmits(['report-created'])
 
+const importFile = fileImport
 
 // Create refs for the selected doctor and address
 const selectedDoctor = ref(props.patient.Doctors[0])
@@ -40,9 +43,7 @@ const formData = ref({ ...initialFormData.value })
 const files = ref([])
 
 const handleFileUpload = (e) => {
-      // files.value = Array.from(e.target.files)
       formData.value.files = e.target.files
-      console.log('Files:', formData.value.files)
     }
 
 const mergePDFs = async (pdfFiles) => {
@@ -147,10 +148,21 @@ const createPDF = async () => {
   }
 }
 
-
+const handleFileChange = async (event) => {
+    const deviceSerial = deviceFromStore.value.serial
+    const target = event.target;
+    const file = target.files[0];
+    const data = await fileImport(file, deviceSerial)
+    return data
+    // Object.assign(form, data);
+}
 </script>
 <template>
   <div class="row">
+    <div class="col">
+      <!-- <button type="button" class="btn btn-secondary" @click="importFile">Import</button> -->
+      <input type="file" @change="handleFileChange($event)" class="form-control">
+    </div>
     <div class="col">
       <!-- Doctor selection -->
       <select class="form-select" v-model="selectedDoctor">
@@ -195,7 +207,7 @@ const createPDF = async () => {
         </div>
         <div class="mb-3">
           <label for="current_heart_rate" class="form-label">Heart Rate</label>
-          <input type="number" v-model="formData.current_heart_rate" name="current_heart_rate" id="current_heart_rate">
+          <input type="number" class="file-input" v-model="formData.current_heart_rate" name="current_heart_rate" id="current_heart_rate">
         </div>
         <div class="mb-3">
           <label for="file_path" class="form-label">Files:</label>

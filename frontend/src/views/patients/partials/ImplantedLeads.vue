@@ -18,6 +18,7 @@ const newLead = ref({
   implant_date: '',
   explant_date: '',
   lead_id: '',
+  serial: '',
   is_active:"true",
   patient_id: route.params.id,
   doctor_id: '', 
@@ -28,6 +29,7 @@ const editedLead = ref({
   explant_date: '',
   is_active: '',
   lead_id: '',
+  serial: '',
   doctor_id: ''
 });
 
@@ -61,6 +63,7 @@ async function createLead() {
             explant_date: newLead.value.explant_date || null, // Send null for optional fields
             is_active: newLead.value.is_active,
             lead_id: newLead.value.lead_id,
+            serial: newLead.value.serial,
             patient_id: patientId, // Send patient_id as a number
             doctor_id: newLead.value.doctor_id
         })
@@ -70,6 +73,7 @@ async function createLead() {
             implant_date: '',
             explant_date: '',
             lead_id: '',
+            serial: '',
             is_active:"true",
             patient_id: patientId,
             doctor_id: '', 
@@ -163,6 +167,9 @@ function hideModal(modalId) {
                             <b>Implant Date:</b> {{ lead.implant_date }}
                         </div>
                         <div class="col">
+                            <b>Serial:</b> {{ lead.serial }}
+                        </div>
+                        <div class="col">
                             <b>Lead:</b> {{ lead.Lead.manufacturer }} {{ lead.Lead.name }}
                         </div>
                         <div class="col">
@@ -201,6 +208,10 @@ function hideModal(modalId) {
                     <div class="col">
                         <label for="implantDate" class="form-label">Implant Date</label>
                         <input type="date" v-model="newLead.implant_date" class="form-control" id="implantDate" required>
+                    </div>
+                    <div class="col">
+                        <label for="serial" class="form-label">Serial</label>
+                        <input type="text" v-model="newLead.serial" class="form-control" id="serial" required>
                     </div>
                     <div class="col">
                         <label for="explantDate" class="form-label">Explant Date</label>
@@ -252,6 +263,10 @@ function hideModal(modalId) {
                     <label for="editLeadExplantDate" class="form-label">Explant Date</label>
                     <input type="date" v-model="editedLead.explant_date" class="form-control border border-danger" id="editLeadExplantDate">
                   </div>
+                    <div class="col">
+                        <label for="editLeadSerial" class="form-label">Serial</label>
+                        <input type="text" v-model="editedLead.serial" class="form-control" id="editLeadSerial" required>
+                    </div>
                   <div class="col">
                     <label for="editLeadIsActive" class="form-label">Active</label>
                     <select v-model="editedLead.is_active" class="form-select" id="editLeadIsActive" required>

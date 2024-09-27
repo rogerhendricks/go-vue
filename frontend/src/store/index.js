@@ -5,6 +5,7 @@ import axios from '../axiosConfig'
 export default createStore({
     state: {
         devices: [],
+        device: {},
         leads: [],
         doctors: [],
         patient: {},
@@ -16,7 +17,10 @@ export default createStore({
     },
     mutations: {
         setDevices(state, devices) {
-            state.devices = devices
+            state.implantedDevice = devices
+        },
+        setImplantedDevice(state, implantedDevice) {
+            state.device = implantedDevice
         },
         setLeads(state, leads) {
             state.leads = leads

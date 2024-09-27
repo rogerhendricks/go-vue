@@ -7,6 +7,7 @@ type ImplantedDevice struct {
     ImplantDate string `json:"implant_date"`
     ExplantDate string `json:"explant_date"`
     DeviceID uint `json:"device_id"`
+    Serial string `json:"serial"`
     DoctorID uint `json:"doctor_id"`
     PatientID uint `json:"patient_id"`
     Device Device `gorm:"foreignKey:DeviceID"`

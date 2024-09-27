@@ -17,6 +17,7 @@ const loading = ref(false)
 const newDevice = ref({ 
   implant_date: '',
   explant_date: '',
+  serial: '',
   device_id: '',
   patient_id: route.params.id,
   doctor_id: '', 
@@ -26,6 +27,7 @@ const editedDevice = ref({
   ID: '',
   implant_date: '',
   explant_date: '',
+  serial: '',
   device_id: '',
   doctor_id: ''
 });
@@ -35,7 +37,9 @@ onMounted(async () => {
     getImplantedDevices()
     if (!devicesFromStore.value) {
         await store.dispatch('fetchDevices')
-    }
+        .then(() => {
+          store.commit('setImplantedDevice', implantedDevices.value[0])        })
+        }
 })
 
 async function getImplantedDevices() {
@@ -44,7 +48,7 @@ async function getImplantedDevices() {
         try {
          const response = await axios.get(`/api/${patientId}/implantedDevices`)
          implantedDevices.value = response.data.implantedDevices
-            // console.log('Implanted Devices:', implantedDevices.value)
+         store.commit('setImplantedDevice', implantedDevices.value[0])
         } catch (error) {
             console.error('Error fetching implanted devices:', error)
         } finally {
@@ -58,6 +62,7 @@ async function createDevice() {
       const response = await axios.post(`/api/${patientId}/implantedDevices`, {
             implant_date: newDevice.value.implant_date,
             explant_date: newDevice.value.explant_date || null, // Send null for optional fields
+            serial: newDevice.value.serial,
             device_id: newDevice.value.device_id,
             patient_id: patientId, // Send patient_id as a number
             doctor_id: newDevice.value.doctor_id
@@ -66,6 +71,7 @@ async function createDevice() {
         newDevice.value = { 
           implant_date: '',
           explant_date: '',
+          serial: '',
           device_id: '',
           patient_id: patientId,
           doctor_id: '',
@@ -158,6 +164,9 @@ function hideModal(modalId) {
                   <b>Implant Date:</b> {{ device.implant_date }}
                 </div>
                 <div class="col">
+                  <b>Serial:</b> {{ device.serial }}
+                </div>
+                <div class="col">
                   <b>Device:</b> {{ device.Device.manufacturer }} {{ device.Device.name }}
                 </div>
                 <div class="col">
@@ -197,6 +206,10 @@ function hideModal(modalId) {
                 <input type="date" v-model="newDevice.explant_date" class="form-control border border-danger" id="explantDate">
               </div>
               <div class="col">
+                <label for="serial" class="form-label">Serial</label>
+                <input type="text" v-model="newDevice.serial" class="form-control" id="serial" required>
+              </div>
+              <div class="col">
                 <label for="device" class="form-label">Device</label>
                 <select v-model="newDevice.device_id" class="form-select" id="device" required>
                   <option v-for="device in devicesFromStore" :key="device.ID" :value="device.ID">{{ device.name }}</option>
@@ -233,6 +246,11 @@ function hideModal(modalId) {
                   <div class="col">
                     <label for="editDeviceExplantDate" class="form-label">Explant Date</label>
                     <input type="date" v-model="editedDevice.explant_date" class="form-control border border-danger" id="editDeviceExplantDate">
+                  </div>
+                  <div class="col">
+                    <label for="editDeviceSerial" class="form-label
+                    ">Serial</label>
+                    <input type="text" v-model="editedDevice.serial" class="form-control" id="editDeviceSerial" required>
                   </div>
                   <div class="col">
                     <label for="editDeviceDevice" class="form-label">Device</label>
