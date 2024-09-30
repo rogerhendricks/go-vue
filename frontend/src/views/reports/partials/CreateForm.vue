@@ -152,9 +152,23 @@ const handleFileChange = async (event) => {
     const deviceSerial = deviceFromStore.value.serial
     const target = event.target;
     const file = target.files[0];
+try{
     const data = await fileImport(file, deviceSerial)
-    return data
-    // Object.assign(form, data);
+    console.log('Parsed dataResult:', data);
+    for (const key in data) {
+      // formData.value[key] = data[key]
+      console.log('Key:', key, 'Value:', data[key]);
+      // if (formData.value.hasOwnProperty(key)) {
+      //   formData.value[key] = dataResult[key];
+      // }
+    }
+    return data;
+  } catch (error) {
+    console.error('Error importing file:', error)
+    toast.error('Error importing file', {
+      timeout: 2000
+    })
+  }
 }
 </script>
 <template>

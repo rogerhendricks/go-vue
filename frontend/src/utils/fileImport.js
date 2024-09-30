@@ -10,7 +10,8 @@ export default function fileImport(file, deviceSerial) {
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(data, 'text/xml');
                 const result = xmlToJson(xmlDoc);
-                resolve(result);
+                Object.assign(dataResult, result);
+                resolve(dataResult);
             });
             reader.addEventListener('error', () => {
                 reject('File read error');
@@ -21,19 +22,30 @@ export default function fileImport(file, deviceSerial) {
             reader.addEventListener('load', (e) => {
                 const data = e.target.result;
                 const result = csvToJSON(data);
-                resolve(result); // Ensure to resolve after processing
+                Object.assign(dataResult, result);
+                resolve(dataResult);
             });
             reader.addEventListener('error', (e) => {
                 reject(e);
             });
-
+        } else if (file.name.endsWith(".bnk")) {
+            reader.readAsText(file);
+            reader.addEventListener('load', (e) => {
+                const data = e.target.result;
+                const result = bnkToJSON(data);
+                Object.assign(dataResult, result);
+                resolve(dataResult);
+            });
+            reader.addEventListener('error', (e) => {
+                reject(e);
+            });
         } else {
             reject('Unsupported file format');
         }
     });
 }
 
-// XML to JSON Conversion
+//////////////////////////////////////// XML to JSON Conversion //////////////////////////////////////////
 function xmlToJson(xmlDoc) {
     let result = { };
 
@@ -58,12 +70,10 @@ function xmlToJson(xmlDoc) {
     result['msmtRa'] = msmtRa;
     result['msmtRv'] = msmtRv;
     result['brady'] = brady;
-    console.log(result);
+    // console.log(result);
 
     // Populate the global dataResult object
-    updateXmlDataResult(result);
-
-    return result;
+    return updateXmlDataResult(result);
 }
 
 // Helper function to extract XPath results into an object
@@ -88,52 +98,14 @@ function updateXmlDataResult(parsedData) {
     dataResult.mdc_idc_dev_pav = parsedData.dev.PAV;
     dataResult.mdc_idc_set_brady_mode = parsedData.brady.MODE;
     dataResult.mdc_idc_batt_volt = parsedData.msmtBatt.VOLTAGE;
-    console.log(dataResult);    
+    return dataResult;
 }
 
 // Format Date Helper
 function formatDate(dtm) {
     return `${dtm.substring(0, 4)}-${dtm.substring(4, 6)}-${dtm.substring(6, 8)}`;
 }
-
-// function parseNode(node) {
-//     let obj = {};
-
-//     // Check if the node is an element node (type 1)
-//     if (node.nodeType === 1) {
-//         // Parse attributes
-//         if (node.attributes && node.attributes.length > 0) {
-//             for (let i = 0; i < node.attributes.length; i++) {
-//                 const attribute = node.attributes.item(i);
-//                 obj[attribute.nodeName] = attribute.nodeValue;
-//             }
-//         }
-
-//         // Parse child nodes if it has children
-//         if (node.hasChildNodes()) {
-//             for (let j = 0; j < node.childNodes.length; j++) {
-//                 const child = node.childNodes.item(j);
-//                 const childName = child.nodeName;
-
-//                 // If the object doesn't already have this child name, create it
-//                 if (typeof obj[childName] === "undefined") {
-//                     obj[childName] = parseNode(child);
-//                 } else {
-//                     // If it already exists, make it an array if it's not already one
-//                     if (!Array.isArray(obj[childName])) {
-//                         obj[childName] = [obj[childName]];
-//                     }
-//                     obj[childName].push(parseNode(child));
-//                 }
-//             }
-//         } else {
-//             obj = node.textContent;
-//         }
-//     }
-//     return obj;
-// }
-
-
+////////////////////////////////////////// CSV to JSON Conversion //////////////////////////////////////////
 // CSV to JSON Conversion for .log files
 function csvToJSON(data) {
     const result = {}; 
@@ -150,8 +122,7 @@ function csvToJSON(data) {
 
     // Assuming the CSV data updates specific parts of dataResult
     
-    updateLogDataResult(result);
-    return result;
+    return updateLogDataResult(result);
 }
 
 function updateLogDataResult(parsedData) {
@@ -159,7 +130,64 @@ function updateLogDataResult(parsedData) {
         dataResult.serial = parsedData["102"].value;
     }
     // Update other relevant fields in dataResult
-    console.log(dataResult);
+    // console.log(dataResult);
+    return dataResult;
+}
+////////////////////////////////////////// BNK to JSON Conversion //////////////////////////////////////////
+// BNK to JSON Conversion for .bnk files
+function bnkToJSON(data) {
+    let vals = data.split('\n'); // Split the CSV content into rows
+    let result = {}; // Initialize result as an object to store key-value pairs
+
+    for (let i in vals) {
+        let row = vals[i].split(',');
+
+        // Skip lines that don't have the expected key-value format
+        if (row.length === 2) {
+            let key = row[0].trim();   // Trim whitespace from the key
+            let value = row[1].trim(); // Trim whitespace from the value
+
+            // Store each key-value pair in the result object
+            result[key] = value;
+        }
+    }
+
+    console.log('result', result); // Output the parsed data for debugging
+
+    // Now update the dataResult object with the parsed data
+   return updateBnkDataResult(result);
+}
+
+// Function to update the dataResult object with the parsed CSV data
+function updateBnkDataResult(parsedData, deviceSerial) {
+    // Here are some examples of how to map parsed data to dataResult
+    console.log('parsed data',parsedData); // Output the parsed data for debugging
+    if (parsedData["SystemSerialNumber"] != deviceSerial) {
+         alert("The serial number in the file does not match the device serial number.");
+    }
+    if (parsedData["SystemName"]) {
+        dataResult.mdc_idc_set_brady_max_tracking_rate = parsedData["SystemName"];
+    }
+    if (parsedData["BdyPSBradyMode"]) {
+        dataResult.mdc_idc_set_brady_mode = parsedData["BdyPSBradyMode"];
+    }
+    if (parsedData["NormParams.LRLIntvl"]) {
+        let lrlToBpm =  Math.floor(60000 / parsedData["NormParams.LRLIntvl"].slice(0, -3));
+        dataResult.mdc_idc_set_brady_lowrate= lrlToBpm;
+    }
+    if (parsedData["NormParams.MTRIntvl"]) {
+        dataResult.mdc_idc_set_brady_max_tracking_rate = Math.floor(parsedData["NormParams.MTRIntvl"].slice(0, -3));
+    }
+    if (parsedData["NormParams.MSRIntvl"]) {
+        dataResult.mdc_idc_set_brady_max_sensor_rate = Math.floor(parsedData["NormParams.MSRIntvl"].slice(0, -3));
+    }
+    if (parsedData["BatteryStatus.BatteryPhase"]) {
+        dataResult.mdc_idc_batt_status = parsedData["BatteryStatus.BatteryPhase"];
+    }
+
+    // Update other relevant fields in dataResult based on the parsed data
+     // Output the updated dataResult for debugging
+     return dataResult;
 }
 // Initial dataResult template
 const dataResult = {
