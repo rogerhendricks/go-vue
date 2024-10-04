@@ -1,0 +1,1331 @@
+{
+    "100": {
+        "name": "Programmer Marketing Name",
+        "value": "Merlin"
+    },
+    "101": {
+        "name": "Programmer Model Number",
+        "value": "3650"
+    },
+    "102": {
+        "name": "Programmer Serial Number",
+        "value": "10132"
+    },
+    "103": {
+        "name": "Application Software Version Number",
+        "value": "3330 v6.3.2"
+    },
+    "104": {
+        "name": "Application Build Number",
+        "value": "upsw-IR7.7UDX-18.11.05"
+    },
+    "105": {
+        "name": "Session Timestamp",
+        "value": "09/26/2020 02:00:16"
+    },
+    "106": {
+        "name": "Programmer Language",
+        "value": "English (UK)"
+    },
+    "200": {
+        "name": "Device Model Name",
+        "value": "Quadra Assura MP"
+    },
+    "201": {
+        "name": "Device Model Number",
+        "value": "3371-40QC"
+    },
+    "202": {
+        "name": "Device Serial Number",
+        "value": "9838591"
+    },
+    "203": {
+        "name": "Device Last Interrogation Date and Time",
+        "value": "09/26/2020 02:00:16"
+    },
+    "204": {
+        "name": "Patient ID",
+        "value": ""
+    },
+    "208": {
+        "name": "Atrial Lead Type",
+        "value": "Bipolar"
+    },
+    "209": {
+        "name": "RV Lead Type",
+        "value": "Bipolar"
+    },
+    "301": {
+        "name": "Mode",
+        "value": "DDDR"
+    },
+    "302": {
+        "name": "Base Rate",
+        "value": "60"
+    },
+    "303": {
+        "name": "Hysteresis Rate",
+        "value": "Off"
+    },
+    "305": {
+        "name": "RV Pulse Width",
+        "value": "0.5"
+    },
+    "306": {
+        "name": "RV Pulse Amplitude",
+        "value": "2.0"
+    },
+    "307": {
+        "name": "Ventricular Sense Configuration",
+        "value": "RV Bipolar"
+    },
+    "309": {
+        "name": "Ventricular Pace Refractory",
+        "value": "250"
+    },
+    "310": {
+        "name": "Atrial Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "311": {
+        "name": "Atrial Pulse Width",
+        "value": "0.5"
+    },
+    "312": {
+        "name": "Atrial Pulse Amplitude",
+        "value": "1.5"
+    },
+    "313": {
+        "name": "Atrial Sense Configuration",
+        "value": "Bipolar"
+    },
+    "317": {
+        "name": "Ventricular Safety Standby",
+        "value": "On"
+    },
+    "318": {
+        "name": "PVC Response",
+        "value": "Off"
+    },
+    "319": {
+        "name": "PMT Response",
+        "value": "Atrial Pace"
+    },
+    "320": {
+        "name": "Rate Responsive AV Delay",
+        "value": "Medium"
+    },
+    "321": {
+        "name": "Magnet Response",
+        "value": "Normal"
+    },
+    "322": {
+        "name": "Paced AV Delay",
+        "value": "300"
+    },
+    "323": {
+        "name": "Maximum Tracking Rate",
+        "value": "110"
+    },
+    "337": {
+        "name": "Sensed AV Delay",
+        "value": "275"
+    },
+    "338": {
+        "name": "Negative AV Hysteresis Search",
+        "value": "-50"
+    },
+    "339": {
+        "name": "Auto Mode Switch",
+        "value": "DDIR"
+    },
+    "340": {
+        "name": "Atrial Tachycardia Detection Rate",
+        "value": "180"
+    },
+    "341": {
+        "name": "Shortest AV Delay",
+        "value": "100"
+    },
+    "344": {
+        "name": "AutoCapture Search Interval",
+        "value": "8"
+    },
+    "346": {
+        "name": "RV Automatic Pulse Amplitude",
+        "value": "2.0"
+    },
+    "353": {
+        "name": "RV AutoCapture",
+        "value": "On"
+    },
+    "354": {
+        "name": "Rest Rate",
+        "value": "Off"
+    },
+    "356": {
+        "name": "AF Suppression",
+        "value": "Off"
+    },
+    "360": {
+        "name": "2:1 Block Rate",
+        "value": "122"
+    },
+    "361": {
+        "name": "Ventricular Triggering",
+        "value": "Off"
+    },
+    "370": {
+        "name": "Auto Intrinsic Conduction Search",
+        "value": "Off"
+    },
+    "372": {
+        "name": "AMS Ventricular Triggering",
+        "value": "Off"
+    },
+    "373": {
+        "name": "Pre-Vent. Atrial Blanking (Pre-VAB)",
+        "value": "Off"
+    },
+    "380": {
+        "name": "PMT Detection Rate",
+        "value": "100"
+    },
+    "386": {
+        "name": "RV Backup Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "387": {
+        "name": "AMS Base Rate",
+        "value": "70"
+    },
+    "389": {
+        "name": "Rate Responsive PVARP/VREF",
+        "value": "Low"
+    },
+    "390": {
+        "name": "Shortest PVARP/VREF",
+        "value": "225"
+    },
+    "392": {
+        "name": "AT/AF Burden Duration",
+        "value": "48"
+    },
+    "393": {
+        "name": "AT/AF Episode Duration",
+        "value": "30"
+    },
+    "395": {
+        "name": "Suspend Notification during Rest",
+        "value": "On"
+    },
+    "401": {
+        "name": "Activity Sensor",
+        "value": "On"
+    },
+    "402": {
+        "name": "Activity Sensor: Threshold",
+        "value": "Auto (+0.0)"
+    },
+    "403": {
+        "name": "Measured Average Sensor",
+        "value": "2.0"
+    },
+    "404": {
+        "name": "Activity Sensor: Slope",
+        "value": "10"
+    },
+    "406": {
+        "name": "Maximum Sensor Rate",
+        "value": "110"
+    },
+    "407": {
+        "name": "Reaction Time",
+        "value": "Fast"
+    },
+    "409": {
+        "name": "Activity Sensor: Recovery Time",
+        "value": "Medium"
+    },
+    "507": {
+        "name": "RV Pacing Lead Impedance",
+        "value": "400.0"
+    },
+    "512": {
+        "name": "Atrial Pacing Lead Impedance",
+        "value": "537.5"
+    },
+    "533": {
+        "name": "Longevity Estimate",
+        "value": "4.7"
+    },
+    "805": {
+        "name": "AutoCapture Paced/Sensed AV Delay",
+        "value": "50/25"
+    },
+    "807": {
+        "name": "Atrial AutoThreshold",
+        "value": "On"
+    },
+    "808": {
+        "name": "Atrial Automatic Pulse Amplitude",
+        "value": "1.5"
+    },
+    "809": {
+        "name": "Atrial Backup Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "810": {
+        "name": "Atrial AutoThreshold Search Interval",
+        "value": "8"
+    },
+    "848": {
+        "name": "ATHR Threshold",
+        "value": "0.5"
+    },
+    "849": {
+        "name": "A. AutoCapture Capture Test Pulse Amplitude (threshold)",
+        "value": "0.5"
+    },
+    "870": {
+        "name": "Atrial Lead Monitoring",
+        "value": "Monitor"
+    },
+    "871": {
+        "name": "Atrial Lead Monitoring: Upper Limit",
+        "value": "2000"
+    },
+    "872": {
+        "name": "Atrial Lead Monitoring: Lower Limit",
+        "value": "200"
+    },
+    "873": {
+        "name": "RV Lead Monitoring",
+        "value": "Monitor"
+    },
+    "874": {
+        "name": "RV Lead Monitoring: Upper Limit",
+        "value": "2000"
+    },
+    "875": {
+        "name": "RV Lead Monitoring: Lower Limit",
+        "value": "200"
+    },
+    "1606": {
+        "name": "RV. Capture Test Threshold Amplitude",
+        "value": "0.875"
+    },
+    "1607": {
+        "name": "RV. Capture Test Pulse Width",
+        "value": "0.5"
+    },
+    "1608": {
+        "name": "RV. Capture Test Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "1610": {
+        "name": "A. Capture Test Threshold Amplitude",
+        "value": "0.5"
+    },
+    "1611": {
+        "name": "A. Capture Test Pulse Width",
+        "value": "0.5"
+    },
+    "1612": {
+        "name": "A. Capture Test Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "1616": {
+        "name": "LV. Capture Test Threshold Amplitude",
+        "value": "1.625"
+    },
+    "1617": {
+        "name": "LV. Capture Test Pulse Width",
+        "value": "0.5"
+    },
+    "1618": {
+        "name": "LV. Capture Test Pulse Configuration",
+        "value": "LV Distal tip 1 - Mid 2"
+    },
+    "1620": {
+        "name": "RV. AutoCapture Capture Test Pulse Amplitude (threshold)",
+        "value": "0.875"
+    },
+    "1621": {
+        "name": "RV Automatic Pulse Amplitude",
+        "value": "2.0"
+    },
+    "2000": {
+        "name": "Atrial Pace Refractory",
+        "value": "190"
+    },
+    "2001": {
+        "name": "Post Ventricular Atrial Refractory Period",
+        "value": "275"
+    },
+    "2002": {
+        "name": "LV Pulse Amplitude",
+        "value": "2.625"
+    },
+    "2003": {
+        "name": "LV Pulse Width",
+        "value": "0.5"
+    },
+    "2004": {
+        "name": "Ventricular Sensing Chamber",
+        "value": "RV"
+    },
+    "2005": {
+        "name": "Ventricular Pacing Chamber",
+        "value": "LV1 -> LV2 -> RV"
+    },
+    "2007": {
+        "name": "LV Pulse Configuration",
+        "value": "LV Distal tip 1 - Mid 2"
+    },
+    "2008": {
+        "name": "RV Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "2020": {
+        "name": "Ventricular Noise Reversion Mode",
+        "value": "Pacing Off"
+    },
+    "2021": {
+        "name": "Episodal Pacing Mode",
+        "value": "DDI"
+    },
+    "2024": {
+        "name": "Maximum Pacing Rate",
+        "value": "110"
+    },
+    "2040": {
+        "name": "Post-Shock Mode",
+        "value": "DDD"
+    },
+    "2041": {
+        "name": "Post-Shock Base Rate",
+        "value": "60"
+    },
+    "2042": {
+        "name": "Post-Shock Brady Pacing Pause",
+        "value": "1"
+    },
+    "2043": {
+        "name": "Post-Shock Duration",
+        "value": "0.5"
+    },
+    "2044": {
+        "name": "Post-Shock Atrial Pulse Amplitude",
+        "value": "7.5"
+    },
+    "2045": {
+        "name": "Post-Shock Atrial Pulse Width",
+        "value": "1.5"
+    },
+    "2046": {
+        "name": "Post-Shock Ventricular Pulse Amplitude",
+        "value": "7.5"
+    },
+    "2047": {
+        "name": "Post-Shock Ventricular Pulse Width",
+        "value": "1.5"
+    },
+    "2060": {
+        "name": "Ventricular Blanking",
+        "value": "52"
+    },
+    "2062": {
+        "name": "Arrhythmia Unhiding",
+        "value": "3"
+    },
+    "2063": {
+        "name": "Post Ventricular Atrial Blanking",
+        "value": "70"
+    },
+    "2100": {
+        "name": "Zone Configuration",
+        "value": "Defib with Tach A & Tach B"
+    },
+    "2101": {
+        "name": "VF Detection Interval",
+        "value": "270"
+    },
+    "2102": {
+        "name": "VT-2 Detection Interval",
+        "value": "330"
+    },
+    "2103": {
+        "name": "VT-1 Detection Interval",
+        "value": "375"
+    },
+    "2104": {
+        "name": "VT-2 No. of Intervals",
+        "value": "24"
+    },
+    "2105": {
+        "name": "VT-1 No. of Intervals",
+        "value": "24"
+    },
+    "2106": {
+        "name": "Therapy Enable/Disable",
+        "value": "Enabled"
+    },
+    "2120": {
+        "name": "Post VF/VT-2 Detection Interval",
+        "value": "Same as VT-2"
+    },
+    "2121": {
+        "name": "VT Redetection",
+        "value": "6"
+    },
+    "2123": {
+        "name": "VF No. of Intervals",
+        "value": "12"
+    },
+    "2140": {
+        "name": "SVT Discrimination Mode",
+        "value": "Dual Chamber"
+    },
+    "2141": {
+        "name": "SVT Upper Limit",
+        "value": "Same as VF"
+    },
+    "2143": {
+        "name": "V < A Rate Branch: VT Diagnosis Criteria",
+        "value": "If All"
+    },
+    "2145": {
+        "name": "Interval Stability",
+        "value": "On w/AVA"
+    },
+    "2146": {
+        "name": "Interval Stability Delta",
+        "value": "40"
+    },
+    "2147": {
+        "name": "V < A Rate Branch: AV Association Delta",
+        "value": "60"
+    },
+    "2148": {
+        "name": "V = A Rate Branch Enable",
+        "value": "On"
+    },
+    "2149": {
+        "name": "V = A Rate Branch: VT Diagnosis Criteria",
+        "value": "If All"
+    },
+    "2150": {
+        "name": "Morphology",
+        "value": "On (90%, 3)"
+    },
+    "2151": {
+        "name": "Sudden Onset",
+        "value": "Off"
+    },
+    "2161": {
+        "name": "Interval Stability Window Size",
+        "value": "12"
+    },
+    "2162": {
+        "name": "V = A Rate Branch: AV Interval Delta",
+        "value": "Off"
+    },
+    "2163": {
+        "name": "SVT Discrimination in VT-1",
+        "value": "On"
+    },
+    "2164": {
+        "name": "SVT Discrimination in VT-2",
+        "value": "On"
+    },
+    "2180": {
+        "name": "Morphology Template Auto Update",
+        "value": "3"
+    },
+    "2200": {
+        "name": "SVT Discrimination Timeout",
+        "value": "Off"
+    },
+    "2203": {
+        "name": "VT Timeout",
+        "value": "Off"
+    },
+    "2220": {
+        "name": "Atrial Sense Refractory",
+        "value": "93"
+    },
+    "2221": {
+        "name": "Ventricular Sense Refractory",
+        "value": "125"
+    },
+    "2222": {
+        "name": "Atrial AutoSense",
+        "value": "Automatic"
+    },
+    "2223": {
+        "name": "Atrial Max Sensitivity",
+        "value": "0.3"
+    },
+    "2225": {
+        "name": "Post-Sensed Atrial Decay Delay",
+        "value": "0"
+    },
+    "2226": {
+        "name": "Post-Sensed Atrial Threshold Start",
+        "value": "50"
+    },
+    "2227": {
+        "name": "Post-Paced Atrial Decay Delay",
+        "value": "0"
+    },
+    "2228": {
+        "name": "Post-Paced Atrial Threshold Start",
+        "value": "0.8"
+    },
+    "2229": {
+        "name": "Ventricular Pacemaker Max Sensitivity",
+        "value": "Same as Defib"
+    },
+    "2230": {
+        "name": "Ventricular Defib Max Sensitivity",
+        "value": "0.5"
+    },
+    "2231": {
+        "name": "Post-Sensed Ventricular Decay Delay",
+        "value": "60"
+    },
+    "2232": {
+        "name": "Post-Sensed Ventricular  Threshold Start",
+        "value": "50"
+    },
+    "2233": {
+        "name": "Post-Paced Ventricular Decay Delay",
+        "value": "95"
+    },
+    "2234": {
+        "name": "Post-Paced Ventricular Threshold Start",
+        "value": "1.0"
+    },
+    "2260": {
+        "name": "Waveform",
+        "value": "Biphasic"
+    },
+    "2262": {
+        "name": "Defib Waveform 1st Phase Tilt",
+        "value": "65"
+    },
+    "2264": {
+        "name": "Defib Waveform 2nd Phase Tilt",
+        "value": "65"
+    },
+    "2265": {
+        "name": "Shock Configuration",
+        "value": "RV to Can"
+    },
+    "2266": {
+        "name": "RV Polarity",
+        "value": "Anode(+)"
+    },
+    "2267": {
+        "name": "HV Output Mode",
+        "value": "Tilt"
+    },
+    "2302": {
+        "name": "ATP Pulse Amplitude",
+        "value": "7.5"
+    },
+    "2303": {
+        "name": "ATP Pulse Width",
+        "value": "1.0"
+    },
+    "2340": {
+        "name": "VT-2 Therapy 1 BCL Mode",
+        "value": "Adaptive"
+    },
+    "2341": {
+        "name": "VT-2 Therapy 1 No. Bursts",
+        "value": "3"
+    },
+    "2342": {
+        "name": "VT-2 Therapy 1 BCL",
+        "value": "85"
+    },
+    "2343": {
+        "name": "VT-2 Therapy 1 No. Stimuli",
+        "value": "8"
+    },
+    "2344": {
+        "name": "VT-2 Therapy 1 Extrastimuli Per Burst",
+        "value": "Off"
+    },
+    "2345": {
+        "name": "VT-2 Therapy 1 Readaptive",
+        "value": "On"
+    },
+    "2346": {
+        "name": "VT-2 Therapy 1 Min. BCL",
+        "value": "200"
+    },
+    "2347": {
+        "name": "VT-2 Therapy 1 Scan Mode",
+        "value": "On (Dec)"
+    },
+    "2348": {
+        "name": "VT-2 Therapy 1 Scan Step Size",
+        "value": "10"
+    },
+    "2349": {
+        "name": "VT-2 Therapy 1 Max Step Size",
+        "value": "50"
+    },
+    "2350": {
+        "name": "VT-2 Therapy 1 Ramp",
+        "value": "Off"
+    },
+    "2354": {
+        "name": "VT-2 Therapy 1 Type",
+        "value": "ATP"
+    },
+    "2355": {
+        "name": "VT-2 Therapy 2 Type",
+        "value": "CVRT"
+    },
+    "2356": {
+        "name": "VT-2 Therapy 3 Type",
+        "value": "CVRT"
+    },
+    "2357": {
+        "name": "VT-2 Therapy 4 Type",
+        "value": "CVRT x 2"
+    },
+    "2361": {
+        "name": "VT-2 Energy 2",
+        "value": "36.0"
+    },
+    "2363": {
+        "name": "VT-2 Energy 3",
+        "value": "40.0"
+    },
+    "2365": {
+        "name": "VT-2 Energy 4",
+        "value": "40.0"
+    },
+    "2368": {
+        "name": "CVRT Waveform 1st Phase Tilt",
+        "value": "Same as Defib"
+    },
+    "2369": {
+        "name": "CVRT Waveform 2nd Phase Tilt",
+        "value": "Same as Defib"
+    },
+    "2382": {
+        "name": "VF Energy 1",
+        "value": "36.0"
+    },
+    "2384": {
+        "name": "VF Energy 2",
+        "value": "40.0"
+    },
+    "2386": {
+        "name": "VF Energy 3",
+        "value": "40.0"
+    },
+    "2387": {
+        "name": "VF Therapy 1 Type",
+        "value": "ATP While Charging"
+    },
+    "2388": {
+        "name": "Max VF Interval for ATP",
+        "value": "200"
+    },
+    "2389": {
+        "name": "VF Therapy BCL",
+        "value": "85"
+    },
+    "2390": {
+        "name": "VF Therapy BCL Mode",
+        "value": "Adaptive"
+    },
+    "2391": {
+        "name": "VF Therapy Min. BCL",
+        "value": "170"
+    },
+    "2392": {
+        "name": "VF Therapy No. Bursts",
+        "value": "1"
+    },
+    "2393": {
+        "name": "VF Therapy No. Stimuli",
+        "value": "8"
+    },
+    "2394": {
+        "name": "VF Therapy Ramp",
+        "value": "Off"
+    },
+    "2400": {
+        "name": "Episode Settings: EGM 1 Configuration",
+        "value": "A Sense Amp"
+    },
+    "2402": {
+        "name": "Episode Settings: EGM 2 Configuration",
+        "value": "V Sense Amp"
+    },
+    "2404": {
+        "name": "Episode Settings: Custom EGM 1 Anode",
+        "value": "LV Mid 2"
+    },
+    "2405": {
+        "name": "Episode Settings: Custom EGM 1 Cathode",
+        "value": "LV Distal tip 1"
+    },
+    "2407": {
+        "name": "VT/VF Pre-Trigger Max Duration",
+        "value": "14"
+    },
+    "2408": {
+        "name": "VT/VF EGM Max Duration",
+        "value": "1"
+    },
+    "2415": {
+        "name": "PMT Termination Trigger",
+        "value": "Off"
+    },
+    "2430": {
+        "name": "Patient Name",
+        "value": "BARTLETT, Eunice"
+    },
+    "2431": {
+        "name": "Patient Date of Birth",
+        "value": "04/20/1937 00:00:00"
+    },
+    "2432": {
+        "name": "Follow-up Physician",
+        "value": ""
+    },
+    "2440": {
+        "name": "Ejection Fraction",
+        "value": "Unknown"
+    },
+    "2441": {
+        "name": "Indications for Implant: List",
+        "value": ""
+    },
+    "2442": {
+        "name": "Implant Date: Device",
+        "value": "11/04/2019 00:00:00"
+    },
+    "2443": {
+        "name": "LV Lead Type",
+        "value": "Quadripolar"
+    },
+    "2448": {
+        "name": "Manufacturer: RV Lead",
+        "value": "St. Jude Medical"
+    },
+    "2449": {
+        "name": "Model Number: SJM RV Defib Lead",
+        "value": "LDA210Q Optisure"
+    },
+    "2451": {
+        "name": "Implant Date: RV Lead",
+        "value": "11/04/2019 00:00:00"
+    },
+    "2456": {
+        "name": "Manufacturer: Atrial Lead",
+        "value": "St. Jude Medical"
+    },
+    "2457": {
+        "name": "Model Number: SJM Atrial Lead",
+        "value": "2088TC Tendril STS"
+    },
+    "2459": {
+        "name": "Implant Date: Atrial Lead",
+        "value": "11/04/2019 00:00:00"
+    },
+    "2464": {
+        "name": "Manufacturer: LV Lead",
+        "value": "<not set>"
+    },
+    "2466": {
+        "name": "Model Number: Other LV Lead",
+        "value": ""
+    },
+    "2468": {
+        "name": "Atrial Lead Serial Number",
+        "value": "CNY597389"
+    },
+    "2469": {
+        "name": "RV Lead Serial Number",
+        "value": "DAP038060"
+    },
+    "2471": {
+        "name": "LV Lead Serial Number",
+        "value": ""
+    },
+    "2480": {
+        "name": "Low Battery Notification Mode",
+        "value": "On"
+    },
+    "2481": {
+        "name": "HV Charge Notification Mode",
+        "value": "On"
+    },
+    "2482": {
+        "name": "Firmware ROM/RAM Reset Notification Mode",
+        "value": "On"
+    },
+    "2483": {
+        "name": "SOSD Notification Mode",
+        "value": "On"
+    },
+    "2484": {
+        "name": "Atrial PLI Notification Mode",
+        "value": "On"
+    },
+    "2485": {
+        "name": "Ventricular PLI Notification Mode",
+        "value": "On"
+    },
+    "2486": {
+        "name": "Left Ventricular PLI Notification Mode",
+        "value": "On"
+    },
+    "2487": {
+        "name": "Stimulus Duration",
+        "value": "6"
+    },
+    "2488": {
+        "name": "Re-Notification Frequency",
+        "value": "10"
+    },
+    "2489": {
+        "name": "Number of Notifications",
+        "value": "4"
+    },
+    "2630": {
+        "name": "Total Number of VT/VF Episodes",
+        "value": "0"
+    },
+    "2631": {
+        "name": "Number of Fib Episodes with Therapy Aborted",
+        "value": "0"
+    },
+    "2632": {
+        "name": "Number of Fib Episodes with Therapy Delivered",
+        "value": "0"
+    },
+    "2633": {
+        "name": "Number Of Tach B Episodes With All Diagnosis Inhibited",
+        "value": "0"
+    },
+    "2636": {
+        "name": "Number Of Tach A Episodes With All Diagnoses Inhibited",
+        "value": "0"
+    },
+    "2642": {
+        "name": "Tachy Episodal Diagnostic Date and Time Last Cleared",
+        "value": "11/04/2019 14:22:04"
+    },
+    "2660": {
+        "name": "Delivered Shocks For Episode Therapies",
+        "value": "0"
+    },
+    "2661": {
+        "name": "Tach A Episodes Where ATP Delivered",
+        "value": "0"
+    },
+    "2662": {
+        "name": "Tach B Episodes Where ATP Delivered",
+        "value": "0"
+    },
+    "2670": {
+        "name": "Total Number of Aborted Shocks",
+        "value": "0"
+    },
+    "2680": {
+        "name": "Event Histogram Auto Mode Switch Count",
+        "value": "0.0"
+    },
+    "2681": {
+        "name": "Event Histogram Percent Paced In Ventricle",
+        "value": "95.0"
+    },
+    "2682": {
+        "name": "Event Histogram Percent Paced In Atrium",
+        "value": "17.0"
+    },
+    "2700": {
+        "name": "Device Charging History Level 1",
+        "value": "0"
+    },
+    "2701": {
+        "name": "Device Charging History Level 2",
+        "value": "0"
+    },
+    "2702": {
+        "name": "Device Charging History Level 3",
+        "value": "0"
+    },
+    "2703": {
+        "name": "Device Charging History Level 4",
+        "value": "0"
+    },
+    "2704": {
+        "name": "Device Charging History Level 5",
+        "value": "0"
+    },
+    "2705": {
+        "name": "Device Charging History Level 6",
+        "value": "0"
+    },
+    "2706": {
+        "name": "Device Charging History Level 7",
+        "value": "0"
+    },
+    "2707": {
+        "name": "Device Charging History Level 8",
+        "value": "4"
+    },
+    "2708": {
+        "name": "Atrial Paced - Lifetime",
+        "value": "15.0"
+    },
+    "2709": {
+        "name": "Ventricular Paced - Lifetime (RVP)",
+        "value": "0.0"
+    },
+    "2711": {
+        "name": "Ventricular Paced - Lifetime (BP)",
+        "value": "67.0"
+    },
+    "2720": {
+        "name": "LV Pacing Lead Impedance",
+        "value": "925.0"
+    },
+    "2721": {
+        "name": "Atrial Signal Amplitude",
+        "value": "3.2"
+    },
+    "2722": {
+        "name": "Ventricular Signal Amplitude",
+        "value": "8.5"
+    },
+    "2724": {
+        "name": "Test Polarity of Ventricular Signal Amplitude",
+        "value": "RV Bipolar"
+    },
+    "2726": {
+        "name": "Test Polarity of Atrial Signal Amplitude",
+        "value": "Bipolar"
+    },
+    "2730": {
+        "name": "HV Lead Impedance",
+        "value": "66.375"
+    },
+    "2742": {
+        "name": "Charge Interval",
+        "value": "4"
+    },
+    "2743": {
+        "name": "Last Max Charge Date",
+        "value": "07/05/2020 13:38:54"
+    },
+    "2745": {
+        "name": "Last HV Cap Charge Duration",
+        "value": "8.625"
+    },
+    "2750": {
+        "name": "AT/AF Last Cleared Date",
+        "value": "08/03/2020"
+    },
+    "2751": {
+        "name": "AT/AF Last Cleared Time",
+        "value": "01:57:42"
+    },
+    "2754": {
+        "name": "Total Number of AT/AF Episodes Since Last Cleared",
+        "value": "0"
+    },
+    "2755": {
+        "name": "Total Time in AT/AF Recent Week",
+        "value": "0"
+    },
+    "2902": {
+        "name": "Committed",
+        "value": "False"
+    },
+    "2903": {
+        "name": "VT-2 Therapy 1 Sequence",
+        "value": "Decrement"
+    },
+    "2904": {
+        "name": "A Sense Polarity",
+        "value": "Bipolar"
+    },
+    "2905": {
+        "name": "V Sense Polarity",
+        "value": "Bipolar"
+    },
+    "2906": {
+        "name": "A Pace Polarity",
+        "value": "Bipolar"
+    },
+    "2907": {
+        "name": "V Pace Polarity",
+        "value": "Bipolar"
+    },
+    "2908": {
+        "name": "Adaptive AVD Start Rate",
+        "value": "90"
+    },
+    "3001": {
+        "name": "LV. AutoCapture Capture Test Pulse Configuration",
+        "value": "LV Distal tip 1 - Mid 2"
+    },
+    "3002": {
+        "name": "LV. AutoCapture Capture Test Pulse Width",
+        "value": "0.5"
+    },
+    "3003": {
+        "name": "LVCap Confirm",
+        "value": "On"
+    },
+    "3004": {
+        "name": "LV Automatic Pulse Amplitude",
+        "value": "2.625"
+    },
+    "3006": {
+        "name": "LVCap Confirm Safety Margin",
+        "value": "1.0"
+    },
+    "3007": {
+        "name": "RV. AutoCapture Capture Test Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "3008": {
+        "name": "RV. AutoCapture Capture Test Pulse Width",
+        "value": "0.5"
+    },
+    "3009": {
+        "name": "LV. AutoCapture Capture Test Pulse Amplitude (threshold)",
+        "value": "1.625"
+    },
+    "3010": {
+        "name": "A. AutoCapture Capture Test Pulse Configuration",
+        "value": "Bipolar"
+    },
+    "3011": {
+        "name": "A. AutoCapture Capture Test Pulse Width",
+        "value": "0.5"
+    },
+    "9001": {
+        "name": "HVLI Notification Mode",
+        "value": "On"
+    },
+    "9004": {
+        "name": "NSLN Notification Mode",
+        "value": "Off"
+    },
+    "9005": {
+        "name": "AT/AF Burden Alert",
+        "value": "On"
+    },
+    "9006": {
+        "name": "AT/AF Burden Evaluation Period",
+        "value": "weekly"
+    },
+    "9007": {
+        "name": "AT/AF Burden Notification Mode",
+        "value": "Off"
+    },
+    "9008": {
+        "name": "AT/AF Episode Alert",
+        "value": "On"
+    },
+    "9009": {
+        "name": "AT/AF Episode Notification Mode",
+        "value": "Off"
+    },
+    "9010": {
+        "name": "V Rate During AT/AF Alert",
+        "value": "On"
+    },
+    "9011": {
+        "name": "V Rate During AT/AF Notification Mode",
+        "value": "Off"
+    },
+    "9012": {
+        "name": "V Rate During AT/AF Duration",
+        "value": "6"
+    },
+    "9013": {
+        "name": "V Rate During AT/AF Threshold",
+        "value": "100"
+    },
+    "9014": {
+        "name": "Percent Pacing Alert Duration",
+        "value": "7 days"
+    },
+    "9015": {
+        "name": "Percent Ventricular Pacing Alert",
+        "value": "On"
+    },
+    "9016": {
+        "name": "Percent Ventricular Pacing Notification Mode",
+        "value": "Off"
+    },
+    "9017": {
+        "name": "Percentage Biventricular Pacing Limit",
+        "value": "90"
+    },
+    "9019": {
+        "name": "RVCap Confirm Safety Margin",
+        "value": "1.0"
+    },
+    "9023": {
+        "name": "Sinus Redetection",
+        "value": "Fast (3 intervals)"
+    },
+    "9024": {
+        "name": "LFDA Mode",
+        "value": "On"
+    },
+    "9025": {
+        "name": "LFDA Configuration",
+        "value": "RV Coil-Can"
+    },
+    "9026": {
+        "name": "LFDA Timeout",
+        "value": "Off"
+    },
+    "9027": {
+        "name": "LFDA Non Sustained Episodes",
+        "value": "5"
+    },
+    "9028": {
+        "name": "Morphology Type",
+        "value": "Far Field MD"
+    },
+    "9029": {
+        "name": "Far Field Morphology Configuration",
+        "value": "RV Coil-Can"
+    },
+    "9030": {
+        "name": "Morphology Template Pacing Hysteresis",
+        "value": "On"
+    },
+    "9031": {
+        "name": "Chamber Onset",
+        "value": "On"
+    },
+    "9032": {
+        "name": "Programmable Dynamic OCD",
+        "value": "Off"
+    },
+    "9035": {
+        "name": "Ventricular AutoSense",
+        "value": "On"
+    },
+    "9036": {
+        "name": "HV Lead Monitoring: Lower Limit",
+        "value": "20"
+    },
+    "9037": {
+        "name": "HV Lead Monitoring: Upper Limit",
+        "value": "125"
+    },
+    "9038": {
+        "name": "LV Lead Monitoring",
+        "value": "Monitor"
+    },
+    "9039": {
+        "name": "LV Lead Monitoring: Lower Limit",
+        "value": "200"
+    },
+    "9040": {
+        "name": "LV Lead Monitoring: Upper Limit",
+        "value": "2000"
+    },
+    "9042": {
+        "name": "Episode Settings: Custom EGM 2 Anode",
+        "value": "LV Mid 2"
+    },
+    "9043": {
+        "name": "Episode Settings: Custom EGM 2 Cathode",
+        "value": "LV Distal tip 1"
+    },
+    "9046": {
+        "name": "VT Episode Trigger Priority",
+        "value": "High"
+    },
+    "9047": {
+        "name": "VT Trigger Type",
+        "value": "Detection"
+    },
+    "9050": {
+        "name": "Atrial Episode Trigger Priority",
+        "value": "Low"
+    },
+    "9051": {
+        "name": "Atrial Trigger Type",
+        "value": "AMS"
+    },
+    "9056": {
+        "name": "Magnet Response Trigger",
+        "value": "Low"
+    },
+    "9057": {
+        "name": "NSLN Trigger",
+        "value": "High"
+    },
+    "9058": {
+        "name": "NSVT Episode Trigger Priority",
+        "value": "Low"
+    },
+    "9059": {
+        "name": "Noise Reversion Trigger",
+        "value": "Low"
+    },
+    "9060": {
+        "name": "Ventricular Sensing Filter",
+        "value": "On"
+    },
+    "9061": {
+        "name": "MRI Ventricular Pacing Chamber",
+        "value": "RV Only"
+    },
+    "9062": {
+        "name": "RV Lead Noise Notification Mode",
+        "value": "On"
+    },
+    "9063": {
+        "name": "VF Episode Trigger Priority",
+        "value": "High"
+    },
+    "9064": {
+        "name": "MSLV Post Ventricular Atrial Blanking",
+        "value": "150"
+    },
+    "9065": {
+        "name": "Pacing First Delay",
+        "value": "5"
+    },
+    "9066": {
+        "name": "Pacing Second Delay",
+        "value": "5"
+    },
+    "9067": {
+        "name": "Pacing LV2 Pulse Amplitude",
+        "value": "2.0"
+    },
+    "9068": {
+        "name": "Pacing LV2 Pulse Configuration",
+        "value": "Mid 3 - RV Coil"
+    },
+    "9069": {
+        "name": "Pacing LV2 Pulse Width",
+        "value": "0.5"
+    },
+    "": {}
+}

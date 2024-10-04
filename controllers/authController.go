@@ -7,6 +7,7 @@ import (
 	"github.com/rogerhendricks/go-vue/database"
 	"github.com/rogerhendricks/go-vue/models"
 	"golang.org/x/crypto/bcrypt"
+    "time"
 )
 
 var store = session.New(session.Config{
@@ -14,6 +15,7 @@ var store = session.New(session.Config{
     CookieSecure:   true,
     CookieHTTPOnly: true,
     CookieSameSite: "Strict",
+    Expiration: time.Hour,
 })
 
 
@@ -64,7 +66,7 @@ func LoginUser(c *fiber.Ctx) error {
     if err != nil {
         return c.Status(401).JSON(fiber.Map{"error": "Invalid credentials"})
     }
-    log.Printf("Password comparison successful")
+    // log.Printf("Password comparison successful")
     sess, err := store.Get(c)
     if err != nil {
         return c.Status(500).JSON(fiber.Map{"error": "Internal server error"})
@@ -77,6 +79,7 @@ func LoginUser(c *fiber.Ctx) error {
     user.Password = "" // Don't send password back
     return c.JSON(fiber.Map{"message": "Login successful", "user": user})
 }
+
 func LogoutUser(c *fiber.Ctx) error {
     sess, err := store.Get(c)
     if err != nil {

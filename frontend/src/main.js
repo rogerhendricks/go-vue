@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import * as bootstrap from "bootstrap"
 // // Import Bootstrap CSS
 // import 'bootstrap/dist/css/bootstrap.min.css';
-
+import './style.css'
 // // Import Bootstrap JS
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
 // Make Bootstrap available globally

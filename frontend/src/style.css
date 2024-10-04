@@ -1,0 +1,11 @@
+html, body {
+    font-size: 16px;
+    --tw-bg-opacity: 1;
+    background-color: rgba(238, 238, 225, var(--tw-bg-opacity)) !important;
+    --tw-text-opacity: 1;
+    color: rgba(17, 17, 17, var(--tw-text-opacity));
+    height: 100vh;
+}
+.navbar {
+    background-color:  rgba(238, 238, 225, var(--tw-bg-opacity)) !important;
+}

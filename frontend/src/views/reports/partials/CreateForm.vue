@@ -221,7 +221,7 @@ try{
         </div>
         <div class="mb-3">
           <label for="current_heart_rate" class="form-label">Heart Rate</label>
-          <input type="number" class="form-input" v-model="formData.current_heart_rate" name="current_heart_rate" id="current_heart_rate">
+          <input type="number" class="form-control" v-model="formData.current_heart_rate" name="current_heart_rate" id="current_heart_rate">
         </div>
         <div class="mb-3">
           <label for="file_path" class="form-label">Files:</label>

@@ -312,7 +312,7 @@
     "PatientWeightUnits": "kg",
     "PSParams.BradyParams.LRLIntvl": "857.0 ms",
     
-    ######### RA amplitude and pulse width
+    ######### Programmed RA amplitude and pulse width
     "PSParams.BradyParams.RAPulse.Amplitude": "5.0 V",
     "PSParams.BradyParams.RAPulse.PulseWidth": "1.0 ms",
 
