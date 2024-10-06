@@ -179,8 +179,8 @@ function updateXmlDataResult(parsedData) {
 
 // Format Date Helper
 function formatDate(dtm) {
-  // return `${dtm.substring(0, 4)}-${dtm.substring(4, 6)}-${dtm.substring(6, 8)}`;
-  return `${dtm.substring(6, 8)}-${dtm.substring(4, 6)}-${dtm.substring(0, 4)}`;
+  return `${dtm.substring(0, 4)}-${dtm.substring(4, 6)}-${dtm.substring(6, 8)}`;
+  // return `${dtm.substring(6, 8)}-${dtm.substring(4, 6)}-${dtm.substring(0, 4)}`;
 }
 ////////////////////////////////////////// CSV to JSON Conversion //////////////////////////////////////////
 // CSV to JSON Conversion for .log files
@@ -327,12 +327,12 @@ function updateBnkDataResult(parsedData, deviceSerial) {
   // Here are some examples of how to map parsed data to dataResult
   console.log("parsed data", parsedData); // Output the parsed data for debugging
   // Date Conversion
-  const implantDay = parsedData["PatientData.ImplantDay"];
+  const implantDay = parsedData["PatientData.ImplantDay"].padStart(2, "0");
   const implantMonth = parsedData["PatientData.ImplantMonth"];
   const numericalMonth = monthToNumber(implantMonth);
   const implantYear = parsedData["PatientData.ImplantYear"];
   // dataResult.report_date = `${implantYear}-${numericalMonth}-${implantDay}`;
-  dataResult.report_date = `${implantDay}-${numericalMonth}-${implantYear}`;
+  dataResult.report_date = `${implantYear}-${numericalMonth}-${implantDay}`;
 
   // Check if the serial number in the file matches the device serial number
   if (parsedData["SystemSerialNumber"] != deviceSerial) {
@@ -374,7 +374,6 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .slice(0, -2)
       .trim();
   }
-
   if (parsedData["ManualIntrinsicResult.LVMsmt.Msmt"]) {
     dataResult.mdc_idc_msmt_lv_sensing_mean = parsedData[
       "ManualIntrinsicResult.LVMsmt.Msmt"
@@ -390,11 +389,13 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .trim();
   }
   if (parsedData["InterPaceThreshResult.LVMsmt.Amplitude"]) {
-    dataResult.mdc_idc_msmt_lv_threshold = parsedData[
-      "InterPaceThreshResult.LVMsmt.Amplitude"
-    ]
-      .slice(0, -3)
-      .trim();
+    dataResult.mdc_idc_msmt_lv_threshold = (
+      parseFloat(
+        parsedData["InterPaceThreshResult.LVMsmt.Amplitude"]
+          .slice(0, -3)
+          .trim(),
+      ) / 1000
+    ).toString();
   }
   if (parsedData["InterPaceThreshResult.LVMsmt.PulseWidth"]) {
     dataResult.mdc_idc_msmt_lv_pw = parsedData[
@@ -403,7 +404,6 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .slice(0, -3)
       .trim();
   }
-
   if (parsedData["ManualIntrinsicResult.RVMsmt.Msmt"]) {
     dataResult.mdc_idc_msmt_rv_sensing_mean = parsedData[
       "ManualIntrinsicResult.RVMsmt.Msmt"
@@ -419,11 +419,13 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .trim();
   }
   if (parsedData["InterPaceThreshResult.RVMsmt.Amplitude"]) {
-    dataResult.mdc_idc_msmt_rv_threshold = parsedData[
-      "InterPaceThreshResult.RVMsmt.Amplitude"
-    ]
-      .slice(0, -3)
-      .trim();
+    dataResult.mdc_idc_msmt_rv_threshold = (
+      parseFloat(
+        parsedData["InterPaceThreshResult.RVMsmt.Amplitude"]
+          .slice(0, -3)
+          .trim(),
+      ) / 1000
+    ).toString();
   }
   if (parsedData["InterPaceThreshResult.RVMsmt.PulseWidth"]) {
     dataResult.mdc_idc_msmt_rv_pw = parsedData[
@@ -437,7 +439,6 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .slice(0, -5)
       .trim();
   }
-
   if (parsedData["ManualIntrinsicResult.RAMsmt.Msmt"]) {
     dataResult.mdc_idc_msmt_ra_sensing_mean = parsedData[
       "ManualIntrinsicResult.RAMsmt.Msmt"
@@ -532,7 +533,7 @@ function monthToNumber(month) {
 
   return monthMap[month];
 }
-function formatDateToDMY(dateString) {
-  const [year, month, day] = dateString.split("-");
-  return `${day}-${month}-${year}`;
-}
+// function formatDateToDMY(dateString) {
+//   const [year, month, day] = dateString.split("-");
+//   return `${year}-${month}-${day}`;
+// }

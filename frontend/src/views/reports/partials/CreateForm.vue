@@ -229,6 +229,7 @@ const handleFileChange = async (event) => {
 };
 </script>
 <template>
+    <p>{{ formData.report_date }}</p>
     <div class="row mb-3">
         <div class="col">
             <!-- <button type="button" class="btn btn-secondary" @click="importFile">Import</button> -->
@@ -281,7 +282,7 @@ const handleFileChange = async (event) => {
                     v-model="formData.report_date"
                     type="date"
                     required
-                    input="handleInput"
+                    @change="handleInput"
                 />
             </div>
             <div class="col p-2">
@@ -683,5 +684,6 @@ const handleFileChange = async (event) => {
         <div class="mb-3">
             <button class="btn btn-primary" type="submit">Submit</button>
         </div>
+        <p>{{ formData }}</p>
     </form>
 </template>
