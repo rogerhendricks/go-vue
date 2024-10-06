@@ -32,7 +32,7 @@
 - [x] RV Paced Percent
 - [x] LV Paced Percent
 - [x] AT/AF Burden Percent
- 
+
 ## Subtask Abbott LOG File
 
 - [x] Date
@@ -48,7 +48,7 @@
 - [] Battery Status - not found in log file
 - [x] Battery Voltage
 - [x] Battery Remaining
-- [] Cap Charge Time
+- [x] Cap Charge Time
 - [x] RA Impedance
 - [x] RA Sensing Mean
 - [x] RA Threshold
@@ -98,6 +98,41 @@
 - [] RV Paced Percent - not found in bnk file
 - [] LV Paced Percent - not found in bnk file
 - [] AT/AF Burden Percent - not found in bnk file
+
+
+## Subtask report.go match
+
+- [x] Date
+- [x] Type
+- [] Model
+- [] Serial
+- [] SAV
+- [] PAV
+- [x] Max Track
+- [x] Max Sensor
+- [x] Mode
+- [x] LRL
+- [x] Battery Status
+- [x] Battery Voltage
+- [x] Battery Remaining
+- [x] Cap Charge Time
+- [x] RA Impedance
+- [x] RA Sensing Mean
+- [x] RA Threshold
+- [x] RA Pulsewidth
+- [x] RV Impedance
+- [x] RV Sensing Mean
+- [x] RV Threshold
+- [x] RV Pulsewidth
+- [x] HV Impedance
+- [x] LV Impedance
+- [x] LV Threshold
+- [x] LV Pulsewidth
+- [x] RA Paced Percent
+- [x] RV Paced Percent
+- [x] LV Paced Percent
+- [x] AT/AF Burden Percent
+
 
 ### Notes
 
