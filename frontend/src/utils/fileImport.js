@@ -2,7 +2,7 @@ export default function fileImport(file, deviceSerial) {
   return new Promise((resolve, reject) => {
     console.log(file.name, file.type, deviceSerial);
     const reader = new FileReader();
-
+    // const dataResult = { ...dataResult };
     if (file.type === "text/xml") {
       reader.readAsText(file);
       reader.addEventListener("load", () => {
@@ -179,7 +179,8 @@ function updateXmlDataResult(parsedData) {
 
 // Format Date Helper
 function formatDate(dtm) {
-  return `${dtm.substring(0, 4)}-${dtm.substring(4, 6)}-${dtm.substring(6, 8)}`;
+  // return `${dtm.substring(0, 4)}-${dtm.substring(4, 6)}-${dtm.substring(6, 8)}`;
+  return `${dtm.substring(6, 8)}-${dtm.substring(4, 6)}-${dtm.substring(0, 4)}`;
 }
 ////////////////////////////////////////// CSV to JSON Conversion //////////////////////////////////////////
 // CSV to JSON Conversion for .log files
@@ -330,7 +331,8 @@ function updateBnkDataResult(parsedData, deviceSerial) {
   const implantMonth = parsedData["PatientData.ImplantMonth"];
   const numericalMonth = monthToNumber(implantMonth);
   const implantYear = parsedData["PatientData.ImplantYear"];
-  dataResult.report_date = `${implantYear}-${numericalMonth}-${implantDay}`;
+  // dataResult.report_date = `${implantYear}-${numericalMonth}-${implantDay}`;
+  dataResult.report_date = `${implantDay}-${numericalMonth}-${implantYear}`;
 
   // Check if the serial number in the file matches the device serial number
   if (parsedData["SystemSerialNumber"] != deviceSerial) {
@@ -451,11 +453,13 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .trim();
   }
   if (parsedData["InterPaceThreshResult.RAMsmt.Amplitude"]) {
-    dataResult.mdc_idc_msmt_ra_threshold = parsedData[
-      "InterPaceThreshResult.RAMsmt.Amplitude"
-    ]
-      .slice(0, -3)
-      .trim();
+    dataResult.mdc_idc_msmt_ra_threshold = (
+      parseFloat(
+        parsedData["InterPaceThreshResult.RAMsmt.Amplitude"]
+          .slice(0, -3)
+          .trim(),
+      ) / 1000
+    ).toString();
   }
   if (parsedData["InterPaceThreshResult.RAMsmt.PulseWidth"]) {
     dataResult.mdc_idc_msmt_ra_pw = parsedData[
@@ -527,4 +531,8 @@ function monthToNumber(month) {
   };
 
   return monthMap[month];
+}
+function formatDateToDMY(dateString) {
+  const [year, month, day] = dateString.split("-");
+  return `${day}-${month}-${year}`;
 }

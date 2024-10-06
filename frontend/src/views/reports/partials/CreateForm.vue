@@ -211,13 +211,13 @@ const handleFileChange = async (event) => {
     const file = target.files[0];
     try {
         const data = await fileImport(file, deviceSerial);
-        console.log("Parsed dataResult:", data);
+        // console.log("Parsed dataResult:", data);
         for (const key in data) {
             // formData.value[key] = data[key]
             console.log("Key:", key, "Value:", data[key]);
-            // if (formData.value.hasOwnProperty(key)) {
-            //   formData.value[key] = dataResult[key];
-            // }
+            if (formData.value.hasOwnProperty(key)) {
+                formData.value[key] = data[key];
+            }
         }
         return data;
     } catch (error) {
@@ -229,7 +229,7 @@ const handleFileChange = async (event) => {
 };
 </script>
 <template>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col">
             <!-- <button type="button" class="btn btn-secondary" @click="importFile">Import</button> -->
             <input
@@ -272,8 +272,8 @@ const handleFileChange = async (event) => {
 
     <form @submit.prevent="handleSubmit">
         <!-- Report Data -->
-        <div class="row mb-3">
-            <div class="col">
+        <div class="row border border-warning rounded mb-3">
+            <div class="col p-2">
                 <label for="report_date" class="form-label">Report Date:</label>
                 <input
                     id="report_date"
@@ -284,7 +284,7 @@ const handleFileChange = async (event) => {
                     input="handleInput"
                 />
             </div>
-            <div class="col">
+            <div class="col p-2">
                 <label for="report_type" class="form-label">Report Type:</label>
                 <select
                     class="form-select"
@@ -298,7 +298,7 @@ const handleFileChange = async (event) => {
                     <option value="remote">Remote</option>
                 </select>
             </div>
-            <div class="col">
+            <div class="col p-2">
                 <label for="report_status" class="form-label"
                     >Report Status:</label
                 >
@@ -315,8 +315,8 @@ const handleFileChange = async (event) => {
             </div>
         </div>
         <!-- Patient Substrate -->
-        <div class="row mb-3">
-            <div class="col">
+        <div class="row border border-danger-subtle rounded mb-3">
+            <div class="col p-2">
                 <label for="current_rhythm" class="form-label"
                     >Current Rhythm:</label
                 >
@@ -327,7 +327,7 @@ const handleFileChange = async (event) => {
                     id="current_rhythm"
                 />
             </div>
-            <div class="col">
+            <div class="col p-2">
                 <label for="current_dependency" class="form-label"
                     >Dependent</label
                 >
@@ -342,7 +342,7 @@ const handleFileChange = async (event) => {
                     <option value="unknown">Unkown</option>
                 </select>
             </div>
-            <div class="col">
+            <div class="col p-2">
                 <label for="current_heart_rate" class="form-label"
                     >Heart Rate</label
                 >
@@ -354,18 +354,20 @@ const handleFileChange = async (event) => {
                     id="current_heart_rate"
                 />
             </div>
-        </div>
-        <!-- Patient Arrhythmias -->
-        <div class="mb-3">
-            <label for="mdc_idc__stat_ataf_burden_percent" class="form-label"
-                >ATAF Burden Percent:</label
-            >
-            <input
-                type="number"
-                class="form-control"
-                v-model="formData.mdc_idc__stat_ataf_burden_percent"
-                id="mdc_idc__stat_ataf_burden_percent"
-            />
+            <!-- Patient Arrhythmias -->
+            <div class="col p-2">
+                <label
+                    for="mdc_idc__stat_ataf_burden_percent"
+                    class="form-label"
+                    >ATAF Burden Percent:</label
+                >
+                <input
+                    type="number"
+                    class="form-control"
+                    v-model="formData.mdc_idc__stat_ataf_burden_percent"
+                    id="mdc_idc__stat_ataf_burden_percent"
+                />
+            </div>
         </div>
         <div class="row border border-success-subtle rounded mb-3">
             <div class="col">
@@ -374,11 +376,11 @@ const handleFileChange = async (event) => {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Impedance Mean</th>
-                                <th>Sensing Mean</th>
+                                <th>Impedance</th>
+                                <th>Sensing</th>
                                 <th>Threshold</th>
-                                <th>PW</th>
-                                <th>Percent Paced</th>
+                                <th>Pulse Width</th>
+                                <th>Paced %</th>
                                 <!-- <th>Biv Paced</th> -->
                             </tr>
                         </thead>
