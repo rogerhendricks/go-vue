@@ -144,25 +144,47 @@ function updateXmlDataResult(parsedData) {
   dataResult.mdc_idc_set_brady_mode = parsedData.brady.VENDOR_MODE;
   //Battery and capacitor
   dataResult.mdc_idc_batt_status = parsedData.msmtBatt.STATUS;
-  dataResult.mdc_idc_batt_volt = parsedData.msmtBatt.VOLTAGE;
+  dataResult.mdc_idc_batt_volt = parseFloat(
+    parsedData.msmtBatt.VOLTAGE,
+  ).toFixed(2);
   dataResult.mdc_idc_batt_remaining = parsedData.msmtBatt.REMAINING;
-  dataResult.mdc_idc_cap_charge_time = parsedData.msmtCap.CHARGE_TIME;
+  dataResult.mdc_idc_cap_charge_time = parseFloat(
+    parsedData.msmtCap.CHARGE_TIME,
+  ).toFixed(2);
   // Ra Lead Channel
-  dataResult.mdc_idc_msmt_ra_impedance_mean = parsedData.msmtRa.VALUE;
-  dataResult.mdc_idc_msmt_ra_sensing_mean = parsedData.msmtRa.INTR_AMPL_MEAN;
-  dataResult.mdc_idc_msmt_ra_threshold = parsedData.msmtRa.AMPLITUDE;
+  dataResult.mdc_idc_msmt_ra_impedance_mean = parseFloat(
+    parsedData.msmtRa.VALUE,
+  ).toFixed(2);
+  dataResult.mdc_idc_msmt_ra_sensing_mean = parseFloat(
+    parsedData.msmtRa.INTR_AMPL_MEAN,
+  ).toFixed(2);
+  dataResult.mdc_idc_msmt_ra_threshold = parseFloat(
+    parsedData.msmtRa.AMPLITUDE,
+  ).toFixed(2);
   dataResult.mdc_idc_msmt_ra_pw = parsedData.msmtRa.PULSEWIDTH;
   // Rv Lead Channel
-  dataResult.mdc_idc_msmt_rv_impedance_mean = parsedData.msmtRv.VALUE;
-  dataResult.mdc_idc_msmt_rv_sensing_mean = parsedData.msmtRv.INTR_AMPL_MEAN;
-  dataResult.mdc_idc_msmt_rv_threshold = parsedData.msmtRv.AMPLITUDE;
+  dataResult.mdc_idc_msmt_rv_impedance_mean = parseFloat(
+    parsedData.msmtRv.VALUE,
+  ).toFixed(2);
+  dataResult.mdc_idc_msmt_rv_sensing_mean = parseFloat(
+    parsedData.msmtRv.INTR_AMPL_MEAN,
+  ).toFixed(2);
+  dataResult.mdc_idc_msmt_rv_threshold = parseFloat(
+    parsedData.msmtRv.AMPLITUDE,
+  ).toFixed(2);
   dataResult.mdc_idc_msmt_rv_pw = parsedData.msmtRv.PULSEWIDTH;
   // Hv Lead Channel
-  dataResult.mdc_idc_msmt_shock_impedance = parsedData.msmtHv.IMPEDANCE;
+  dataResult.mdc_idc_msmt_shock_impedance = parseFloat(
+    parsedData.msmtHv.IMPEDANCE,
+  ).toFixed(2);
   // Lv Lead Channel
-  dataResult.mdc_idc_msmt_lv_impedance_mean = parsedData.msmtLv.VALUE;
+  dataResult.mdc_idc_msmt_lv_impedance_mean = parseFloat(
+    parsedData.msmtLv.VALUE,
+  ).toFixed(2);
   // dataResult.mdc_idc_msmt_lv_sensing_mean = parsedData.msmtLv.INTR_AMPL_MEAN;
-  dataResult.mdc_idc_msmt_lv_threshold = parsedData.msmtLv.AMPLITUDE;
+  dataResult.mdc_idc_msmt_lv_threshold = parseFloat(
+    parsedData.msmtLv.AMPLITUDE,
+  ).toFixed(2);
   dataResult.mdc_idc_msmt_lv_pw = parsedData.msmtLv.PULSEWIDTH;
   // Patient statistics
   dataResult.mdc_idc_stat_brady_ra_percent_paced =
@@ -239,13 +261,17 @@ function updateLogDataResult(parsedData) {
   }
   //battery status
   if (parsedData["519"] && parsedData["519"].value) {
-    dataResult.mdc_idc_batt_volt = parsedData["519"].value;
+    dataResult.mdc_idc_batt_volt = parseFloat(parsedData["519"].value).toFixed(
+      2,
+    );
   }
   if (parsedData["533"] && parsedData["533"].value) {
     dataResult.mdc_idc_batt_remaining = parsedData["533"].value;
   }
   if (parsedData["2745"] && parsedData["2745"].value) {
-    dataResult.mdc_idc_cap_charge_time = parsedData["2745"].value;
+    dataResult.mdc_idc_cap_charge_time = parseFloat(
+      parsedData["2745"].value,
+    ).toFixed(2);
   }
   // patient status
   if (parsedData["2680"] && parsedData["2680"].value) {
@@ -259,13 +285,19 @@ function updateLogDataResult(parsedData) {
   }
   // Device measurements
   if (parsedData["2721"] && parsedData["2721"].value) {
-    dataResult.mdc_idc_msmt_ra_sensing_mean = parsedData["2721"].value;
+    dataResult.mdc_idc_msmt_ra_sensing_mean = parseFloat(
+      parsedData["2721"].value,
+    ).toFixed(2);
   }
   if (parsedData["512"] && parsedData["512"].value) {
-    dataResult.mdc_idc_msmt_ra_impedance_mean = parsedData["512"].value;
+    dataResult.mdc_idc_msmt_ra_impedance_mean = parseFloat(
+      parsedData["512"].value,
+    ).toFixed(2);
   }
   if (parsedData["1610"] && parsedData["1610"].value) {
-    dataResult.mdc_idc_msmt_ra_threshold = parsedData["1610"].value;
+    dataResult.mdc_idc_msmt_ra_threshold = parseFloat(
+      parsedData["1610"].value,
+    ).toFixed(2);
   }
   if (parsedData["1611"] && parsedData["1611"].value) {
     dataResult.mdc_idc_msmt_ra_pw = parsedData["1611"].value;
@@ -274,22 +306,32 @@ function updateLogDataResult(parsedData) {
     dataResult.mdc_idc_msmt_rv_sensing_mean = parsedData["2722"].value;
   }
   if (parsedData["507"] && parsedData["507"].value) {
-    dataResult.mdc_idc_msmt_rv_impedance_mean = parsedData["507"].value;
+    dataResult.mdc_idc_msmt_rv_impedance_mean = parseFloat(
+      parsedData["507"].value,
+    ).toFixed(2);
   }
   if (parsedData["1620"] && parsedData["1620"].value) {
-    dataResult.mdc_idc_msmt_rv_threshold = parsedData["1620"].value;
+    dataResult.mdc_idc_msmt_rv_threshold = parseFloat(
+      parsedData["1620"].value,
+    ).toFixed(2);
   }
   if (parsedData["1621"] && parsedData["1621"].value) {
     dataResult.mdc_idc_msmt_rv_pw = parsedData["1621"].value;
   }
   if (parsedData["2730"] && parsedData["2730"].value) {
-    dataResult.mdc_idc_msmt_shock_impedance = parsedData["2730"].value;
+    dataResult.mdc_idc_msmt_shock_impedance = parseFloat(
+      parsedData["2730"].value,
+    ).toFixed(2);
   }
   if (parsedData["2720"] && parsedData["2720"].value) {
-    dataResult.mdc_idc_msmt_lv_impedance_mean = parsedData["2720"].value;
+    dataResult.mdc_idc_msmt_lv_impedance_mean = parseFloat(
+      parsedData["2720"].value,
+    ).toFixed(2);
   }
   if (parsedData["1616"] && parsedData["1616"].value) {
-    dataResult.mdc_idc_msmt_lv_threshold = parsedData["1616"].value;
+    dataResult.mdc_idc_msmt_lv_threshold = parseFloat(
+      parsedData["1616"].value,
+    ).toFixed(2);
   }
   if (parsedData["1617"] && parsedData["1617"].value) {
     dataResult.mdc_idc_msmt_lv_pw = parsedData["1617"].value;
@@ -324,19 +366,34 @@ function bnkToJSON(data) {
 
 // Function to update the dataResult object with the parsed CSV data
 function updateBnkDataResult(parsedData, deviceSerial) {
-  // Here are some examples of how to map parsed data to dataResult
-  console.log("parsed data", parsedData); // Output the parsed data for debugging
+  // Ensure dataResult is defined
+  if (typeof dataResult === "undefined") {
+    console.error("dataResult is not defined");
+    return;
+  }
+
+  // Ensure parsedData is an object
+  if (typeof parsedData !== "object" || parsedData === null) {
+    console.error("parsedData is not a valid object");
+    return;
+  }
+
+  // Ensure deviceSerial is a string
+  if (typeof deviceSerial !== "string") {
+    console.error("deviceSerial is not a valid");
+    // return;
+  }
+
   // Date Conversion
-  const implantDay = parsedData["PatientData.ImplantDay"].padStart(2, "0");
+  const implantDay = parsedData["PatientData.ImplantDay"]?.padStart(2, "0");
   const implantMonth = parsedData["PatientData.ImplantMonth"];
   const numericalMonth = monthToNumber(implantMonth);
   const implantYear = parsedData["PatientData.ImplantYear"];
-  // dataResult.report_date = `${implantYear}-${numericalMonth}-${implantDay}`;
   dataResult.report_date = `${implantYear}-${numericalMonth}-${implantDay}`;
 
   // Check if the serial number in the file matches the device serial number
-  if (parsedData["SystemSerialNumber"] != deviceSerial) {
-    alert(
+  if (parsedData["SystemSerialNumber"] !== deviceSerial) {
+    console.warn(
       "The serial number in the file does not match the device serial number.",
     );
   }
@@ -370,23 +427,19 @@ function updateBnkDataResult(parsedData, deviceSerial) {
     dataResult.mdc_idc_batt_status = parsedData["BatteryStatus.BatteryPhase"];
   }
   if (parsedData["CapformChargeTime"]) {
-    dataResult.mdc_idc_cap_charge_time = parsedData["CapformChargeTime"]
-      .slice(0, -2)
-      .trim();
+    dataResult.mdc_idc_cap_charge_time = parseFloat(
+      parsedData["CapformChargeTime"].slice(0, -2).trim(),
+    ).toFixed(2);
   }
   if (parsedData["ManualIntrinsicResult.LVMsmt.Msmt"]) {
-    dataResult.mdc_idc_msmt_lv_sensing_mean = parsedData[
-      "ManualIntrinsicResult.LVMsmt.Msmt"
-    ]
-      .slice(0, -3)
-      .trim();
+    dataResult.mdc_idc_msmt_lv_sensing_mean = parseFloat(
+      parsedData["ManualIntrinsicResult.LVMsmt.Msmt"].slice(0, -3).trim(),
+    ).toFixed(2);
   }
   if (parsedData["ManualLeadImpedData.LVMsmt.Msmt"]) {
-    dataResult.mdc_idc_msmt_lv_impedance_mean = parsedData[
-      "ManualLeadImpedData.LVMsmt.Msmt"
-    ]
-      .slice(0, -5)
-      .trim();
+    dataResult.mdc_idc_msmt_lv_impedance_mean = parseFloat(
+      parsedData["ManualLeadImpedData.LVMsmt.Msmt"].slice(0, -5).trim(),
+    ).toFixed(2);
   }
   if (parsedData["InterPaceThreshResult.LVMsmt.Amplitude"]) {
     dataResult.mdc_idc_msmt_lv_threshold = (
@@ -395,7 +448,7 @@ function updateBnkDataResult(parsedData, deviceSerial) {
           .slice(0, -3)
           .trim(),
       ) / 1000
-    ).toString();
+    ).toFixed(2);
   }
   if (parsedData["InterPaceThreshResult.LVMsmt.PulseWidth"]) {
     dataResult.mdc_idc_msmt_lv_pw = parsedData[
@@ -412,11 +465,9 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .trim();
   }
   if (parsedData["ManualLeadImpedData.RVMsmt.Msmt"]) {
-    dataResult.mdc_idc_msmt_rv_impedance_mean = parsedData[
-      "ManualLeadImpedData.RVMsmt.Msmt"
-    ]
-      .slice(0, -5)
-      .trim();
+    dataResult.mdc_idc_msmt_rv_impedance_mean = parseFloat(
+      parsedData["ManualLeadImpedData.RVMsmt.Msmt"].slice(0, -5).trim(),
+    ).toFixed(2);
   }
   if (parsedData["InterPaceThreshResult.RVMsmt.Amplitude"]) {
     dataResult.mdc_idc_msmt_rv_threshold = (
@@ -425,7 +476,7 @@ function updateBnkDataResult(parsedData, deviceSerial) {
           .slice(0, -3)
           .trim(),
       ) / 1000
-    ).toString();
+    ).toFixed(2);
   }
   if (parsedData["InterPaceThreshResult.RVMsmt.PulseWidth"]) {
     dataResult.mdc_idc_msmt_rv_pw = parsedData[
@@ -435,9 +486,9 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .trim();
   }
   if (parsedData["ShockLastImpedance"]) {
-    dataResult.mdc_idc_msmt_shock_impedance = parsedData["ShockLastImpedance"]
-      .slice(0, -5)
-      .trim();
+    dataResult.mdc_idc_msmt_shock_impedance = parseFloat(
+      parsedData["ShockLastImpedance"].slice(0, -5).trim(),
+    ).toFixed(2);
   }
   if (parsedData["ManualIntrinsicResult.RAMsmt.Msmt"]) {
     dataResult.mdc_idc_msmt_ra_sensing_mean = parsedData[
@@ -447,11 +498,9 @@ function updateBnkDataResult(parsedData, deviceSerial) {
       .trim();
   }
   if (parsedData["ManualLeadImpedData.RAMsmt.Msmt"]) {
-    dataResult.mdc_idc_msmt_ra_impedance_mean = parsedData[
-      "ManualLeadImpedData.RAMsmt.Msmt"
-    ]
-      .slice(0, -5)
-      .trim();
+    dataResult.mdc_idc_msmt_ra_impedance_mean = parseFloat(
+      parsedData["ManualLeadImpedData.RAMsmt.Msmt"].slice(0, -5).trim(),
+    ).toFixed(2);
   }
   if (parsedData["InterPaceThreshResult.RAMsmt.Amplitude"]) {
     dataResult.mdc_idc_msmt_ra_threshold = (
@@ -460,7 +509,7 @@ function updateBnkDataResult(parsedData, deviceSerial) {
           .slice(0, -3)
           .trim(),
       ) / 1000
-    ).toString();
+    ).toFixed(2);
   }
   if (parsedData["InterPaceThreshResult.RAMsmt.PulseWidth"]) {
     dataResult.mdc_idc_msmt_ra_pw = parsedData[
@@ -471,9 +520,9 @@ function updateBnkDataResult(parsedData, deviceSerial) {
   }
 
   // Output the updated dataResult for debugging
+  // console.log("Updated dataResult:", dataResult);
   return dataResult;
 }
-
 // Initial dataResult template
 const dataResult = {
   report_date: "",

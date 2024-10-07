@@ -104,7 +104,7 @@ const handleSubmit = async () => {
             form.append(key, value);
         });
         form.append("author_id", currentUser.ID);
-        
+
         if (formData.value.files && formData.value.files.length > 0) {
             const mergedPdfBlob = await mergePDFs(files.value);
             form.append("file", mergedPdfBlob, "merged_report.pdf");
@@ -362,6 +362,7 @@ const handleFileChange = async (event) => {
                 >
                 <input
                     type="number"
+                    step="0.01"
                     class="form-control"
                     v-model="formData.mdc_idc__stat_ataf_burden_percent"
                     id="mdc_idc__stat_ataf_burden_percent"
@@ -389,6 +390,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_ra_impedance_mean
@@ -399,6 +401,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_ra_sensing_mean
@@ -409,6 +412,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_ra_threshold
@@ -419,6 +423,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="formData.mdc_idc_msmt_ra_pw"
                                         id="mdc_idc_msmt_ra_pw"
@@ -427,6 +432,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_stat_brady_ra_percent_paced
@@ -440,6 +446,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_rv_impedance_mean
@@ -450,6 +457,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_rv_sensing_mean
@@ -460,6 +468,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_rv_threshold
@@ -470,6 +479,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="formData.mdc_idc_msmt_rv_pw"
                                         id="mdc_idc_msmt_rv_pw"
@@ -478,6 +488,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_stat_brady_rv_percent_paced
@@ -491,6 +502,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_lv_impedance_mean
@@ -502,6 +514,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_lv_threshold
@@ -512,6 +525,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="formData.mdc_idc_msmt_lv_pw"
                                         id="mdc_idc_msmt_lv_pw"
@@ -520,6 +534,7 @@ const handleFileChange = async (event) => {
                                 <td>
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_stat_brady_lv_percent_paced
@@ -533,6 +548,7 @@ const handleFileChange = async (event) => {
                                 <td colspan="4">
                                     <input
                                         type="number"
+                                        step="0.01"
                                         class="form-control"
                                         v-model="
                                             formData.mdc_idc_msmt_shock_impedance
@@ -620,6 +636,7 @@ const handleFileChange = async (event) => {
                 >
                 <input
                     type="number"
+                    step="0.01"
                     class="form-control"
                     v-model="formData.mdc_idc_batt_volt"
                     id="mdc_idc_batt_volt"
@@ -631,6 +648,7 @@ const handleFileChange = async (event) => {
                 >
                 <input
                     type="number"
+                    step="0.01"
                     class="form-control"
                     v-model="formData.mdc_idc_batt_remaining"
                     id="mdc_idc_batt_remaining"
@@ -653,6 +671,7 @@ const handleFileChange = async (event) => {
                 >
                 <input
                     type="number"
+                    step="0.001"
                     class="form-control"
                     v-model="formData.mdc_idc_cap_charge_time"
                     id="mdc_idc_cap_charge_time"
@@ -682,6 +701,5 @@ const handleFileChange = async (event) => {
         <div class="mb-3">
             <button class="btn btn-primary" type="submit">Submit</button>
         </div>
-        <p>{{ formData }}</p>
     </form>
 </template>
