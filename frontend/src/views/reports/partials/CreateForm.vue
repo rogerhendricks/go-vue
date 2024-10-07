@@ -100,13 +100,11 @@ const mergePDFs = async (pdfFiles) => {
 const handleSubmit = async () => {
     try {
         const form = new FormData();
+        Object.entries(formData.value).forEach(([key, value]) => {
+            form.append(key, value);
+        });
         form.append("author_id", currentUser.ID);
-        form.append("report_date", formData.value.report_date);
-        form.append("patient_id", formData.value.patient_id);
-        form.append("report_type", formData.value.report_type);
-        form.append("current_dependency", formData.value.current_dependency);
-        form.append("current_heart_rate", formData.value.current_heart_rate);
-
+        
         if (formData.value.files && formData.value.files.length > 0) {
             const mergedPdfBlob = await mergePDFs(files.value);
             form.append("file", mergedPdfBlob, "merged_report.pdf");
