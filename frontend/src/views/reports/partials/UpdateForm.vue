@@ -19,9 +19,43 @@ const report = computed(() => store.state.report)
 const patientReport = ref([])
 const formData = ref({
   report_date: '',
+  report_type: "",
+  report_status: "",
+  current_heart_rate: 0,
+  current_rhythm: "",
+  current_dependency: "",
+  mdc_idc__stat_ataf_burden_percent: 0,
+  mdc_idc_set_brady_mode: '',
+  mdc_idc_set_brady_lowrate: 0,
+  mdc_idc_set_brady_max_tracking_rate: 0,
+  mdc_idc_set_brady_max_sensor_rate: 0,
+  mdc_idc_dev_sav: "",
+  mdc_idc_dev_pav: "",
+  mdc_idc_stat_brady_ra_percent_paced: 0,
+  mdc_idc_stat_brady_rv_percent_paced: 0,
+  mdc_idc_stat_brady_lv_percent_paced: 0,
+  mdc_idc_stat_brady_biv_percent_paced: 0,
+  mdc_idc_batt_volt: 0,
+  mdc_idc_batt_remaining: 0,
+  mdc_idc_batt_status: "",
+  mdc_idc_cap_charge_time: 0,
+  mdc_idc_msmt_ra_impedance_mean: 0,
+  mdc_idc_msmt_ra_sensing_mean: 0,
+  mdc_idc_msmt_ra_threshold: 0,
+  mdc_idc_msmt_ra_pw: 0,
+  mdc_idc_msmt_rv_impedance_mean: 0,
+  mdc_idc_msmt_rv_sensing_mean: 0,
+  mdc_idc_msmt_rv_threshold: 0,
+  mdc_idc_msmt_rv_pw: 0,
+  mdc_idc_msmt_shock_impedance: 0,
+  mdc_idc_msmt_lv_impedance_mean: 0,
+  mdc_idc_msmt_lv_threshold: 0,
+  mdc_idc_msmt_lv_pw: 0,
+  comments: "",
+  is_completed: false,
+  author_id : currentUser.ID,
   file_path: '',
   patient: null,
-  author_id : currentUser.ID,
   files: null,
 })
 
@@ -38,8 +72,42 @@ watch(selectedDoctor, (newDoctor) => {
 watch(report, (newReport) => {
   if (newReport) {
     formData.value.report_date = newReport.report_date
-    formData.value.file_path = newReport.file_path
+    formData.value.report_type = newReport.report_type
+    formData.value.report_status = newReport.report_status
+    formData.value.current_heart_rate = newReport.current_heart_rate
+    formData.value.current_rhythm = newReport.current_rhythm
+    formData.value.current_dependency = newReport.current_dependency
+    formData.value.mdc_idc__stat_ataf_burden_percent = newReport.mdc_idc__stat_ataf_burden_percent
+    formData.value.mdc_idc_set_brady_mode = newReport.mdc_idc_set_brady_mode
+    formData.value.mdc_idc_set_brady_lowrate = newReport.mdc_idc_set_brady_lowrate
+    formData.value.mdc_idc_set_brady_max_tracking_rate = newReport.mdc_idc_set_brady_max_tracking_rate
+    formData.value.mdc_idc_set_brady_max_sensor_rate = newReport.mdc_idc_set_brady_max_sensor_rate
+    formData.value.mdc_idc_dev_sav = newReport.mdc_idc_dev_sav
+    formData.value.mdc_idc_dev_pav = newReport.mdc_idc_dev_pav
+    formData.value.mdc_idc_stat_brady_ra_percent_paced = newReport.mdc_idc_stat_brady_ra_percent_paced
+    formData.value.mdc_idc_stat_brady_rv_percent_paced = newReport.mdc_idc_stat_brady_rv_percent_paced
+    formData.value.mdc_idc_stat_brady_lv_percent_paced = newReport.mdc_idc_stat_brady_lv_percent_paced
+    formData.value.mdc_idc_stat_brady_biv_percent_paced = newReport.mdc_idc_stat_brady_biv_percent_paced
+    formData.value.mdc_idc_batt_volt = newReport.mdc_idc_batt_volt
+    formData.value.mdc_idc_batt_remaining = newReport.mdc_idc_batt_remaining
+    formData.value.mdc_idc_batt_status = newReport.mdc_idc_batt_status
+    formData.value.mdc_idc_cap_charge_time = newReport.mdc_idc_cap_charge_time
+    formData.value.mdc_idc_msmt_ra_impedance_mean = newReport.mdc_idc_msmt_ra_impedance_mean
+    formData.value.mdc_idc_msmt_ra_sensing_mean = newReport.mdc_idc_msmt_ra_sensing_mean
+    formData.value.mdc_idc_msmt_ra_threshold = newReport.mdc_idc_msmt_ra_threshold
+    formData.value.mdc_idc_msmt_ra_pw = newReport.mdc_idc_msmt_ra_pw
+    formData.value.mdc_idc_msmt_rv_impedance_mean = newReport.mdc_idc_msmt_rv_impedance_mean
+    formData.value.mdc_idc_msmt_rv_sensing_mean = newReport.mdc_idc_msmt_rv_sensing_mean
+    formData.value.mdc_idc_msmt_rv_threshold = newReport.mdc_idc_msmt_rv_threshold
+    formData.value.mdc_idc_msmt_rv_pw = newReport.mdc_idc_msmt_rv_pw
+    formData.value.mdc_idc_msmt_shock_impedance = newReport.mdc_idc_msmt_shock_impedance
+    formData.value.mdc_idc_msmt_lv_impedance_mean = newReport.mdc_idc_msmt_lv_impedance_mean
+    formData.value.mdc_idc_msmt_lv_threshold = newReport.mdc_idc_msmt_lv_threshold
+    formData.value.mdc_idc_msmt_lv_pw = newReport.mdc_idc_msmt_lv_pw
+    formData.value.comments = newReport.comments
+    formData.value.is_completed = newReport.is_completed
     formData.value.patient = newReport.patient_id
+    formData.value.file_path = newReport.file_path
   }
 })
 watch(() => props.report_id, async (newReportId) => {
@@ -188,40 +256,410 @@ const deleteReport = async () => {
 </script>
 
 <template>
-    <div class="row">
-    <div class="col">
-      <!-- Doctor selection -->
-      <select class="form-select" v-model="selectedDoctor">
-        <option v-for="doctor in props.patient.Doctors" :key="doctor.id" :value="doctor">
-          {{ doctor.name }}
-        </option>
-      </select>
-    </div>
-    <div class="col">
-      <!-- Address selection -->
-      <select class="form-select" v-model="selectedAddress">
-        <option v-for="address in selectedDoctor.Addresses" :key="address.id" :value="address">
-          {{ address.street }} {{ address.city }} {{ address.state }} {{ address.zip }}
-        </option>
-      </select>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
-    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <!-- Doctor selection -->
+        <select class="form-select" v-model="selectedDoctor">
+          <option v-for="doctor in props.patient.Doctors" :key="doctor.id" :value="doctor">
+            {{ doctor.name }}
+          </option>
+        </select>
+      </div>
+      <div class="col">
+        <!-- Address selection -->
+        <select class="form-select" v-model="selectedAddress">
+          <option v-for="address in selectedDoctor.Addresses" :key="address.id" :value="address">
+            {{ address.street }} {{ address.city }} {{ address.state }} {{ address.zip }}
+          </option>
+        </select>
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-primary" @click="createPDF">Create PDF</button>
+      </div>
   </div>
   <div class="row">
     <div class="col">
       <form @submit.prevent="handleSubmit">
-        <div class="mb-3">
-          <label for="report_date" class="form-label">Report Date:</label>
-          <input
-            id="report_date"
-            class="form-control"
-            v-model="formData.report_date"
-            type="date"
-            required
-          />
+        <!-- Report Data -->
+        <div class="row border border-warning rounded mb-3">
+            <div class="col p-2">
+                <label for="report_date" class="form-label">Report Date:</label>
+                <input
+                    id="report_date"
+                    class="form-control"
+                    v-model="formData.report_date"
+                    type="date"
+                    required
+                    @change="handleInput"
+                />
+            </div>
+            <div class="col p-2">
+                <label for="report_type" class="form-label">Report Type:</label>
+                <select
+                    class="form-select"
+                    id="report_type"
+                    v-model="formData.report_type"
+                    required
+                >
+                    <option value="in_clinic">In Clinic</option>
+                    <option value="hospital">Hospital</option>
+                    <option value="remote">Remote</option>
+                </select>
+            </div>
+            <div class="col p-2">
+                <label for="report_status" class="form-label">Report Status:</label>
+                <select
+                    id="report_status"
+                    class="form-select"
+                    v-model="formData.report_status">
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="unknown">Unknown</option>
+                </select>
+            </div>
         </div>
+        <!-- Patient Substrate -->
+        <div class="row border border-danger-subtle rounded mb-3">
+            <div class="col p-2">
+                <label for="current_rhythm" class="form-label">Current Rhythm:</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    v-model="formData.current_rhythm"
+                    id="current_rhythm"
+                />
+            </div>
+            <div class="col p-2">
+                <label for="current_dependency" class="form-label">Dependent</label>
+                <select
+                    class="form-select"
+                    v-model="formData.current_dependency"
+                    name="current_dependency"
+                    id="current_dependency"
+                >
+                    <option value="dependent">Dependent</option>
+                    <option value="non_dependent">Non Dependent</option>
+                    <option value="unknown">Unkown</option>
+                </select>
+            </div>
+            <div class="col p-2">
+                <label for="current_heart_rate" class="form-label">Heart Rate</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    v-model="formData.current_heart_rate"
+                    name="current_heart_rate"
+                    id="current_heart_rate"
+                />
+            </div>
+            <!-- Patient Arrhythmias -->
+            <div class="col p-2">
+                <label for="mdc_idc__stat_ataf_burden_percent" class="form-label">ATAF Burden Percent:</label>
+                <input
+                    type="number"
+                    step="0.01"
+                    class="form-control"
+                    v-model="formData.mdc_idc__stat_ataf_burden_percent"
+                    id="mdc_idc__stat_ataf_burden_percent"
+                />
+            </div>
+        </div>
+        <!-- Device Measurements -->
+        <div class="row border border-success-subtle rounded mb-3">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Impedance</th>
+                                <th>Sensing</th>
+                                <th>Threshold</th>
+                                <th>Pulse Width</th>
+                                <th>Paced %</th>
+                                <!-- <th>Biv Paced</th> -->
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <th>RA</th>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_ra_impedance_mean"
+                                        id="mdc_idc_msmt_ra_impedance_mean"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_ra_sensing_mean"
+                                        id="mdc_idc_msmt_ra_sensing_mean"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_ra_threshold"
+                                        id="mdc_idc_msmt_ra_threshold"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_ra_pw"
+                                        id="mdc_idc_msmt_ra_pw"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_stat_brady_ra_percent_paced"
+                                        id="mdc_idc_stat_brady_ra_percent_paced"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>RV</th>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_rv_impedance_mean"
+                                        id="mdc_idc_msmt_rv_impedance_mean"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_rv_sensing_mean"
+                                        id="mdc_idc_msmt_rv_sensing_mean"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_rv_threshold"
+                                        id="mdc_idc_msmt_rv_threshold"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_rv_pw"
+                                        id="mdc_idc_msmt_rv_pw"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_stat_brady_rv_percent_paced"
+                                        id="mdc_idc_stat_brady_rv_percent_paced"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>LV</th>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_lv_impedance_mean"
+                                        id="mdc_idc_msmt_lv_impedance_mean"
+                                    />
+                                </td>
+                                <td></td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_lv_threshold"
+                                        id="mdc_idc_msmt_lv_threshold"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_lv_pw"
+                                        id="mdc_idc_msmt_lv_pw"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_stat_brady_lv_percent_paced"
+                                        id="mdc_idc_stat_brady_lv_percent_paced"
+                                    />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Shock</th>
+                                <td colspan="4">
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_msmt_shock_impedance"
+                                        id="mdc_idc_msmt_shock_impedance"
+                                    />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <!-- <tr>
+                                <th>BIV</th>
+                                <td colspan="4"></td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        v-model="formData.mdc_idc_stat_brady_biv_percent_paced"
+                                        id="mdc_idc_stat_brady_biv_percent_paced"
+                                    />
+                                </td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Device Settings -->
+        <div class="row border border-primary-subtle rounded mb-3">
+            <div class="col p-2">
+                <label for="mdc_idc_set_brady_mode" class="form-label"
+                    >Brady Mode:</label
+                >
+                <input
+                    type="text"
+                    class="form-control"
+                    v-model="formData.mdc_idc_set_brady_mode"
+                    id="mdc_idc_set_brady_mode"
+                />
+            </div>
+            <div class="col p-2">
+                <label for="mdc_idc_set_brady_lowrate" class="form-label"
+                    >Brady Lowrate:</label
+                >
+                <input
+                    type="number"
+                    class="form-control"
+                    v-model="formData.mdc_idc_set_brady_lowrate"
+                    id="mdc_idc_set_brady_lowrate"
+                />
+            </div>
+            <div class="col p-2">
+                <label
+                    for="mdc_idc_set_brady_max_tracking_rate"
+                    class="form-label"
+                    >Max Tracking Rate:</label
+                >
+                <input
+                    type="number"
+                    class="form-control"
+                    v-model="formData.mdc_idc_set_brady_max_tracking_rate"
+                    id="mdc_idc_set_brady_max_tracking_rate"
+                />
+            </div>
+            <div class="col p-2">
+                <label
+                    for="mdc_idc_set_brady_max_sensor_rate"
+                    class="form-label"
+                    >Max Sensor Rate:</label
+                >
+                <input
+                    type="number"
+                    class="form-control"
+                    v-model="formData.mdc_idc_set_brady_max_sensor_rate"
+                    id="mdc_idc_set_brady_max_sensor_rate"
+                />
+            </div>
+        </div>
+        <!-- Battery Status -->
+        <div class="row border border-secondary-subtle rounded mb-3">
+            <div class="col p-2">
+                <label for="mdc_idc_batt_volt" class="form-label"
+                    >Battery Voltage:</label
+                >
+                <input
+                    type="number"
+                    step="0.01"
+                    class="form-control"
+                    v-model="formData.mdc_idc_batt_volt"
+                    id="mdc_idc_batt_volt"
+                />
+            </div>
+            <div class="col p-2">
+                <label for="mdc_idc_batt_remaining" class="form-label"
+                    >Battery Remaining:</label
+                >
+                <input
+                    type="number"
+                    step="0.01"
+                    class="form-control"
+                    v-model="formData.mdc_idc_batt_remaining"
+                    id="mdc_idc_batt_remaining"
+                />
+            </div>
+            <div class="col p-2">
+                <label for="mdc_idc_batt_status" class="form-label"
+                    >Battery Status:</label
+                >
+                <input
+                    type="text"
+                    class="form-control"
+                    v-model="formData.mdc_idc_batt_status"
+                    id="mdc_idc_batt_status"
+                />
+            </div>
+            <div class="col p-2">
+                <label for="mdc_idc_cap_charge_time" class="form-label"
+                    >Cap Charge Time:</label
+                >
+                <input
+                    type="number"
+                    step="0.001"
+                    class="form-control"
+                    v-model="formData.mdc_idc_cap_charge_time"
+                    id="mdc_idc_cap_charge_time"
+                />
+            </div>
+        </div>
+        <!-- Comments -->
+        <div class="mb-3">
+            <label for="comments" class="form-label">Comments:</label>
+            <textarea
+                class="form-control"
+                v-model="formData.comments"
+                id="comments"
+            ></textarea>
+        </div>
+
+        <!-- File upload -->
         <div class="mb-3">
           <label for="file_path" class="form-label">Files:
                 <a v-if = "formData.file_path"

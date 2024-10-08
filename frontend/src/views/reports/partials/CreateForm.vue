@@ -300,14 +300,11 @@ const handleFileChange = async (event) => {
                 </select>
             </div>
             <div class="col p-2">
-                <label for="report_status" class="form-label"
-                    >Report Status:</label
-                >
+                <label for="report_status" class="form-label">Report Status:</label>
                 <select
                     id="report_status"
                     class="form-select"
-                    v-model="formData.report_status"
-                >
+                    v-model="formData.report_status">
                     <option value="pending">Pending</option>
                     <option value="completed">Completed</option>
                     <option value="cancelled">Cancelled</option>
@@ -371,6 +368,7 @@ const handleFileChange = async (event) => {
                 />
             </div>
         </div>
+        <!-- Device Measurements -->
         <div class="row border border-success-subtle rounded mb-3">
             <div class="col">
                 <div class="table-responsive">
@@ -582,9 +580,7 @@ const handleFileChange = async (event) => {
         <!-- Device Settings -->
         <div class="row border border-primary-subtle rounded mb-3">
             <div class="col p-2">
-                <label for="mdc_idc_set_brady_mode" class="form-label"
-                    >Brady Mode:</label
-                >
+                <label for="mdc_idc_set_brady_mode" class="form-label">Brady Mode:</label>
                 <input
                     type="text"
                     class="form-control"
@@ -593,9 +589,7 @@ const handleFileChange = async (event) => {
                 />
             </div>
             <div class="col p-2">
-                <label for="mdc_idc_set_brady_lowrate" class="form-label"
-                    >Brady Lowrate:</label
-                >
+                <label for="mdc_idc_set_brady_lowrate" class="form-label">Brady Lowrate:</label>
                 <input
                     type="number"
                     class="form-control"
@@ -606,9 +600,7 @@ const handleFileChange = async (event) => {
             <div class="col p-2">
                 <label
                     for="mdc_idc_set_brady_max_tracking_rate"
-                    class="form-label"
-                    >Max Tracking Rate:</label
-                >
+                    class="form-label">Max Tracking Rate:</label>
                 <input
                     type="number"
                     class="form-control"
@@ -619,9 +611,7 @@ const handleFileChange = async (event) => {
             <div class="col p-2">
                 <label
                     for="mdc_idc_set_brady_max_sensor_rate"
-                    class="form-label"
-                    >Max Sensor Rate:</label
-                >
+                    class="form-label">Max Sensor Rate:</label>
                 <input
                     type="number"
                     class="form-control"
@@ -633,9 +623,7 @@ const handleFileChange = async (event) => {
         <!-- Battery Status -->
         <div class="row border border-secondary-subtle rounded mb-3">
             <div class="col p-2">
-                <label for="mdc_idc_batt_volt" class="form-label"
-                    >Battery Voltage:</label
-                >
+                <label for="mdc_idc_batt_volt" class="form-label">Battery Voltage:</label>
                 <input
                     type="number"
                     step="0.01"
@@ -645,9 +633,7 @@ const handleFileChange = async (event) => {
                 />
             </div>
             <div class="col p-2">
-                <label for="mdc_idc_batt_remaining" class="form-label"
-                    >Battery Remaining:</label
-                >
+                <label for="mdc_idc_batt_remaining" class="form-label">Battery Remaining:</label>
                 <input
                     type="number"
                     step="0.01"
@@ -657,9 +643,7 @@ const handleFileChange = async (event) => {
                 />
             </div>
             <div class="col p-2">
-                <label for="mdc_idc_batt_status" class="form-label"
-                    >Battery Status:</label
-                >
+                <label for="mdc_idc_batt_status" class="form-label">Battery Status:</label>
                 <input
                     type="text"
                     class="form-control"
@@ -668,9 +652,7 @@ const handleFileChange = async (event) => {
                 />
             </div>
             <div class="col p-2">
-                <label for="mdc_idc_cap_charge_time" class="form-label"
-                    >Cap Charge Time:</label
-                >
+                <label for="mdc_idc_cap_charge_time" class="form-label">Cap Charge Time:</label>
                 <input
                     type="number"
                     step="0.001"
