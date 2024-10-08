@@ -41,6 +41,75 @@ func GetReport(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"report": report})
 }
 
+// func CreateReport(c *fiber.Ctx) error {
+// 	db := database.InitDB()
+
+// 	// Get file from the form
+// 	file, _ := c.FormFile("file")
+// 	hasFile := file != nil
+
+// 	authorIdStr := c.FormValue("author_id")
+// 	patientIDStr := c.FormValue("patient_id")
+// 	reportDate := c.FormValue("report_date")
+// 	reportType := c.FormValue("report_type")
+// 	reportStatus := c.FormValue("report_status")
+// 	currentDependency := c.FormValue("current_dependency")
+// 	currentHeartRate := c.FormValue("current_heart_rate")
+
+// 	// Convert patient_id to uint
+// 	patientID, err := strconv.ParseUint(patientIDStr, 10, 32)
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusBadRequest, "Invalid patient ID")
+// 	}
+
+// 	// Convert author_id to uint
+// 	authorId, err := strconv.ParseUint(authorIdStr, 10, 32)
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusBadRequest, "Invalid author ID")
+// 	}
+// 	var filePath string
+// 	if hasFile {
+// 		// Create directories if they don't exist
+// 		dirPath := filepath.Join("uploads", fmt.Sprint(patientID), reportDate)
+// 		if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
+// 			return fiber.NewError(fiber.StatusInternalServerError, "Failed to create directory")
+// 		}
+
+// 		// Generate the file path
+// 		filePath = filepath.Join(dirPath, file.Filename)
+
+// 		// Save the file
+// 		if err := c.SaveFile(file, filePath); err != nil {
+// 			return fiber.NewError(fiber.StatusInternalServerError, "Failed to save file")
+// 		}
+// 	}
+// 	// Save the report in the database
+// 	currentHeartRateInt, err := strconv.Atoi(currentHeartRate)
+// 	if err != nil {
+// 		return fiber.NewError(fiber.StatusBadRequest, "Invalid current heart rate")
+// 	}
+
+// 	report := models.Report{
+// 		AuthorID:          uint(authorId),
+// 		ReportDate:        reportDate,
+// 		ReportType:        reportType,
+// 		ReportStatus:      reportStatus,
+// 		CurrentHeartRate:  currentHeartRateInt,
+// 		CurrentDependency: currentDependency,
+// 		PatientID:         uint(patientID),
+// 		FilePath:          filePath,
+// 	}
+
+// 	if err := db.Create(&report).Error; err != nil {
+// 		return fiber.NewError(fiber.StatusInternalServerError, "Failed to save report to database")
+// 	}
+
+//		return c.JSON(fiber.Map{
+//			"status":  "success",
+//			"message": "Report created successfully",
+//			"data":    report,
+//		})
+//	}
 func CreateReport(c *fiber.Ctx) error {
 	db := database.InitDB()
 
@@ -48,25 +117,159 @@ func CreateReport(c *fiber.Ctx) error {
 	file, _ := c.FormFile("file")
 	hasFile := file != nil
 
+	// Get form values
 	authorIdStr := c.FormValue("author_id")
 	patientIDStr := c.FormValue("patient_id")
 	reportDate := c.FormValue("report_date")
 	reportType := c.FormValue("report_type")
 	reportStatus := c.FormValue("report_status")
+	currentHeartRateStr := c.FormValue("current_heart_rate")
+	currentRhythm := c.FormValue("current_rhythm")
 	currentDependency := c.FormValue("current_dependency")
-	currentHeartRate := c.FormValue("current_heart_rate")
+	mdc_idc__stat_ataf_burden_percentStr := c.FormValue("mdc_idc__stat_ataf_burden_percent")
+	mdc_idc_set_brady_mode := c.FormValue("mdc_idc_set_brady_mode")
+	mdc_idc_set_brady_lowrateStr := c.FormValue("mdc_idc_set_brady_lowrate")
+	mdc_idc_set_brady_max_tracking_rateStr := c.FormValue("mdc_idc_set_brady_max_tracking_rate")
+	mdc_idc_set_brady_max_sensor_rateStr := c.FormValue("mdc_idc_set_brady_max_sensor_rate")
+	mdc_idc_dev_sav := c.FormValue("mdc_idc_dev_sav")
+	mdc_idc_dev_pav := c.FormValue("mdc_idc_dev_pav")
+	mdc_idc_stat_brady_ra_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_ra_percent_paced")
+	mdc_idc_stat_brady_rv_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_rv_percent_paced")
+	mdc_idc_stat_brady_lv_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_lv_percent_paced")
+	mdc_idc_stat_brady_biv_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_biv_percent_paced")
+	mdc_idc_batt_voltStr := c.FormValue("mdc_idc_batt_volt")
+	mdc_idc_batt_remaining := c.FormValue("mdc_idc_batt_remaining")
+	mdc_idc_batt_status := c.FormValue("mdc_idc_batt_status")
+	mdc_idc_cap_charge_timeStr := c.FormValue("mdc_idc_cap_charge_time")
+	mdc_idc_msmt_ra_impedance_meanStr := c.FormValue("mdc_idc_msmt_ra_impedance_mean")
+	mdc_idc_msmt_ra_sensing_meanStr := c.FormValue("mdc_idc_msmt_ra_sensing_mean")
+	mdc_idc_msmt_ra_thresholdStr := c.FormValue("mdc_idc_msmt_ra_threshold")
+	mdc_idc_msmt_ra_pwStr := c.FormValue("mdc_idc_msmt_ra_pw")
+	mdc_idc_msmt_rv_impedance_meanStr := c.FormValue("mdc_idc_msmt_rv_impedance_mean")
+	mdc_idc_msmt_rv_sensing_meanStr := c.FormValue("mdc_idc_msmt_rv_sensing_mean")
+	mdc_idc_msmt_rv_thresholdStr := c.FormValue("mdc_idc_msmt_rv_threshold")
+	mdc_idc_msmt_rv_pwStr := c.FormValue("mdc_idc_msmt_rv_pw")
+	mdc_idc_msmt_shock_impedanceStr := c.FormValue("mdc_idc_msmt_shock_impedance")
+	mdc_idc_msmt_lv_impedance_meanStr := c.FormValue("mdc_idc_msmt_lv_impedance_mean")
+	mdc_idc_msmt_lv_thresholdStr := c.FormValue("mdc_idc_msmt_lv_threshold")
+	mdc_idc_msmt_lv_pwStr := c.FormValue("mdc_idc_msmt_lv_pw")
+	comments := c.FormValue("comments")
+	isCompletedStr := c.FormValue("is_completed")
 
-	// Convert patient_id to uint
-	patientID, err := strconv.ParseUint(patientIDStr, 10, 32)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid patient ID")
-	}
-
-	// Convert author_id to uint
+	// Convert necessary form values to appropriate types
 	authorId, err := strconv.ParseUint(authorIdStr, 10, 32)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid author ID")
 	}
+	patientID, err := strconv.ParseUint(patientIDStr, 10, 32)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid patient ID")
+	}
+	currentHeartRate, err := parseNullableInt(currentHeartRateStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid current heart rate")
+	}
+	mdc_idc__stat_ataf_burden_percent, err := parseNullableInt(mdc_idc__stat_ataf_burden_percentStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc__stat_ataf_burden_percent")
+	}
+	mdc_idc_set_brady_lowrate, err := parseNullableInt(mdc_idc_set_brady_lowrateStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_set_brady_lowrate")
+	}
+	mdc_idc_set_brady_max_tracking_rate, err := parseNullableInt(mdc_idc_set_brady_max_tracking_rateStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_set_brady_max_tracking_rate")
+	}
+	mdc_idc_set_brady_max_sensor_rate, err := parseNullableInt(mdc_idc_set_brady_max_sensor_rateStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_set_brady_max_sensor_rate")
+	}
+	mdc_idc_stat_brady_ra_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_ra_percent_pacedStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_ra_percent_paced")
+	}
+	mdc_idc_stat_brady_rv_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_rv_percent_pacedStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_rv_percent_paced")
+	}
+	mdc_idc_stat_brady_lv_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_lv_percent_pacedStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_lv_percent_paced")
+	}
+	mdc_idc_stat_brady_biv_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_biv_percent_pacedStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_biv_percent_paced")
+	}
+	mdc_idc_batt_volt, err := parseNullableFloat(mdc_idc_batt_voltStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_batt_volt")
+	}
+	// mdc_idc_batt_remaining, err := mdc_idc_batt_remainingStr
+	// if err != nil {
+	// 	return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_batt_remaining")
+	// }
+	mdc_idc_cap_charge_time, err := parseNullableFloat(mdc_idc_cap_charge_timeStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_cap_charge_time")
+	}
+	mdc_idc_msmt_ra_impedance_mean, err := parseNullableFloat(mdc_idc_msmt_ra_impedance_meanStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_impedance_mean")
+	}
+	mdc_idc_msmt_ra_sensing_mean, err := parseNullableFloat(mdc_idc_msmt_ra_sensing_meanStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_sensing_mean")
+	}
+	mdc_idc_msmt_ra_threshold, err := parseNullableFloat(mdc_idc_msmt_ra_thresholdStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_threshold")
+	}
+	mdc_idc_msmt_ra_pw, err := parseNullableFloat(mdc_idc_msmt_ra_pwStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_pw")
+	}
+	mdc_idc_msmt_rv_impedance_mean, err := parseNullableFloat(mdc_idc_msmt_rv_impedance_meanStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_impedance_mean")
+	}
+	mdc_idc_msmt_rv_sensing_mean, err := parseNullableFloat(mdc_idc_msmt_rv_sensing_meanStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_sensing_mean")
+	}
+	mdc_idc_msmt_rv_threshold, err := parseNullableFloat(mdc_idc_msmt_rv_thresholdStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_threshold")
+	}
+	mdc_idc_msmt_rv_pw, err := parseNullableFloat(mdc_idc_msmt_rv_pwStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_pw")
+	}
+	mdc_idc_msmt_shock_impedance, err := parseNullableFloat(mdc_idc_msmt_shock_impedanceStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_shock_impedance")
+	}
+	mdc_idc_msmt_lv_impedance_mean, err := parseNullableFloat(mdc_idc_msmt_lv_impedance_meanStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_lv_impedance_mean")
+	}
+	mdc_idc_msmt_lv_threshold, err := parseNullableFloat(mdc_idc_msmt_lv_thresholdStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_lv_threshold")
+	}
+	mdc_idc_msmt_lv_pw, err := parseNullableFloat(mdc_idc_msmt_lv_pwStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_lv_pw")
+	}
+	isCompleted, err := strconv.ParseBool(isCompletedStr)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid is_completed value")
+	}
+
+	// Debug statements to check the parsed values
+	// fmt.Printf("mdc_idc_set_brady_max_tracking_rate: %v\n", *mdc_idc_set_brady_max_tracking_rate)
+
+
 	var filePath string
 	if hasFile {
 		// Create directories if they don't exist
@@ -83,23 +286,50 @@ func CreateReport(c *fiber.Ctx) error {
 			return fiber.NewError(fiber.StatusInternalServerError, "Failed to save file")
 		}
 	}
-	// Save the report in the database
-	currentHeartRateInt, err := strconv.Atoi(currentHeartRate)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid current heart rate")
-	}
 
+	// Create a new report instance
 	report := models.Report{
-		AuthorID:          uint(authorId),
-		ReportDate:        reportDate,
-		ReportType:        reportType,
-		ReportStatus:      reportStatus,
-		CurrentHeartRate:  currentHeartRateInt,
-		CurrentDependency: currentDependency,
-		PatientID:         uint(patientID),
-		FilePath:          filePath,
+		AuthorID:                             uint(authorId),
+		ReportDate:                           reportDate,
+		ReportType:                           reportType,
+		ReportStatus:                         reportStatus,
+		CurrentHeartRate:                     currentHeartRate,
+		CurrentRhythm:                        currentRhythm,
+		CurrentDependency:                    currentDependency,
+		Mdc_idc__stat_ataf_burden_percent:    mdc_idc__stat_ataf_burden_percent,
+		Mdc_idc_set_brady_mode:               mdc_idc_set_brady_mode,
+		Mdc_idc_set_brady_lowrate:            mdc_idc_set_brady_lowrate,
+		Mdc_idc_set_brady_max_tracking_rate:  mdc_idc_set_brady_max_tracking_rate,
+		Mdc_idc_set_brady_max_sensor_rate:    mdc_idc_set_brady_max_sensor_rate,
+		Mdc_idc_dev_sav:                      mdc_idc_dev_sav,
+		Mdc_idc_dev_pav:                      mdc_idc_dev_pav,
+		Mdc_idc_stat_brady_ra_percent_paced:  mdc_idc_stat_brady_ra_percent_paced,
+		Mdc_idc_stat_brady_rv_percent_paced:  mdc_idc_stat_brady_rv_percent_paced,
+		Mdc_idc_stat_brady_lv_percent_paced:  mdc_idc_stat_brady_lv_percent_paced,
+		Mdc_idc_stat_brady_biv_percent_paced: mdc_idc_stat_brady_biv_percent_paced,
+		Mdc_idc_batt_volt:                    mdc_idc_batt_volt,
+		Mdc_idc_batt_remaining:               mdc_idc_batt_remaining,
+		Mdc_idc_batt_status:                  mdc_idc_batt_status,
+		Mdc_idc_cap_charge_time:              mdc_idc_cap_charge_time,
+		Mdc_idc_msmt_ra_impedance_mean:       mdc_idc_msmt_ra_impedance_mean,
+		Mdc_idc_msmt_ra_sensing_mean:         mdc_idc_msmt_ra_sensing_mean,
+		Mdc_idc_msmt_ra_threshold:            mdc_idc_msmt_ra_threshold,
+		Mdc_idc_msmt_ra_pw:                   mdc_idc_msmt_ra_pw,
+		Mdc_idc_msmt_rv_impedance_mean:       mdc_idc_msmt_rv_impedance_mean,
+		Mdc_idc_msmt_rv_sensing_mean:         mdc_idc_msmt_rv_sensing_mean,
+		Mdc_idc_msmt_rv_threshold:            mdc_idc_msmt_rv_threshold,
+		Mdc_idc_msmt_rv_pw:                   mdc_idc_msmt_rv_pw,
+		Mdc_idc_msmt_shock_impedance:         mdc_idc_msmt_shock_impedance,
+		Mdc_idc_msmt_lv_impedance_mean:       mdc_idc_msmt_lv_impedance_mean,
+		Mdc_idc_msmt_lv_threshold:            mdc_idc_msmt_lv_threshold,
+		Mdc_idc_msmt_lv_pw:                   mdc_idc_msmt_lv_pw,
+		Comments:                             comments,
+		IsCompleted:                          isCompleted,
+		FilePath:                             filePath,
+		PatientID:                            uint(patientID),
 	}
 
+	// Save the report to the database
 	if err := db.Create(&report).Error; err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "Failed to save report to database")
 	}
@@ -110,7 +340,6 @@ func CreateReport(c *fiber.Ctx) error {
 		"data":    report,
 	})
 }
-
 func UpdateReport(c *fiber.Ctx) error {
 	db := database.InitDB()
 
@@ -237,11 +466,43 @@ func appendToFile(filePath string, fileHeader *multipart.FileHeader) error {
 	return nil
 }
 
-// Helper function to parse int from string
-func parseInt(value string, fieldName string) (int, error) {
-	parsedValue, err := strconv.Atoi(value)
-	if err != nil {
-		return 0, fiber.NewError(fiber.StatusBadRequest, fmt.Sprintf("Invalid %s", fieldName))
-	}
-	return parsedValue, nil
+// Helper function to parse nullable integers
+func parseNullableInt(value string) (*int, error) {
+    if value == "" || value =="NaN" || value=="undefined" {
+        return nil, nil
+    }
+    intValue, err := strconv.Atoi(value)
+    if err != nil {
+        return nil, err
+    }
+    return &intValue, nil
 }
+
+func parseNullableFloat(value string) (*float32, error){
+	if value == "" || value =="NaN"  || value =="undefined" {
+		return nil, nil
+	} 
+	floatValue, err := strconv.ParseFloat(value, 32)
+	if err !=nil {
+		return nil, err
+	}
+	float32Value := float32(floatValue)
+	return &float32Value, nil
+}
+// Helper function to convert *float64 to *float32
+// func float64ToFloat32Ptr(value *float64) *float32 {
+// 	if value == nil {
+// 		return nil
+// 	}
+// 	float32Value := float32(*value)
+// 	return &float32Value
+// }
+
+// Helper function to parse int from string
+// func parseInt(value string, fieldName string) (int, error) {
+// 	parsedValue, err := strconv.Atoi(value)
+// 	if err != nil {
+// 		return 0, fiber.NewError(fiber.StatusBadRequest, fmt.Sprintf("Invalid %s", fieldName))
+// 	}
+// 	return parsedValue, nil
+// }

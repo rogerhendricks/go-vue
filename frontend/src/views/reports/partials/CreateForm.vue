@@ -215,6 +215,8 @@ const handleFileChange = async (event) => {
             console.log("Key:", key, "Value:", data[key]);
             if (formData.value.hasOwnProperty(key)) {
                 formData.value[key] = data[key];
+            } else {
+                formData.value[key] = null;
             }
         }
         return data;
