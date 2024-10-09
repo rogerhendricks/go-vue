@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"log"
+	"math"
 	"mime/multipart"
 	"os"
 	"path/filepath"
@@ -128,9 +129,9 @@ func CreateReport(c *fiber.Ctx) error {
 	currentDependency := c.FormValue("current_dependency")
 	mdc_idc__stat_ataf_burden_percentStr := c.FormValue("mdc_idc__stat_ataf_burden_percent")
 	mdc_idc_set_brady_mode := c.FormValue("mdc_idc_set_brady_mode")
-	mdc_idc_set_brady_lowrateStr := c.FormValue("mdc_idc_set_brady_lowrate")
-	mdc_idc_set_brady_max_tracking_rateStr := c.FormValue("mdc_idc_set_brady_max_tracking_rate")
-	mdc_idc_set_brady_max_sensor_rateStr := c.FormValue("mdc_idc_set_brady_max_sensor_rate")
+	mdc_idc_set_brady_lowrate := c.FormValue("mdc_idc_set_brady_lowrate")
+	mdc_idc_set_brady_max_tracking_rate := c.FormValue("mdc_idc_set_brady_max_tracking_rate")
+	mdc_idc_set_brady_max_sensor_rate := c.FormValue("mdc_idc_set_brady_max_sensor_rate")
 	mdc_idc_dev_sav := c.FormValue("mdc_idc_dev_sav")
 	mdc_idc_dev_pav := c.FormValue("mdc_idc_dev_pav")
 	mdc_idc_stat_brady_ra_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_ra_percent_paced")
@@ -172,18 +173,6 @@ func CreateReport(c *fiber.Ctx) error {
 	mdc_idc__stat_ataf_burden_percent, err := parseNullableInt(mdc_idc__stat_ataf_burden_percentStr)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc__stat_ataf_burden_percent")
-	}
-	mdc_idc_set_brady_lowrate, err := parseNullableInt(mdc_idc_set_brady_lowrateStr)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_set_brady_lowrate")
-	}
-	mdc_idc_set_brady_max_tracking_rate, err := parseNullableInt(mdc_idc_set_brady_max_tracking_rateStr)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_set_brady_max_tracking_rate")
-	}
-	mdc_idc_set_brady_max_sensor_rate, err := parseNullableInt(mdc_idc_set_brady_max_sensor_rateStr)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_set_brady_max_sensor_rate")
 	}
 	mdc_idc_stat_brady_ra_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_ra_percent_pacedStr)
 	if err != nil {
@@ -340,25 +329,197 @@ func CreateReport(c *fiber.Ctx) error {
 		"data":    report,
 	})
 }
+
 func UpdateReport(c *fiber.Ctx) error {
 	db := database.InitDB()
 
 	reportId := c.Params("id")
-	// Get patient_id and report_date from the form
+	// Get form values
+	authorIdStr := c.FormValue("author_id")
 	patientIDStr := c.FormValue("patient_id")
 	reportDate := c.FormValue("report_date")
+	reportType := c.FormValue("report_type")
+	reportStatus := c.FormValue("report_status")
+	currentHeartRateStr := c.FormValue("current_heart_rate")
+	currentRhythm := c.FormValue("current_rhythm")
+	currentDependency := c.FormValue("current_dependency")
+	mdc_idc__stat_ataf_burden_percentStr := c.FormValue("mdc_idc__stat_ataf_burden_percent")
+	mdc_idc_set_brady_mode := c.FormValue("mdc_idc_set_brady_mode")
+	mdc_idc_set_brady_lowrate := c.FormValue("mdc_idc_set_brady_lowrate")
+	mdc_idc_set_brady_max_tracking_rate := c.FormValue("mdc_idc_set_brady_max_tracking_rate")
+	mdc_idc_set_brady_max_sensor_rate := c.FormValue("mdc_idc_set_brady_max_sensor_rate")
+	mdc_idc_dev_sav := c.FormValue("mdc_idc_dev_sav")
+	mdc_idc_dev_pav := c.FormValue("mdc_idc_dev_pav")
+	mdc_idc_stat_brady_ra_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_ra_percent_paced")
+	mdc_idc_stat_brady_rv_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_rv_percent_paced")
+	mdc_idc_stat_brady_lv_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_lv_percent_paced")
+	mdc_idc_stat_brady_biv_percent_pacedStr := c.FormValue("mdc_idc_stat_brady_biv_percent_paced")
+	mdc_idc_batt_voltStr := c.FormValue("mdc_idc_batt_volt")
+	mdc_idc_batt_remaining := c.FormValue("mdc_idc_batt_remaining")
+	mdc_idc_batt_status := c.FormValue("mdc_idc_batt_status")
+	mdc_idc_cap_charge_timeStr := c.FormValue("mdc_idc_cap_charge_time")
+	mdc_idc_msmt_ra_impedance_meanStr := c.FormValue("mdc_idc_msmt_ra_impedance_mean")
+	mdc_idc_msmt_ra_sensing_meanStr := c.FormValue("mdc_idc_msmt_ra_sensing_mean")
+	mdc_idc_msmt_ra_thresholdStr := c.FormValue("mdc_idc_msmt_ra_threshold")
+	mdc_idc_msmt_ra_pwStr := c.FormValue("mdc_idc_msmt_ra_pw")
+	mdc_idc_msmt_rv_impedance_meanStr := c.FormValue("mdc_idc_msmt_rv_impedance_mean")
+	mdc_idc_msmt_rv_sensing_meanStr := c.FormValue("mdc_idc_msmt_rv_sensing_mean")
+	mdc_idc_msmt_rv_thresholdStr := c.FormValue("mdc_idc_msmt_rv_threshold")
+	mdc_idc_msmt_rv_pwStr := c.FormValue("mdc_idc_msmt_rv_pw")
+	mdc_idc_msmt_shock_impedanceStr := c.FormValue("mdc_idc_msmt_shock_impedance")
+	mdc_idc_msmt_lv_impedance_meanStr := c.FormValue("mdc_idc_msmt_lv_impedance_mean")
+	mdc_idc_msmt_lv_thresholdStr := c.FormValue("mdc_idc_msmt_lv_threshold")
+	mdc_idc_msmt_lv_pwStr := c.FormValue("mdc_idc_msmt_lv_pw")
+	comments := c.FormValue("comments")
+	isCompletedStr := c.FormValue("is_completed")
 
-	// Convert patient_id to uint
-	patientID, err := strconv.ParseUint(patientIDStr, 10, 32)
-	if err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid patient ID")
-	}
+    // Convert necessary form values to appropriate types
+    authorId, err := strconv.ParseUint(authorIdStr, 10, 32)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid author ID")
+    }
+ 	// Convert patient_id to uint
+	 patientID, err := strconv.ParseUint(patientIDStr, 10, 32)
+	 if err != nil {
+		 return fiber.NewError(fiber.StatusBadRequest, "Invalid patient ID")
+	 }
+    currentHeartRate, err := parseNullableInt(currentHeartRateStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid current heart rate")
+    }
+    mdc_idc__stat_ataf_burden_percent, err := parseNullableInt(mdc_idc__stat_ataf_burden_percentStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc__stat_ataf_burden_percent")
+    }
+    mdc_idc_stat_brady_ra_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_ra_percent_pacedStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_ra_percent_paced")
+    }
+    mdc_idc_stat_brady_rv_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_rv_percent_pacedStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_rv_percent_paced")
+    }
+    mdc_idc_stat_brady_lv_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_lv_percent_pacedStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_lv_percent_paced")
+    }
+    mdc_idc_stat_brady_biv_percent_paced, err := parseNullableInt(mdc_idc_stat_brady_biv_percent_pacedStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_stat_brady_biv_percent_paced")
+    }
+    mdc_idc_batt_volt, err := parseNullableFloat(mdc_idc_batt_voltStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_batt_volt")
+    }
+    // mdc_idc_batt_remaining, err := parseNullableInt(mdc_idc_batt_remainingStr)
+    // if err != nil {
+    //     return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_batt_remaining")
+    // }
+    mdc_idc_cap_charge_time, err := parseNullableFloat(mdc_idc_cap_charge_timeStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_cap_charge_time")
+    }
+    mdc_idc_msmt_ra_impedance_mean, err := parseNullableFloat(mdc_idc_msmt_ra_impedance_meanStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_impedance_mean")
+    }
+    mdc_idc_msmt_ra_sensing_mean, err := parseNullableFloat(mdc_idc_msmt_ra_sensing_meanStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_sensing_mean")
+    }
+    mdc_idc_msmt_ra_threshold, err := parseNullableFloat(mdc_idc_msmt_ra_thresholdStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_threshold")
+    }
+    mdc_idc_msmt_ra_pw, err := parseNullableFloat(mdc_idc_msmt_ra_pwStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_ra_pw")
+    }
+    mdc_idc_msmt_rv_impedance_mean, err := parseNullableFloat(mdc_idc_msmt_rv_impedance_meanStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_impedance_mean")
+    }
+    mdc_idc_msmt_rv_sensing_mean, err := parseNullableFloat(mdc_idc_msmt_rv_sensing_meanStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_sensing_mean")
+    }
+    mdc_idc_msmt_rv_threshold, err := parseNullableFloat(mdc_idc_msmt_rv_thresholdStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_threshold")
+    }
+    mdc_idc_msmt_rv_pw, err := parseNullableFloat(mdc_idc_msmt_rv_pwStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_rv_pw")
+    }
+    mdc_idc_msmt_shock_impedance, err := parseNullableFloat(mdc_idc_msmt_shock_impedanceStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_shock_impedance")
+    }
+    mdc_idc_msmt_lv_impedance_mean, err := parseNullableFloat(mdc_idc_msmt_lv_impedance_meanStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_lv_impedance_mean")
+    }
+    mdc_idc_msmt_lv_threshold, err := parseNullableFloat(mdc_idc_msmt_lv_thresholdStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_lv_threshold")
+    }
+    mdc_idc_msmt_lv_pw, err := parseNullableFloat(mdc_idc_msmt_lv_pwStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid mdc_idc_msmt_lv_pw")
+    }
+    isCompleted, err := strconv.ParseBool(isCompletedStr)
+    if err != nil {
+        return fiber.NewError(fiber.StatusBadRequest, "Invalid is_completed value")
+    }
 
 	// Find the existing report
 	report := new(models.Report)
 	if err := db.Where("id = ?", reportId).First(&report).Error; err != nil {
 		return fiber.NewError(fiber.StatusNotFound, "Report not found")
 	}
+
+
+    // Update the report fields with the new data
+    report.AuthorID = uint(authorId)
+    report.ReportDate = reportDate
+    report.ReportType = reportType
+    report.ReportStatus = reportStatus
+    report.CurrentHeartRate = currentHeartRate
+    report.CurrentRhythm = currentRhythm
+    report.CurrentDependency = currentDependency
+    report.Mdc_idc__stat_ataf_burden_percent = mdc_idc__stat_ataf_burden_percent
+    report.Mdc_idc_set_brady_mode = mdc_idc_set_brady_mode
+    report.Mdc_idc_set_brady_lowrate = mdc_idc_set_brady_lowrate
+    report.Mdc_idc_set_brady_max_tracking_rate = mdc_idc_set_brady_max_tracking_rate
+    report.Mdc_idc_set_brady_max_sensor_rate = mdc_idc_set_brady_max_sensor_rate
+    report.Mdc_idc_dev_sav = mdc_idc_dev_sav
+    report.Mdc_idc_dev_pav = mdc_idc_dev_pav
+    report.Mdc_idc_stat_brady_ra_percent_paced = mdc_idc_stat_brady_ra_percent_paced
+    report.Mdc_idc_stat_brady_rv_percent_paced = mdc_idc_stat_brady_rv_percent_paced
+    report.Mdc_idc_stat_brady_lv_percent_paced = mdc_idc_stat_brady_lv_percent_paced
+    report.Mdc_idc_stat_brady_biv_percent_paced = mdc_idc_stat_brady_biv_percent_paced
+    report.Mdc_idc_batt_volt = mdc_idc_batt_volt
+    report.Mdc_idc_batt_remaining = mdc_idc_batt_remaining
+    report.Mdc_idc_batt_status = mdc_idc_batt_status
+    report.Mdc_idc_cap_charge_time = mdc_idc_cap_charge_time
+    report.Mdc_idc_msmt_ra_impedance_mean = mdc_idc_msmt_ra_impedance_mean
+    report.Mdc_idc_msmt_ra_sensing_mean = mdc_idc_msmt_ra_sensing_mean
+    report.Mdc_idc_msmt_ra_threshold = mdc_idc_msmt_ra_threshold
+    report.Mdc_idc_msmt_ra_pw = mdc_idc_msmt_ra_pw
+    report.Mdc_idc_msmt_rv_impedance_mean = mdc_idc_msmt_rv_impedance_mean
+    report.Mdc_idc_msmt_rv_sensing_mean = mdc_idc_msmt_rv_sensing_mean
+    report.Mdc_idc_msmt_rv_threshold = mdc_idc_msmt_rv_threshold
+    report.Mdc_idc_msmt_rv_pw = mdc_idc_msmt_rv_pw
+    report.Mdc_idc_msmt_shock_impedance = mdc_idc_msmt_shock_impedance
+    report.Mdc_idc_msmt_lv_impedance_mean = mdc_idc_msmt_lv_impedance_mean
+    report.Mdc_idc_msmt_lv_threshold = mdc_idc_msmt_lv_threshold
+    report.Mdc_idc_msmt_lv_pw = mdc_idc_msmt_lv_pw
+    report.Comments = comments
+    report.IsCompleted = isCompleted
+
+
+
+
 
 	// Handle file upload
 	file, err := c.FormFile("file")
@@ -468,7 +629,7 @@ func appendToFile(filePath string, fileHeader *multipart.FileHeader) error {
 
 // Helper function to parse nullable integers
 func parseNullableInt(value string) (*int, error) {
-    if value == "" || value =="NaN" || value=="undefined" {
+    if value == "" || value =="NaN" || value=="undefined" || value =="null" {
         return nil, nil
     }
     intValue, err := strconv.Atoi(value)
@@ -479,14 +640,14 @@ func parseNullableInt(value string) (*int, error) {
 }
 
 func parseNullableFloat(value string) (*float32, error){
-	if value == "" || value =="NaN"  || value =="undefined" {
+	if value == "" || value =="NaN"  || value =="undefined" || value =="null" {
 		return nil, nil
 	} 
 	floatValue, err := strconv.ParseFloat(value, 32)
 	if err !=nil {
 		return nil, err
 	}
-	float32Value := float32(floatValue)
+	float32Value := float32(math.Round(floatValue*100) / 100)
 	return &float32Value, nil
 }
 // Helper function to convert *float64 to *float32

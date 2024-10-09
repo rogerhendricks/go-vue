@@ -138,7 +138,42 @@ const handleSubmit = async () => {
     const uploadData = new FormData()
     uploadData.append('patient_id', formData.value.patient)
     uploadData.append('report_date', formData.value.report_date)
-
+    uploadData.append('report_type', formData.value.report_type)
+    uploadData.append('report_status', formData.value.report_status)
+    uploadData.append('current_heart_rate', formData.value.current_heart_rate)
+    uploadData.append('current_rhythm', formData.value.current_rhythm)
+    uploadData.append('current_dependency', formData.value.current_dependency)
+    uploadData.append('mdc_idc__stat_ataf_burden_percent', formData.value.mdc_idc__stat_ataf_burden_percent)
+    uploadData.append('mdc_idc_set_brady_mode', formData.value.mdc_idc_set_brady_mode)
+    uploadData.append('mdc_idc_set_brady_lowrate', formData.value.mdc_idc_set_brady_lowrate)
+    uploadData.append('mdc_idc_set_brady_max_tracking_rate', formData.value.mdc_idc_set_brady_max_tracking_rate)
+    uploadData.append('mdc_idc_set_brady_max_sensor_rate', formData.value.mdc_idc_set_brady_max_sensor_rate)
+    uploadData.append('mdc_idc_dev_sav', formData.value.mdc_idc_dev_sav)
+    uploadData.append('mdc_idc_dev_pav', formData.value.mdc_idc_dev_pav)
+    uploadData.append('mdc_idc_stat_brady_ra_percent_paced', formData.value.mdc_idc_stat_brady_ra_percent_paced)
+    uploadData.append('mdc_idc_stat_brady_rv_percent_paced', formData.value.mdc_idc_stat_brady_rv_percent_paced)
+    uploadData.append('mdc_idc_stat_brady_lv_percent_paced', formData.value.mdc_idc_stat_brady_lv_percent_paced)
+    uploadData.append('mdc_idc_stat_brady_biv_percent_paced', formData.value.mdc_idc_stat_brady_biv_percent_paced)
+    uploadData.append('mdc_idc_batt_volt', formData.value.mdc_idc_batt_volt)
+    uploadData.append('mdc_idc_batt_remaining', formData.value.mdc_idc_batt_remaining)
+    uploadData.append('mdc_idc_batt_status', formData.value.mdc_idc_batt_status)
+    uploadData.append('mdc_idc_cap_charge_time', formData.value.mdc_idc_cap_charge_time)
+    uploadData.append('mdc_idc_msmt_ra_impedance_mean', formData.value.mdc_idc_msmt_ra_impedance_mean)
+    uploadData.append('mdc_idc_msmt_ra_sensing_mean', formData.value.mdc_idc_msmt_ra_sensing_mean)
+    uploadData.append('mdc_idc_msmt_ra_threshold', formData.value.mdc_idc_msmt_ra_threshold)
+    uploadData.append('mdc_idc_msmt_ra_pw', formData.value.mdc_idc_msmt_ra_pw)
+    uploadData.append('mdc_idc_msmt_rv_impedance_mean', formData.value.mdc_idc_msmt_rv_impedance_mean)
+    uploadData.append('mdc_idc_msmt_rv_sensing_mean', formData.value.mdc_idc_msmt_rv_sensing_mean)
+    uploadData.append('mdc_idc_msmt_rv_threshold', formData.value.mdc_idc_msmt_rv_threshold)
+    uploadData.append('mdc_idc_msmt_rv_pw', formData.value.mdc_idc_msmt_rv_pw)
+    uploadData.append('mdc_idc_msmt_shock_impedance', formData.value.mdc_idc_msmt_shock_impedance)
+    uploadData.append('mdc_idc_msmt_lv_impedance_mean', formData.value.mdc_idc_msmt_lv_impedance_mean)
+    uploadData.append('mdc_idc_msmt_lv_threshold', formData.value.mdc_idc_msmt_lv_threshold)
+    uploadData.append('mdc_idc_msmt_lv_pw', formData.value.mdc_idc_msmt_lv_pw)
+    uploadData.append('comments', formData.value.comments)
+    uploadData.append('is_completed', formData.value.is_completed)
+    uploadData.append('author_id', formData.value.author_id)
+    
     // Check if new files are selected
     if (formData.value.files && formData.value.files.length > 0) {
       // Create a new PDF document to merge files
@@ -188,7 +223,6 @@ function getFileLink(filePath) {
       return `https://dev.nuttynarwhal.com/${filePath}`
 }
 
-
 // Create a PDF from the form data
 const createPDF = async () => {
   try {
@@ -232,7 +266,6 @@ const createPDF = async () => {
     })
   }
 }
-
 
 // Deleting report
 function confirmDelete() {

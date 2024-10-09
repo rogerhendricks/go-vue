@@ -18,9 +18,9 @@ type Report struct {
 	// Mdc_idc_stat_nsvt_count int `json:"mdc_idc_stat_nsvt_count"`
 	// Device Settings
 	Mdc_idc_set_brady_mode              string `json:"mdc_idc_set_brady_mode"`
-	Mdc_idc_set_brady_lowrate           *int    `json:"mdc_idc_set_brady_lowrate"`
-	Mdc_idc_set_brady_max_tracking_rate *int    `json:"mdc_idc_set_brady_max_tracking_rate"`
-	Mdc_idc_set_brady_max_sensor_rate   *int    `json:"mdc_idc_set_brady_max_sensor_rate"`
+	Mdc_idc_set_brady_lowrate           string    `json:"mdc_idc_set_brady_lowrate"`
+	Mdc_idc_set_brady_max_tracking_rate string    `json:"mdc_idc_set_brady_max_tracking_rate"`
+	Mdc_idc_set_brady_max_sensor_rate   string    `json:"mdc_idc_set_brady_max_sensor_rate"`
 	Mdc_idc_dev_sav                     string `json:"mdc_idc_dev_sav"`
 	Mdc_idc_dev_pav                     string `json:"mdc_idc_dev_pav"`
 	// Pacing Percentages
