@@ -1,22 +1,24 @@
 package main
 
 import (
-    "log"
-	"time"
-	"strings"
 	"embed"
+	"log"
 	"net/http"
-    "github.com/gofiber/fiber/v2"
+	"strings"
+	"time"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
-    "github.com/gofiber/fiber/v2/middleware/session"
-    "github.com/gofiber/fiber/v2/middleware/cors"
-    "github.com/gofiber/fiber/v2/middleware/csrf"
-    "github.com/gofiber/fiber/v2/utils"
-    "gorm.io/gorm"
-    "gorm.io/driver/sqlite"
-    "github.com/rogerhendricks/go-vue/controllers"
-    "github.com/rogerhendricks/go-vue/models"
-    // "github.com/rogerhendricks/go-vue/sessionstore"
+	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/gofiber/fiber/v2/utils"
+	"github.com/rogerhendricks/go-vue/controllers"
+	"github.com/rogerhendricks/go-vue/middleware"
+	"github.com/rogerhendricks/go-vue/models"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	// "github.com/rogerhendricks/go-vue/sessionstore"
 )
 
 //go:embed frontend/dist
@@ -38,15 +40,15 @@ func main() {
 
     // Migrate the schema
     err = db.AutoMigrate(
-        &models.User{}, &models.Device{}, 
-        &models.Lead{}, &models.Doctor{}, 
-        &models.Address{} ,&models.Patient{}, 
+        &models.User{}, &models.Device{},
+        &models.Lead{}, &models.Doctor{},
+        &models.Address{} ,&models.Patient{},
         &models.ImplantedDevice{}, &models.ImplantedLead{},
         &models.Report{}, &models.Session{})
     if err != nil {
             log.Fatalf("Failed to migrate Report: %v", err)
     }
-    
+
     app := fiber.New()
     app.Use(cors.New(cors.Config{
         AllowOrigins:     "http://localhost:8000",
@@ -69,7 +71,7 @@ func main() {
     SetupRoutes(app)
 
     app.Static("/uploads", "./uploads")
-    
+
 	app.Use("/", filesystem.New(filesystem.Config{
 		Root:   http.FS(distDir),
 		PathPrefix: "frontend/dist",
@@ -88,7 +90,7 @@ func main() {
 }
 
 func SetupRoutes(app *fiber.App) {
-    api := app.Group("/api")
+    api := app.Group("/api", middleware.AuthRequired())
     // users
     api.Post("/register", controllers.RegisterUser)
     api.Post("/login", controllers.LoginUser)
