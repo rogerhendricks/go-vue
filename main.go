@@ -8,6 +8,7 @@ import (
 	"net/http"
     "github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+    "github.com/gofiber/fiber/v2/middleware/session"
     "github.com/gofiber/fiber/v2/middleware/cors"
     "github.com/gofiber/fiber/v2/middleware/csrf"
     "github.com/gofiber/fiber/v2/utils"
@@ -15,11 +16,18 @@ import (
     "gorm.io/driver/sqlite"
     "github.com/rogerhendricks/go-vue/controllers"
     "github.com/rogerhendricks/go-vue/models"
+    // "github.com/rogerhendricks/go-vue/sessionstore"
 )
 
 //go:embed frontend/dist
 var distDir embed.FS
 var db *gorm.DB
+
+
+var store = session.New(session.Config{
+    Expiration: 24 * time.Hour, // Set session expiration time
+})
+
 
 func main() {
     var err error
@@ -34,7 +42,7 @@ func main() {
         &models.Lead{}, &models.Doctor{}, 
         &models.Address{} ,&models.Patient{}, 
         &models.ImplantedDevice{}, &models.ImplantedLead{},
-        &models.Report{},)
+        &models.Report{}, &models.Session{})
     if err != nil {
             log.Fatalf("Failed to migrate Report: %v", err)
     }
@@ -52,7 +60,11 @@ func main() {
         CookieSameSite: "Strict",
         Expiration:     1 * time.Hour,
         KeyGenerator:   utils.UUID,
+        // Session:           session.Store,
+        SessionKey:        "fiber.csrf.token",
+        HandlerContextKey: "fiber.csrf.handler",
     }))
+
 
     SetupRoutes(app)
 
