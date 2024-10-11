@@ -12,10 +12,11 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/session"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/rogerhendricks/go-vue/controllers"
 
-	// "github.com/rogerhendricks/go-vue/middleware"
+	"github.com/rogerhendricks/go-vue/middleware"
 	"github.com/rogerhendricks/go-vue/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -65,6 +66,8 @@ func main() {
 		SessionKey:        "fiber.csrf.token",
 		HandlerContextKey: "fiber.csrf.handler",
 	}))
+	// for logging
+	app.Use(logger.New())
 
 	SetupRoutes(app)
 
@@ -88,11 +91,11 @@ func main() {
 }
 
 func SetupRoutes(app *fiber.App) {
-	api := app.Group("/api")
 	// users
-	api.Post("/register", controllers.RegisterUser)
-	api.Post("/login", controllers.LoginUser)
-	api.Post("/logout", controllers.LogoutUser)
+	app.Post("/register", controllers.RegisterUser)
+	app.Post("/login", controllers.LoginUser)
+	app.Post("/logout", controllers.LogoutUser)
+	api := app.Group("/api", middleware.AuthRequired)
 	api.Get("/user", controllers.GetUser)
 	api.Put("/user", controllers.UpdateUser)
 	// devices
